@@ -1,0 +1,15 @@
+using CustomRoles.Configs.Roles;
+using CustomRoles.Roles;
+
+namespace CustomRoles
+{
+    public class RoleConfigs
+    {
+        public ShotgunnerConfig ShotCfg { get; set; } = new ShotgunnerConfig();
+        public DwarfConfig DwarfCfg { get; set; } = new DwarfConfig();
+        public PhantomConfig PhantomCfg { get; set; } = new PhantomConfig();
+        public Scp575Config Scp575Cfg { get; set; } = new Scp575Config();
+        public MedicConfig MediCfg { get; set; } = new MedicConfig();
+        public DemolitionistConfig DemoCfg { get; set; } = new DemolitionistConfig();
+    }
+}
