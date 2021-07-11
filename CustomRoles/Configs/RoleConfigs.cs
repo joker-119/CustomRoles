@@ -11,5 +11,6 @@ namespace CustomRoles
         public Scp575Config Scp575Cfg { get; set; } = new Scp575Config();
         public MedicConfig MediCfg { get; set; } = new MedicConfig();
         public DemolitionistConfig DemoCfg { get; set; } = new DemolitionistConfig();
+        public JuggernautZombieConfig JuggCfg { get; set; } = new JuggernautZombieConfig();
     }
 }

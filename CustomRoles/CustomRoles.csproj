@@ -114,6 +114,7 @@
         <Compile Include="Configs\RoleConfigs.cs" />
         <Compile Include="Configs\Roles\DemolitionistConfig.cs" />
         <Compile Include="Configs\Roles\DwarfConfig.cs" />
+        <Compile Include="Configs\Roles\JuggernautZombieConfig.cs" />
         <Compile Include="Configs\Roles\MedicConfig.cs" />
         <Compile Include="Configs\Roles\PhantomConfig.cs" />
         <Compile Include="Configs\Roles\Scp575Config.cs" />
@@ -124,6 +125,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Roles\Demolitionist.cs" />
         <Compile Include="Roles\Dwarf.cs" />
+        <Compile Include="Roles\JuggernautZombie.cs" />
         <Compile Include="Roles\Medic.cs" />
         <Compile Include="Roles\Phantom.cs" />
         <Compile Include="Roles\Scp575.cs" />
