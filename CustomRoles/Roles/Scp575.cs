@@ -85,10 +85,17 @@ namespace CustomRoles.Roles
 
         private void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev)
         {
-            if (ev.Role.roleId == RoleType.Scp106)
+            if (ev.Role.roleId == RoleType.Scp106 && ev.HitInfo.GetDamageType() != DamageTypes.Wall)
             {
+                string message = "scp 5 7 5 has been successfully terminated .";
+
+                if (ev.Killer.Side == Side.Mtf && !string.IsNullOrEmpty(ev.Killer.UnitName))
+                    message += $" termination cause {ev.Killer.UnitName}";
+                else
+                    message += " termination cause unspecified";
+                
                 ev.IsAllowed = false;
-                Cassie.Message("scp 5 7 5 has been successfully contained");
+                Cassie.Message(message);
             }
         }
 
