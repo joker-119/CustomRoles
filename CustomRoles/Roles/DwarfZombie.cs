@@ -34,9 +34,7 @@ namespace CustomRoles.Roles
         {
             if (ev.Attacker == Player)
             {
-                var dmgCal = ev.Amount * 0.3;
-                var dmgPer = ev.Amount - dmgCal;
-                ev.Amount = (float) dmgPer;
+                ev.Amount *= 0.7f;
             }
         }
     }
