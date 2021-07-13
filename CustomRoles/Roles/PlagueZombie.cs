@@ -1,6 +1,7 @@
 using System;
 using CustomRoles.API;
 using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 
@@ -18,14 +19,14 @@ namespace CustomRoles.Roles
         
         protected override void RoleAdded()
         {
-            try
-            {
-                Log.Debug($"{Name} added to {Player.Nickname}");
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{Name}: {e}\n{e.StackTrace}");
-            }
+            Player.ChangeRunningSpeed(0.90f);
+            Player.ChangeWalkingSpeed(0.90f);
+        }
+
+        protected override void RoleRemoved()
+        {
+            Player.ChangeRunningSpeed(1f);
+            Player.ChangeWalkingSpeed(1f);
         }
 
         protected override void LoadEvents()

@@ -1,4 +1,5 @@
 using CustomRoles.API;
+using Exiled.API.Extensions;
 
 namespace CustomRoles.Roles
 {
@@ -9,5 +10,17 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.TankZombieCfg.Name;
         protected override string Description { get; set; } = 
             "A slightly slower zombie with double the regular health";
+
+        protected override void RoleAdded()
+        {
+            Player.ChangeRunningSpeed(0.80f);
+            Player.ChangeWalkingSpeed(0.80f);
+        }
+
+        protected override void RoleRemoved()
+        {
+            Player.ChangeRunningSpeed(1f);
+            Player.ChangeWalkingSpeed(1f);
+        }
     }
 }

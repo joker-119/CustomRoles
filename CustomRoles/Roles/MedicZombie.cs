@@ -1,5 +1,6 @@
 using CustomRoles.Abilities;
 using CustomRoles.API;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 
@@ -22,7 +23,17 @@ namespace CustomRoles.Roles
             Player.GameObject.AddComponent<ZombieMist>();
             return "Ability used.";
         }
+        protected override void RoleAdded()
+        {
+            Player.ChangeRunningSpeed(0.80f);
+            Player.ChangeWalkingSpeed(0.80f);
+        }
 
+        protected override void RoleRemoved()
+        {
+            Player.ChangeRunningSpeed(1f);
+            Player.ChangeWalkingSpeed(1f);
+        }
         protected override void LoadEvents()
         {
             Log.Debug($"{Name} loading events.");
