@@ -16,5 +16,6 @@ namespace CustomRoles
         public PDZombieConfig PDZombieCfg { get; set; } = new PDZombieConfig();
         public DwarfZombieConfig DwarfZombieCfg { get; set; } = new DwarfZombieConfig();
         public MedicZombieConfig MedicZombieCfg { get; set; } = new MedicZombieConfig();
+        public TankZombieConfig TankZombieCfg { get; set; } = new TankZombieConfig();
     }
 }
