@@ -31,8 +31,8 @@ namespace CustomRoles.Roles
 
         protected override void RoleRemoved()
         {
-            Player.ChangeRunningSpeed(1f);
-            Player.ChangeWalkingSpeed(1f);
+            Player.ChangeRunningSpeed(1.8f);
+            Player.ChangeWalkingSpeed(1.8f);
         }
         protected override void LoadEvents()
         {

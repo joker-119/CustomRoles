@@ -24,8 +24,8 @@ namespace CustomRoles.Roles
 
         protected override void RoleRemoved()
         {
-            Player.ChangeRunningSpeed(1f);
-            Player.ChangeWalkingSpeed(1f);
+            Player.ChangeRunningSpeed(0.2f);
+            Player.ChangeWalkingSpeed(0.2f);
             Player.Scale = Vector3.one;
         }
         protected override void LoadEvents()
