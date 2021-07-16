@@ -85,7 +85,7 @@ namespace CustomRoles.Roles
 
         private void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev)
         {
-            if (ev.Role.roleId == RoleType.Scp106 && ev.HitInfo.GetDamageType() != DamageTypes.Wall)
+            if (ev.Role.roleId == RoleType.Scp106)
             {
                 string message = "scp 5 7 5 has been successfully terminated .";
 
@@ -118,6 +118,7 @@ namespace CustomRoles.Roles
             Exiled.Events.Handlers.Scp106.Teleporting -= OnTeleporting;
             Exiled.Events.Handlers.Scp106.CreatingPortal -= OnCreatingPortal;
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnExplodingGrenade;
+            Exiled.Events.Handlers.Map.AnnouncingScpTermination -= OnAnnouncingScpTermination;
             Exiled.Events.Handlers.Player.EnteringPocketDimension -= OnEnteringPocketDimension;
         }
 

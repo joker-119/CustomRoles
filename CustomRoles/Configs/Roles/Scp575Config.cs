@@ -12,7 +12,7 @@ namespace CustomRoles.Configs.Roles
         public int AbilityCooldown { get; set; } = 300;
         public int AbilityPowerLevelRequirement { get; set; } = 10;
         public int MaxPowerLevel { get; set; } = 10;
-        public float FlashbangBaseDamage { get; set; } = 350f;
+        public float FlashbangBaseDamage { get; set; } = 450f;
         public float FlashbangFalloffMultiplier { get; set; } = 30f;
         public bool ResetPowerOnFlashbang { get; set; } = true;
         public bool TeleportOnFlashbang { get; set; } = true;

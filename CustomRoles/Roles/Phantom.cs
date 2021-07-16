@@ -45,12 +45,20 @@ namespace CustomRoles.Roles
         {
             Exiled.Events.Handlers.Player.DroppingItem += OnDroppingItem;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
+            Exiled.Events.Handlers.Player.UsingMedicalItem += OnUsingMedicalItem;
+        }
+
+        private void OnUsingMedicalItem(UsingMedicalItemEventArgs ev)
+        {
+            if (ev.Item == ItemType.SCP268)
+                ev.IsAllowed = false;
         }
 
         protected override void UnloadEvents()
         {
             Exiled.Events.Handlers.Player.DroppingItem -= OnDroppingItem;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
+            Exiled.Events.Handlers.Player.UsingMedicalItem -= OnUsingMedicalItem;
         }
 
         private void OnPickingUpItem(PickingUpItemEventArgs ev)
