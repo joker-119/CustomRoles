@@ -1,9 +1,9 @@
 using System;
 using CustomRoles.API;
 using Exiled.API.Enums;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
+using MEC;
 
 namespace CustomRoles.Roles
 {
@@ -13,20 +13,21 @@ namespace CustomRoles.Roles
         public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.PlagueCfg.MaxHealth;
         public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.PlagueCfg.Name;
         protected override string Description { get; set; } = 
-            "A slightly slower zombie that is infectious with SCP-008 while being much weaker than regular zombies.";
+            "A slower and weaker zombie that is infectious with SCP-008.";
 
         private Random _random;
         
         protected override void RoleAdded()
         {
-            Player.ChangeRunningSpeed(0.90f);
-            Player.ChangeWalkingSpeed(0.90f);
+            Timing.CallDelayed(2.5f, () =>
+            {
+                Player.EnableEffect(EffectType.SinkHole);
+            });
         }
 
         protected override void RoleRemoved()
         {
-            Player.ChangeRunningSpeed(1.9f);
-            Player.ChangeWalkingSpeed(1.9f);
+            Player.DisableEffect(EffectType.SinkHole);
         }
 
         protected override void LoadEvents()
@@ -46,7 +47,8 @@ namespace CustomRoles.Roles
             if (ev.Attacker == Player)
             {
                 ev.Amount = 10f;
-                if (_random.Next(1, 100) < 60)
+                var chance = _random.Next(1, 100);
+                if (chance < 60)
                 {
                     ev.Target.EnableEffect(EffectType.Poisoned);
                 }

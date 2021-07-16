@@ -1,8 +1,7 @@
 using CustomRoles.API;
-using Exiled.API.Extensions;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
-using MEC;
 
 namespace CustomRoles.Roles
 {
@@ -31,6 +30,7 @@ namespace CustomRoles.Roles
 
         public void OnHurt(HurtingEventArgs ev)
         {
+            if (ev.Target == Player && ev.DamageType == DamageTypes.Scp207) ev.IsAllowed = false;
             if (ev.Attacker == Player)
             {
                 ev.Amount *= 2f;
@@ -41,13 +41,7 @@ namespace CustomRoles.Roles
         {
             if (ev.Killer == Player)
             {
-                Player.ChangeRunningSpeed(1.3f);
-                Player.ChangeWalkingSpeed(1.3f);
-                Timing.CallDelayed(10f, () =>
-                {
-                    Player.ChangeRunningSpeed(0.3f);
-                    Player.ChangeWalkingSpeed(0.3f);
-                });
+                Player.EnableEffect(EffectType.Scp207,10f,true);
             }
         }
     }

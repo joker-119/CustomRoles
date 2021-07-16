@@ -1,5 +1,6 @@
 using CustomRoles.API;
-using Exiled.API.Extensions;
+using Exiled.API.Enums;
+using MEC;
 
 namespace CustomRoles.Roles
 {
@@ -13,14 +14,15 @@ namespace CustomRoles.Roles
 
         protected override void RoleAdded()
         {
-            Player.ChangeRunningSpeed(0.80f);
-            Player.ChangeWalkingSpeed(0.80f);
+            Timing.CallDelayed(2.5f, () =>
+            {
+                Player.EnableEffect(EffectType.SinkHole);
+            });
         }
 
         protected override void RoleRemoved()
         {
-            Player.ChangeRunningSpeed(1.8f);
-            Player.ChangeWalkingSpeed(1.8f);
+            Player.DisableEffect(EffectType.SinkHole);
         }
     }
 }

@@ -1,5 +1,5 @@
 using CustomRoles.API;
-using Exiled.API.Extensions;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using MEC;
@@ -14,18 +14,19 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.DwarfZombieCfg.Name;
 
         protected override string Description { get; set; } =
-            "A weaker and smaller zombie with greater speed than its brothers.";
+            "A weaker, smaller, amd faster zombie than its brothers.";
         protected override void RoleAdded()
         {
-            Timing.CallDelayed(2.5f, () => Player.Scale = new Vector3(0.75f, 0.75f, 0.75f));
-            Player.ChangeRunningSpeed(1.2f);
-            Player.ChangeWalkingSpeed(1.2f);
+            Timing.CallDelayed(2.5f, () =>
+            {
+                Player.Scale = new Vector3(0.75f, 0.75f, 0.75f);
+                Player.EnableEffect(EffectType.Scp207);
+            });
         }
 
         protected override void RoleRemoved()
         {
-            Player.ChangeRunningSpeed(0.2f);
-            Player.ChangeWalkingSpeed(0.2f);
+            Player.DisableEffect(EffectType.Scp207);
             Player.Scale = Vector3.one;
         }
         protected override void LoadEvents()
@@ -42,6 +43,7 @@ namespace CustomRoles.Roles
 
         private void OnHurt(HurtingEventArgs ev)
         {
+            if (ev.Target == Player && ev.DamageType == DamageTypes.Scp207) ev.IsAllowed = false;
             if (ev.Attacker == Player)
             {
                 ev.Amount *= 0.7f;

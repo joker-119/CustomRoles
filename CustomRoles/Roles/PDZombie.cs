@@ -41,7 +41,8 @@ namespace CustomRoles.Roles
 
         private void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Attacker == Player && _random.Next(1, 100) < 25)
+            var chance = _random.Next(1, 100);
+            if (ev.Attacker == Player && chance < 25)
             {
                 ev.Target.EnableEffect(EffectType.Corroding);
             }
