@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CustomPlayerEffects;
 using CustomRoles.API;
 using CustomRoles.Roles;
 using Exiled.API.Enums;
@@ -94,10 +95,13 @@ namespace CustomRoles
 
         public void OnDying(DyingEventArgs ev)
         {
-            if (!ev.Target.IsHuman) return;
-            if (ev.Target.GetEffect(EffectType.Poisoned) != null)
+            if (!ev.Target.IsHuman) 
+                return;
+            
+            if (ev.Target.TryGetEffect(EffectType.Poisoned, out PlayerEffect poisoned))
             {
-                CustomRole.Add(ev.Target, new PlagueZombie());
+                if (poisoned is Poisoned && poisoned.Intensity > 0)
+                    ev.Target.GameObject.AddComponent<PlagueZombie>();
             }
         }
         

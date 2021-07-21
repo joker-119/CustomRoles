@@ -12,25 +12,27 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.BallisticCfg.Name;
 
         protected override string Description { get; set; } =
-            "A regular zombie that'll explode when killed.";
+            "A zombie that gains more speed when they kill someone.";
 
         protected override void LoadEvents()
         {
-            Log.Debug($"{Name} loading events.");
+            Log.Debug($"{Name}:{nameof(LoadEvents)}: loading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting += OnHurt;
             Exiled.Events.Handlers.Player.Died += OnDied;
         }
 
         protected override void UnloadEvents()
         {
-            Log.Debug($"{Name} unloading events.");
+            Log.Debug($"{Name}:{nameof(UnloadEvents)}: unloading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting -= OnHurt;
             Exiled.Events.Handlers.Player.Died -= OnDied;
         }
 
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Target == Player && ev.DamageType == DamageTypes.Scp207) ev.IsAllowed = false;
+            if (ev.Target == Player && ev.DamageType == DamageTypes.Scp207) 
+                ev.IsAllowed = false;
+            
             if (ev.Attacker == Player)
             {
                 ev.Amount *= 2f;
@@ -39,10 +41,8 @@ namespace CustomRoles.Roles
 
         public void OnDied(DiedEventArgs ev)
         {
-            if (ev.Killer == Player)
-            {
-                Player.EnableEffect(EffectType.Scp207,10f,true);
-            }
+            if (ev.Killer == Player) 
+                Player.EnableEffect(EffectType.Scp207, 10f, true);
         }
     }
 }

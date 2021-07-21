@@ -2,8 +2,11 @@ using System;
 using CustomPlayerEffects;
 using CustomRoles.API;
 using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.CustomItems.API;
 using Exiled.Events.EventArgs;
+using ServerOutput;
 
 namespace CustomRoles.Roles
 {
@@ -14,56 +17,41 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.PDZombieCfg.Name;
         protected override string Description { get; set; } =
             "A zombie with ballistic damage resistance, but is instantly killed by flash grenades. Has a 25% chance when hitting someone to teleport them to the Pocket Dimension";
+        
+        protected override void RoleAdded() => Log.Debug($"{Name} added to {Player.Nickname}", Plugin.Singleton.Config.Debug);
 
-        private Random _random;
-        protected override void RoleAdded()
-        {
-            try
-            {
-                Log.Debug($"{Name} added to {Player.Nickname}");
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{Name}: {e}\n{e.StackTrace}");
-            }
-        }
         protected override void LoadEvents()
         {
-            Log.Debug($"{Name} loading events.");
+            Log.Debug($"{Name}:{nameof(LoadEvents)}: loading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting += OnHurt;
+            Exiled.Events.Handlers.Player.ReceivingEffect += OnReceivingEffect;
         }
 
         protected override void UnloadEvents()
         {
-            Log.Debug($"{Name} unloading events.");
+            Log.Debug($"{Name}:{nameof(UnloadEvents)}: unloading events.");
             Exiled.Events.Handlers.Player.Hurting -= OnHurt;
+            Exiled.Events.Handlers.Player.ReceivingEffect -= OnReceivingEffect;
         }
-
+        
         private void OnHurt(HurtingEventArgs ev)
         {
-            var chance = _random.Next(1, 100);
-            if (ev.Attacker == Player && chance < 25)
+            if (ev.Attacker == Player)
             {
-                ev.Target.EnableEffect(EffectType.Corroding);
+                int chance = Plugin.Singleton.Rng.Next(100);
+                
+                if (chance < 25)
+                    ev.Target.EnableEffect(EffectType.Corroding);
             }
 
-            if (ev.Target == Player && ev.Attacker.IsHuman)
-            {
-                switch (Extensions.IsGun(ev.Attacker.CurrentItem.id))
-                {
-                    case true:
-                        ev.Amount *= 0.20f;
-                        break;
-                }
-            }
+            if (ev.Target == Player && ev.Attacker.IsHuman && ev.Attacker.CurrentItem.id.IsGun()) 
+                ev.Amount *= 0.20f;
         }
 
-        private void OnFlashed(ReceivingEffectEventArgs ev)
+        private void OnReceivingEffect(ReceivingEffectEventArgs ev)
         {
-            if (ev.Player == Player && ev.Effect == ev.Player.GetEffect(EffectType.Flashed))
-            {
-                Player.Kill(DamageTypes.RagdollLess);
-            }
+            if (ev.Player == Player && ev.Effect is Flashed) 
+                Player.Kill(DamageTypes.Grenade);
         }
     }
 }

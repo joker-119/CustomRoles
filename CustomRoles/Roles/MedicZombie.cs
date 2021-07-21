@@ -51,7 +51,7 @@ namespace CustomRoles.Roles
         {
             if (ev.Attacker == Player)
             {
-                ev.Amount *= .75f;
+                ev.Amount *= 0.75f;
             }
         }
     }

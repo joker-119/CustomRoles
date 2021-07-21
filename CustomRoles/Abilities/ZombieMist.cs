@@ -25,20 +25,20 @@ namespace CustomRoles.Abilities
 
         protected override void UnloadEvents()
         {
-            foreach (var handle in Coroutines)
+            foreach (CoroutineHandle handle in Coroutines)
                 Timing.KillCoroutines(handle);
         }
 
         private void ActivateMist()
         {
-            foreach (var player in Player.List)
+            foreach (Player player in Player.List)
                 if (player.Team == Team.SCP && player != Player)
                     Coroutines.Add(Timing.RunCoroutine(DoMist(player)));
         }
 
         private IEnumerator<float> DoMist(Player player)
         {
-            for (var i = 0; i < Duration; i++)
+            for (int i = 0; i < Duration; i++)
             {
                 if (player.Health + HealAmount >= player.MaxHealth || Vector3.Distance(player.Position, Player.Position) > 10f)
                     continue;

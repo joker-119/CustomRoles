@@ -15,8 +15,6 @@ namespace CustomRoles.Roles
         protected override string Description { get; set; } = 
             "A slower and weaker zombie that is infectious with SCP-008.";
 
-        private Random _random;
-        
         protected override void RoleAdded()
         {
             Timing.CallDelayed(2.5f, () =>
@@ -32,27 +30,25 @@ namespace CustomRoles.Roles
 
         protected override void LoadEvents()
         {
-            Log.Debug($"{Name} loading events.");
+            Log.Debug($"{Name} loading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting += OnHurt;
         }
 
         protected override void UnloadEvents()
         {
-            Log.Debug($"{Name} unloading events.");
+            Log.Debug($"{Name} unloading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting -= OnHurt;
         }
 
         private void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Attacker == Player)
-            {
-                ev.Amount = 10f;
-                var chance = _random.Next(1, 100);
-                if (chance < 60)
-                {
-                    ev.Target.EnableEffect(EffectType.Poisoned);
-                }
-            }
+            if (ev.Attacker != Player) 
+                return;
+            
+            ev.Amount = 10f;
+                
+            if (Plugin.Singleton.Rng.Next(100) < 60) 
+                ev.Target.EnableEffect(EffectType.Poisoned);
         }
     }
 }
