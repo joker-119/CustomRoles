@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using CustomRoles.API;
 using CustomRoles.Roles;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Respawning;
@@ -90,6 +92,15 @@ namespace CustomRoles
             }
         }
 
+        public void OnDying(DyingEventArgs ev)
+        {
+            if (!ev.Target.IsHuman) return;
+            if (ev.Target.GetEffect(EffectType.Poisoned) != null)
+            {
+                CustomRole.Add(ev.Target, new PlagueZombie());
+            }
+        }
+        
         public void OnReloadedConfigs() => plugin.Config.LoadConfigs();
     }
 }
