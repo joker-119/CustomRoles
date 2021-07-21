@@ -107,13 +107,10 @@
         <Compile Include="Abilities\CustomAbility.cs" />
         <Compile Include="Abilities\HealingMist.cs" />
         <Compile Include="Abilities\ZombieMist.cs" />
-        <Compile Include="API\AbilityNames.cs" />
         <Compile Include="API\API.cs" />
         <Compile Include="API\CustomRole.cs" />
-        <Compile Include="Commands\Abilities\ActiveCamoCommand.cs" />
-        <Compile Include="Commands\Abilities\BlackoutCommand.cs" />
-        <Compile Include="Commands\Abilities\TestCommand.cs" />
-        <Compile Include="Commands\UseAbilityCommand.cs" />
+        <Compile Include="Commands\Abilities\UseAbilityCommand.cs" />
+        <Compile Include="Commands\TestCommand.cs" />
         <Compile Include="Configs\Config.cs" />
         <Compile Include="Configs\RoleConfigs.cs" />
         <Compile Include="Configs\Roles\BallisticZombieConfig.cs" />
@@ -121,7 +118,6 @@
         <Compile Include="Configs\Roles\DemolitionistConfig.cs" />
         <Compile Include="Configs\Roles\DwarfConfig.cs" />
         <Compile Include="Configs\Roles\DwarfZombieConfig.cs" />
-        <Compile Include="Configs\Roles\JuggernautZombieConfig.cs" />
         <Compile Include="Configs\Roles\MedicConfig.cs" />
         <Compile Include="Configs\Roles\MedicZombieConfig.cs" />
         <Compile Include="Configs\Roles\PDZombieConfig.cs" />

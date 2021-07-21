@@ -6,6 +6,7 @@ using CustomRoles.Roles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
+using MEC;
 using Respawning;
 
 namespace CustomRoles
@@ -95,16 +96,19 @@ namespace CustomRoles
 
         public void OnDying(DyingEventArgs ev)
         {
-            if (!ev.Target.IsHuman) 
-                return;
-            
-            if (ev.Target.TryGetEffect(EffectType.Poisoned, out PlayerEffect poisoned))
-            {
-                if (poisoned is Poisoned && poisoned.Intensity > 0)
-                    ev.Target.GameObject.AddComponent<PlagueZombie>();
-            }
+            if (ev.Target.IsHuman && ev.Target.TryGetEffect(EffectType.Poisoned, out PlayerEffect poisoned) && poisoned is Poisoned && poisoned.Intensity > 0)
+                ev.Target.GameObject.AddComponent<PlagueZombie>();
         }
         
         public void OnReloadedConfigs() => plugin.Config.LoadConfigs();
+
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            if (ev.NewRole == RoleType.Scp0492)
+            {
+                if (plugin.Rng.Next(100) <= 45)
+                    Timing.CallDelayed(2f, () => plugin.Methods.SelectRandomZombieType(ev.Player));
+            }
+        }
     }
 }

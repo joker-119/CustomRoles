@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CustomRoles.Roles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
@@ -44,6 +45,37 @@ namespace CustomRoles
             NetworkServer.Spawn(grenade.gameObject);
 
             return grenade;
+        }
+
+        public void SelectRandomZombieType(Player player)
+        {
+            int r = plugin.Rng.Next(plugin.Config.EnabledZombies.Count - 1);
+            string name = plugin.Config.EnabledZombies[r];
+
+            switch (name)
+            {
+                case nameof(BallisticZombie):
+                    player.GameObject.AddComponent<BallisticZombie>();
+                    break;
+                case nameof(BerserkZombie):
+                    player.GameObject.AddComponent<BerserkZombie>();
+                    break;
+                case nameof(DwarfZombie):
+                    player.GameObject.AddComponent<DwarfZombie>();
+                    break;
+                case nameof(MedicZombie):
+                    player.GameObject.AddComponent<MedicZombie>();
+                    break;
+                case nameof(PDZombie):
+                    player.GameObject.AddComponent<PDZombie>();
+                    break;
+                case nameof(PlagueZombie):
+                    player.GameObject.AddComponent<PlagueZombie>();
+                    break;
+                case nameof(TankZombie):
+                    player.GameObject.AddComponent<TankZombie>();
+                    break;
+            }
         }
     }
 }

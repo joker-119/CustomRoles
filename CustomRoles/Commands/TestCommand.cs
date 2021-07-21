@@ -27,6 +27,8 @@ namespace CustomRoles.Commands.Abilities
                 return false;
             }
 
+            target.Role = RoleType.Spectator;
+
             switch (args[2])
             {
                 case "575":
@@ -51,6 +53,27 @@ namespace CustomRoles.Commands.Abilities
                     break;
                 case "medic":
                     target.GameObject.AddComponent<Medic>();
+                    break;
+                case "berserk":
+                    target.GameObject.AddComponent<BerserkZombie>();
+                    break;
+                case "medicz":
+                    target.GameObject.AddComponent<MedicZombie>();
+                    break;
+                case "plague":
+                    target.GameObject.AddComponent<PlagueZombie>();
+                    break;
+                case "ballistic":
+                    target.GameObject.AddComponent<BallisticZombie>();
+                    break;
+                case "dwarfz":
+                    target.GameObject.AddComponent<DwarfZombie>();
+                    break;
+                case "pdz":
+                    target.GameObject.AddComponent<PDZombie>();
+                    break;
+                case "tank":
+                    target.GameObject.AddComponent<TankZombie>();
                     break;
             }
 

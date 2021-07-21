@@ -23,8 +23,6 @@ namespace CustomRoles.API
         protected virtual bool KeepInventoryOnChange { get; set; } = false;
         protected virtual bool LoseRoleOnChange { get; set; } = true;
 
-        public static void Add(Player player, CustomRole role) => player.GameObject.AddComponent(role.GetType());
-
         public virtual string UseAbility() => "You have no custom ability to use.";
 
         protected void Start()

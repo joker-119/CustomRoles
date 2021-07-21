@@ -38,7 +38,7 @@ namespace CustomRoles
             Config.LoadConfigs();
 
             Exiled.Events.Handlers.Player.Dying += EventHandlers.OnDying;
-            
+            Exiled.Events.Handlers.Player.ChangingRole += EventHandlers.OnChangingRole;
             Exiled.Events.Handlers.Server.RoundStarted += EventHandlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RespawningTeam += EventHandlers.OnRespawningTeam;
             Exiled.Events.Handlers.Server.ReloadedConfigs += EventHandlers.OnReloadedConfigs;
@@ -49,7 +49,7 @@ namespace CustomRoles
         public override void OnDisabled()
         {
             Exiled.Events.Handlers.Player.Dying -= EventHandlers.OnDying;
-            
+            Exiled.Events.Handlers.Player.ChangingRole -= EventHandlers.OnChangingRole;
             Exiled.Events.Handlers.Server.RoundStarted -= EventHandlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RespawningTeam -= EventHandlers.OnRespawningTeam;
             Exiled.Events.Handlers.Server.ReloadedConfigs -= EventHandlers.OnReloadedConfigs;

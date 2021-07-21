@@ -7,9 +7,9 @@ namespace CustomRoles.Roles
 {
     public class BerserkZombie : CustomRole
     {
-        public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.BallisticCfg.RoleType;
-        public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.BallisticCfg.MaxHealth;
-        public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.BallisticCfg.Name;
+        public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.BerserkZombieCfg.RoleType;
+        public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.BerserkZombieCfg.MaxHealth;
+        public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.BerserkZombieCfg.Name;
 
         protected override string Description { get; set; } =
             "A zombie that gains more speed when they kill someone.";
