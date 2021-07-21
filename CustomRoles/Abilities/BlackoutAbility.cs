@@ -39,7 +39,7 @@ namespace CustomRoles.Abilities
         {
             do
             {
-                foreach (Player player in Exiled.API.Features.Player.List)
+                foreach (Player player in Player.List)
                     if (player.CurrentRoom.LightsOff && !HasLightSource(player) && player.IsHuman)
                     {
                         player.Hurt(Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.KeterDamage, DamageTypes.Bleeding,

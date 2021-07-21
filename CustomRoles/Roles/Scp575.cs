@@ -87,8 +87,15 @@ namespace CustomRoles.Roles
         {
             if (ev.Role.roleId == RoleType.Scp106)
             {
+                string message = "scp 5 7 5 has been successfully terminated .";
+
+                if (ev.Killer.Side == Side.Mtf && !string.IsNullOrEmpty(ev.Killer.UnitName))
+                    message += $" termination cause {ev.Killer.UnitName}";
+                else
+                    message += " termination cause unspecified";
+                
                 ev.IsAllowed = false;
-                Cassie.Message("scp 5 7 5 has been successfully contained");
+                Cassie.Message(message);
             }
         }
 
@@ -111,6 +118,7 @@ namespace CustomRoles.Roles
             Exiled.Events.Handlers.Scp106.Teleporting -= OnTeleporting;
             Exiled.Events.Handlers.Scp106.CreatingPortal -= OnCreatingPortal;
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnExplodingGrenade;
+            Exiled.Events.Handlers.Map.AnnouncingScpTermination -= OnAnnouncingScpTermination;
             Exiled.Events.Handlers.Player.EnteringPocketDimension -= OnEnteringPocketDimension;
         }
 

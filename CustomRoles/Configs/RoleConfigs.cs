@@ -18,5 +18,6 @@ namespace CustomRoles
         public MedicZombieConfig MedicZombieCfg { get; set; } = new MedicZombieConfig();
         public TankZombieConfig TankZombieCfg { get; set; } = new TankZombieConfig();
         public BerserkZombieConfig BerserkZombieCfg { get; set; } = new BerserkZombieConfig();
+        public JuggernautZombieConfig JuggCfg { get; set; } = new JuggernautZombieConfig();
     }
 }

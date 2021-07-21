@@ -22,6 +22,7 @@ namespace CustomRoles.Commands
                 if (!role.CanUseAbility(out DateTime usableTime))
                 {
                     response = $"You cannot use the ability for {role.Name} for another {(usableTime - DateTime.Now).TotalSeconds} seconds.\n";
+                    player.ShowHint(response);
                     return false;
                 }
                 else
@@ -35,6 +36,7 @@ namespace CustomRoles.Commands
             if (customRole == null)
             {
                 response = "You are not a role capable of using any custom abilities.";
+                player.ShowHint(response);
                 return false;
             }
 

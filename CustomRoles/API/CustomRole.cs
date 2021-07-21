@@ -36,6 +36,9 @@ namespace CustomRoles.API
                 Destroy(this);
             }
 
+            if (Player.GetPlayerRoles().Any(r => r != this))
+                return;
+
             LoadEvents();
             Add();
             Exiled.Events.Handlers.Player.ChangingRole += OnChangingRole;

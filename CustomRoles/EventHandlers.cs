@@ -51,7 +51,12 @@ namespace CustomRoles
                         isPhantom = true;
                         break;
                     }
-                    default:
+                    case RoleType.Scientist:
+                    case RoleType.ClassD:
+                    case RoleType.NtfCadet:
+                    case RoleType.NtfLieutenant:
+                    case RoleType.NtfCommander:
+                    case RoleType.NtfScientist:
                     {
                         if (spawnDwarf && !isDwarf)
                         {

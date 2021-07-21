@@ -1,7 +1,11 @@
 using System.Collections.Generic;
+using CustomItems.Items;
 using CustomRoles.Abilities;
 using CustomRoles.API;
 using Exiled.API.Features;
+using Exiled.CustomItems;
+using Exiled.CustomItems.API.Features;
+using Exiled.Events.EventArgs;
 using UnityEngine;
 
 namespace CustomRoles.Roles
@@ -28,6 +32,31 @@ namespace CustomRoles.Roles
         {
             Player.GameObject.AddComponent<HealingMist>();
             return "Ability used.";
+        }
+
+        protected override void LoadEvents()
+        {
+            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
+            base.LoadEvents();
+        }
+
+        protected override void UnloadEvents()
+        {
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
+            base.UnloadEvents();
+        }
+
+        private void OnPickingUpItem(PickingUpItemEventArgs ev)
+        {
+            if (ev.Pickup.itemId == CustomItems.CustomItems.Instance.Config.ItemConfigs.MediGuns[0].Type)
+            {
+                if (CustomItem.TryGet(ev.Pickup, out CustomItem item))
+                {
+                    if (item is MediGun)
+                        return;
+                }
+                ev.IsAllowed = false;
+            }
         }
     }
 }
