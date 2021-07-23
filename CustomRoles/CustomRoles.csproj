@@ -46,7 +46,7 @@
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\References\CommandSystem.Core.dll</HintPath>
         </Reference>
-        <Reference Include="CustomItems, Version=2.3.1.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="CustomItems, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\CustomItems\CustomItems\bin\Debug\CustomItems.dll</HintPath>
         </Reference>
         <Reference Include="Exiled.API, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
