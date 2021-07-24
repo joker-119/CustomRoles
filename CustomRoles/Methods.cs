@@ -50,6 +50,7 @@ namespace CustomRoles
         public void SelectRandomZombieType(Player player)
         {
             int r = plugin.Rng.Next(plugin.Config.EnabledZombies.Count - 1);
+            Log.Debug($"{nameof(SelectRandomZombieType)}: {plugin.Config.EnabledZombies.Count} -- {plugin.Config.EnabledZombies[r]} -- Ex: {nameof(BallisticZombie)} - {nameof(PlagueZombie)}", plugin.Config.Debug);
             string name = plugin.Config.EnabledZombies[r];
 
             switch (name)

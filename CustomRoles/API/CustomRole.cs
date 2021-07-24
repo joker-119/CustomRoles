@@ -113,6 +113,7 @@ namespace CustomRoles.API
                 Player.Ammo[1] = 100;
                 Player.Ammo[2] = 100;
 
+                Player.Health = MaxHealth;
                 Player.MaxHealth = MaxHealth;
             });
 

@@ -167,7 +167,10 @@ namespace CustomRoles.Roles
                 if (dist <= 20f)
                 {
                     float damage = Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.FlashbangBaseDamage - (dist * Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.FlashbangFalloffMultiplier);
+                    if (damage > Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.FlashbangBaseDamage || damage < 0)
+                        damage = Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.FlashbangBaseDamage;
 
+                    Log.Debug($"{nameof(OnExplodingGrenade)}: Damage: {damage} - {dist} {Player.Nickname}", Plugin.Singleton.Config.Debug);
                     Player.Hurt(damage, DamageTypes.Nuke, ev.Thrower.Nickname, ev.Thrower.Id);
                     DoFlashEffect();
                 }

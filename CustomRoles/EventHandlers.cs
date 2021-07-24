@@ -31,7 +31,7 @@ namespace CustomRoles
             bool isPhantom = false;
             bool isDwarf = false;
 
-            bool spawn575 = plugin.Rng.Next(100) <= 20;
+            bool spawn575 = plugin.Rng.Next(100) <= 50;
             bool spawnPhantom = plugin.Rng.Next(100) <= 20;
             bool spawnDwarf = plugin.Rng.Next(100) <= 35;
             
@@ -41,8 +41,7 @@ namespace CustomRoles
                 {
                     case RoleType.Scp106 when spawn575:
                     {
-                        if (plugin.Rng.Next(100) <= 20)
-                            player.GameObject.AddComponent<Scp575>();
+                        player.GameObject.AddComponent<Scp575>();
                         
                         break;
                     }
@@ -74,6 +73,15 @@ namespace CustomRoles
 
         public void OnRespawningTeam(RespawningTeamEventArgs ev)
         {
+            if (ev.Players.Count == 0)
+            {
+                Log.Warn($"{nameof(OnRespawningTeam)}: The respawn list is empty ?!? -- {ev.NextKnownTeam} / {ev.MaximumRespawnAmount}");
+                
+                foreach (Player player in Player.Get(RoleType.Spectator))
+                    ev.Players.Add(player);
+                ev.MaximumRespawnAmount = ev.Players.Count;
+            }
+
             if (ev.NextKnownTeam == SpawnableTeamType.ChaosInsurgency)
             {
                 if (plugin.Rng.Next(100) <= 40)
