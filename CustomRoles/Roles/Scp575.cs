@@ -185,9 +185,11 @@ namespace CustomRoles.Roles
         {
             if (Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.ResetPowerOnFlashbang)
             {
-                powerLevel--;
+                if (powerLevel > 0)
+                    powerLevel--;
                 canUseAbility = powerLevel >= Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.AbilityPowerLevelRequirement;
-                Player.DisableEffect<Scp207>();
+                if (powerLevel <= 0)
+                    Player.DisableEffect<Scp207>();
             }
 
             if (Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.TeleportOnFlashbang)
