@@ -101,7 +101,7 @@ namespace CustomRoles.API
             {
                 Vector3 pos = GetSpawnPosition();
                 if (pos != Vector3.zero)
-                    Player.Position = pos;
+                    Player.Position = pos + Vector3.up * 1.5f;
 
                 if (!KeepInventoryOnChange)
                     Player.ClearInventory();
