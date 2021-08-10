@@ -166,6 +166,8 @@ namespace CustomRoles.Roles
                 float dist = Vector3.Distance(ev.Grenade.transform.position, Player.Position);
                 if (dist <= 20f)
                 {
+                    if (Physics.Linecast(ev.Grenade.transform.position, Player.Position, Player.ReferenceHub.playerMovementSync.CollidableSurfaces))
+                        return;
                     float damage = Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.FlashbangBaseDamage - (dist * Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.FlashbangFalloffMultiplier);
                     if (damage < 0)
                         damage = 0f;
