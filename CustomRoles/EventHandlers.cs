@@ -96,7 +96,10 @@ namespace CustomRoles
                 if (plugin.Rng.Next(100) <= 40)
                 {
                     int r = plugin.Rng.Next(ev.Players.Count);
-                    ev.Players[r].GameObject.AddComponent<Medic>();
+                    if (plugin.Rng.Next(0, 1) == 0)
+                        ev.Players[r].GameObject.AddComponent<Medic>();
+                    else
+                        ev.Players[r].GameObject.AddComponent<Demolitionist>();
                     ev.Players.RemoveAt(r);
                 }
             }
@@ -105,7 +108,10 @@ namespace CustomRoles
         public void OnDying(DyingEventArgs ev)
         {
             if (ev.Target.IsHuman && ev.Target.TryGetEffect(EffectType.Poisoned, out PlayerEffect poisoned) && poisoned is Poisoned && poisoned.Intensity > 0)
+            {
+                ev.IsAllowed = false;
                 ev.Target.GameObject.AddComponent<PlagueZombie>();
+            }
         }
         
         public void OnReloadedConfigs() => plugin.Config.LoadConfigs();
@@ -114,8 +120,12 @@ namespace CustomRoles
         {
             if (ev.NewRole == RoleType.Scp0492)
             {
+                Log.Debug($"{nameof(OnChangingRole)}: Trying to spawn new zombie.", plugin.Config.Debug);
                 if (plugin.Rng.Next(100) <= 45)
+                {
+                    Log.Debug($"{nameof(OnChangingRole)}: Selecting random zombie role.", plugin.Config.Debug);
                     Timing.CallDelayed(2f, () => plugin.Methods.SelectRandomZombieType(ev.Player));
+                }
             }
         }
     }

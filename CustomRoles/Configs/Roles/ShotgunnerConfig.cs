@@ -11,7 +11,7 @@ namespace CustomRoles.Configs.Roles
         public List<string> Inventory { get; set; } = new List<string>
         {
             "SG-119",
-            "COM15",
+            "GunCOM15",
             "IG-119",
             $"{ItemType.Medkit}",
             $"{ItemType.KeycardChaosInsurgency}",
