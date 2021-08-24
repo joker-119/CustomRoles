@@ -100,7 +100,7 @@ namespace CustomRoles.Roles
         {
             if (ev.Role.roleId == RoleType.Scp106)
             {
-                string message = $"scp 5 7 5 has been successfully terminated . {ev.TerminationCause}";
+                string message = $"scp 5 7 5 has been successfully terminated . termination cause {ev.TerminationCause}";
 
                 ev.IsAllowed = false;
                 Cassie.Message(message);
