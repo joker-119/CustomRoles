@@ -5,13 +5,15 @@ using CustomRoles.Roles;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
-using Grenades;
 using Mirror;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace CustomRoles
 {
+    using MEC;
+    using RemoteAdmin;
+
     public class Methods
     {
         private readonly Plugin plugin;
@@ -24,33 +26,11 @@ namespace CustomRoles
                     return true;
             return false;
         }
-        
-        public Grenade Spawn(Vector3 position, Vector3 velocity, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeFrag, Player player = null)
-        {
-            if (player == null)
-                player = Server.Host;
-
-            GrenadeManager grenadeManager = player.GrenadeManager;
-            GrenadeSettings settings =
-                grenadeManager.availableGrenades.FirstOrDefault(g => g.inventoryID == grenadeType);
-
-            if (settings == null)
-                return null;
-
-            Grenade grenade = Object.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
-
-            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
-            grenade.NetworkfuseTime = NetworkTime.time + fuseTime;
-
-            NetworkServer.Spawn(grenade.gameObject);
-
-            return grenade;
-        }
 
         public void SelectRandomZombieType(Player player)
         {
             int r = plugin.Rng.Next(plugin.Config.EnabledZombies.Count - 1);
-            Log.Debug($"{nameof(SelectRandomZombieType)}: {plugin.Config.EnabledZombies.Count} -- {plugin.Config.EnabledZombies[r]} -- Ex: {nameof(BallisticZombie)} - {nameof(PlagueZombie)}", plugin.Config.Debug);
+            Log.Debug($"{nameof(SelectRandomZombieType)}: {plugin.Config.EnabledZombies.Count} -- {plugin.Config.EnabledZombies[r]} -- Ex: {nameof(BallisticZombie)} - {nameof(PlagueZombie)}");
             string name = plugin.Config.EnabledZombies[r];
 
             switch (name)

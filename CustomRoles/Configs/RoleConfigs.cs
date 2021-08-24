@@ -3,9 +3,10 @@ using CustomRoles.Roles;
 
 namespace CustomRoles
 {
+    using ChargerZombie = CustomRoles.Configs.Roles.ChargerZombie;
+
     public class RoleConfigs
     {
-        public ShotgunnerConfig ShotCfg { get; set; } = new ShotgunnerConfig();
         public DwarfConfig DwarfCfg { get; set; } = new DwarfConfig();
         public PhantomConfig PhantomCfg { get; set; } = new PhantomConfig();
         public Scp575Config Scp575Cfg { get; set; } = new Scp575Config();
@@ -18,5 +19,6 @@ namespace CustomRoles
         public MedicZombieConfig MedicZombieCfg { get; set; } = new MedicZombieConfig();
         public TankZombieConfig TankZombieCfg { get; set; } = new TankZombieConfig();
         public BerserkZombieConfig BerserkZombieCfg { get; set; } = new BerserkZombieConfig();
+        public ChargerZombie ChargerZombieCfg { get; set; } = new ChargerZombie();
     }
 }

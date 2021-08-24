@@ -44,7 +44,7 @@ namespace CustomRoles.Roles
                     ev.Target.EnableEffect(EffectType.Corroding);
             }
 
-            if (ev.Target == Player && ev.Attacker.IsHuman && ev.Attacker.CurrentItem.id.IsGun()) 
+            if (ev.Target == Player && ev.Attacker.IsHuman && ev.Attacker.CurrentItem.Type.IsWeapon(false)) 
                 ev.Amount *= 0.20f;
         }
 

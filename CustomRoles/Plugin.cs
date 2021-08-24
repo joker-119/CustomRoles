@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CustomRoles.Abilities;
 using CustomRoles.Configs;
@@ -15,6 +14,11 @@ using WarheadEvents = Exiled.Events.Handlers.Warhead;
 
 namespace CustomRoles
 {
+    using Mirror;
+    using UnityEngine;
+    using Random = System.Random;
+    using Version = System.Version;
+
     public class Plugin : Plugin<Config>
     {
         public override string Author { get; } = "Galaxy119";
@@ -23,6 +27,7 @@ namespace CustomRoles
         public override Version Version { get; } = new Version(1, 3, 0);
         public override Version RequiredExiledVersion { get; } = new Version(2, 9, 3);
 
+        public List<Player> StopRagdollList = new List<Player>();
         public Methods Methods { get; private set; }
         public EventHandlers EventHandlers { get; private set; }
 
@@ -34,21 +39,21 @@ namespace CustomRoles
             Singleton = this;
             EventHandlers = new EventHandlers(this);
             Methods = new Methods(this);
-
+            
             Config.LoadConfigs();
-
-            Exiled.Events.Handlers.Player.Dying += EventHandlers.OnDying;
+            
             Exiled.Events.Handlers.Player.ChangingRole += EventHandlers.OnChangingRole;
             Exiled.Events.Handlers.Server.RoundStarted += EventHandlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RespawningTeam += EventHandlers.OnRespawningTeam;
             Exiled.Events.Handlers.Server.ReloadedConfigs += EventHandlers.OnReloadedConfigs;
             Exiled.Events.Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
+            Exiled.Events.Handlers.Scp049.FinishingRecall += EventHandlers.FinishingRecall;
+            Exiled.Events.Handlers.Player.SpawningRagdoll += EventHandlers.OnSpawningRagdoll;
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
-            Exiled.Events.Handlers.Player.Dying -= EventHandlers.OnDying;
             Exiled.Events.Handlers.Player.ChangingRole -= EventHandlers.OnChangingRole;
             Exiled.Events.Handlers.Server.RoundStarted -= EventHandlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RespawningTeam -= EventHandlers.OnRespawningTeam;

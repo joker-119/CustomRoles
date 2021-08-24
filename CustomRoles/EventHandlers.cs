@@ -11,6 +11,9 @@ using Respawning;
 
 namespace CustomRoles
 {
+    using System.Net;
+    using UnityEngine;
+
     public class EventHandlers
     {
         private readonly Plugin plugin;
@@ -54,10 +57,6 @@ namespace CustomRoles
                     }
                     case RoleType.Scientist:
                     case RoleType.ClassD:
-                    case RoleType.NtfCadet:
-                    case RoleType.NtfLieutenant:
-                    case RoleType.NtfCommander:
-                    case RoleType.NtfScientist:
                     {
                         if (spawnDwarf && !isDwarf)
                         {
@@ -81,51 +80,73 @@ namespace CustomRoles
                     ev.Players.Add(player);
                 ev.MaximumRespawnAmount = ev.Players.Count;
             }
-
-            if (ev.NextKnownTeam == SpawnableTeamType.ChaosInsurgency)
+            
+            if (ev.NextKnownTeam == SpawnableTeamType.NineTailedFox)
             {
                 if (plugin.Rng.Next(100) <= 40)
                 {
-                    int r = plugin.Rng.Next(ev.Players.Count);
-                    ev.Players[r].GameObject.AddComponent<Shotgunner>();
-                    ev.Players.RemoveAt(r);
-                }
-            }
-            else
-            {
-                if (plugin.Rng.Next(100) <= 40)
-                {
+                    Log.Debug($"{nameof(OnRespawningTeam)}: Spawning NTF Special");
                     int r = plugin.Rng.Next(ev.Players.Count);
                     if (plugin.Rng.Next(0, 1) == 0)
+                    {
+                        if (ev.Players[r].GetPlayerRoles().Any()) 
+                            return;
+                        Log.Debug($"{nameof(OnRespawningTeam)}: Spawning medic!");
                         ev.Players[r].GameObject.AddComponent<Medic>();
+                    }
                     else
+                    {
+                        if (ev.Players[r].GetPlayerRoles().Any()) 
+                            return;
+                        Log.Debug($"{nameof(OnRespawningTeam)}: Spawning Demo!");
                         ev.Players[r].GameObject.AddComponent<Demolitionist>();
+                    }
+
                     ev.Players.RemoveAt(r);
                 }
             }
         }
 
-        public void OnDying(DyingEventArgs ev)
-        {
-            if (ev.Target.IsHuman && ev.Target.TryGetEffect(EffectType.Poisoned, out PlayerEffect poisoned) && poisoned is Poisoned && poisoned.Intensity > 0)
-            {
-                ev.IsAllowed = false;
-                ev.Target.GameObject.AddComponent<PlagueZombie>();
-            }
-        }
-        
         public void OnReloadedConfigs() => plugin.Config.LoadConfigs();
 
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
+            foreach (CustomRole role in ev.Player.GetPlayerRoles())
+            {
+                if (ev.NewRole == RoleType.Spectator || role.Type != ev.NewRole)
+                {
+                    Log.Debug($"Destroying {role.Name} for {ev.Player.Nickname}");
+                    Object.Destroy(role);
+                }
+            }
+
             if (ev.NewRole == RoleType.Scp0492)
             {
-                Log.Debug($"{nameof(OnChangingRole)}: Trying to spawn new zombie.", plugin.Config.Debug);
+                if (ev.Player.GetPlayerRoles().Any()) 
+                    return;
+                Log.Debug($"{nameof(OnChangingRole)}: Trying to spawn new zombie.");
                 if (plugin.Rng.Next(100) <= 45)
                 {
-                    Log.Debug($"{nameof(OnChangingRole)}: Selecting random zombie role.", plugin.Config.Debug);
+                    Log.Debug($"{nameof(OnChangingRole)}: Selecting random zombie role.");
                     Timing.CallDelayed(2f, () => plugin.Methods.SelectRandomZombieType(ev.Player));
                 }
+            }
+        }
+
+        public void FinishingRecall(FinishingRecallEventArgs ev)
+        {
+            Log.Debug($"{nameof(OnChangingRole)}: Selecting random zombie role.");
+            Timing.CallDelayed(2f, () => plugin.Methods.SelectRandomZombieType(ev.Target));
+        }
+
+        public void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
+        {
+            Log.Warn($"{ev.Killer} -- {ev.Owner}");
+            if (plugin.StopRagdollList.Contains(ev.Owner))
+            {
+                Log.Warn($"Stopped doll for {ev.Owner.Nickname}");
+                ev.IsAllowed = false;
+                plugin.StopRagdollList.Remove(ev.Owner);
             }
         }
     }

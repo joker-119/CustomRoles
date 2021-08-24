@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace CustomRoles.Roles
 {
+    using Exiled.API.Features.Items;
+    using InventorySystem.Items.ThrowableProjectiles;
+
     public class BallisticZombie : CustomRole
     {
         public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.BallisticCfg.RoleType;
@@ -21,7 +24,7 @@ namespace CustomRoles.Roles
         {
             if (ev.Target == Player)
             {
-                Plugin.Singleton.Methods.Spawn(ev.Target.Position, Vector3.zero, 0.5f, ItemType.GrenadeFrag, ev.Target);
+                ((EffectGrenade)new ExplosiveGrenade(ItemType.GrenadeHE).Spawn(ev.Target.Position).Base).ServerActivate();
             }
         }
     }

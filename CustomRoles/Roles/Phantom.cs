@@ -8,6 +8,8 @@ using UnityEngine;
 
 namespace CustomRoles.Roles
 {
+    using Exiled.API.Extensions;
+
     public class Phantom : CustomRole
     {
         public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.PhantomCfg.RoleType;
@@ -15,12 +17,12 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.PhantomCfg.Name;
         protected override string Description { get; set; } = "A Chaos Insurgency outfitted with an active-camo suit that allows them to go invisible at will.\n\nUse the Client console command \".special\" to activate this ability. This can be keybound with \"cmdbind KEY .special\"";
 
-        protected override int AbilityCooldown { get; set; } =
+        public override int AbilityCooldown { get; set; } =
             Plugin.Singleton.Config.RoleConfigs.PhantomCfg.AbilityCooldown;
 
         protected override Dictionary<Vector3, float> SpawnLocations { get; set; } = new Dictionary<Vector3, float>
         {
-            { Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.FacilityGuard), 100 },
+            { RoleType.FacilityGuard.GetRandomSpawnProperties().Item1, 100 },
         };
 
         protected override List<string> Inventory { get; set; } = new List<string>
@@ -45,12 +47,12 @@ namespace CustomRoles.Roles
         {
             Exiled.Events.Handlers.Player.DroppingItem += OnDroppingItem;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
-            Exiled.Events.Handlers.Player.UsingMedicalItem += OnUsingMedicalItem;
+            Exiled.Events.Handlers.Player.UsingItem += OnUsingMedicalItem;
         }
 
-        private void OnUsingMedicalItem(UsingMedicalItemEventArgs ev)
+        private void OnUsingMedicalItem(UsingItemEventArgs ev)
         {
-            if (ev.Item == ItemType.SCP268)
+            if (ev.Player == Player && ev.Item.Type == ItemType.SCP268)
                 ev.IsAllowed = false;
         }
 
@@ -58,18 +60,18 @@ namespace CustomRoles.Roles
         {
             Exiled.Events.Handlers.Player.DroppingItem -= OnDroppingItem;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
-            Exiled.Events.Handlers.Player.UsingMedicalItem -= OnUsingMedicalItem;
+            Exiled.Events.Handlers.Player.UsingItem -= OnUsingMedicalItem;
         }
 
         private void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
-            if (ev.Player == Player && ev.Pickup.ItemId == ItemType.SCP268)
+            if (ev.Player == Player && ev.Pickup.Type == ItemType.SCP268)
                 ev.IsAllowed = false;
         }
 
         private void OnDroppingItem(DroppingItemEventArgs ev)
         {
-            if (ev.Player == Player && ev.Item.id == ItemType.SCP268)
+            if (ev.Player == Player && ev.Item.Type == ItemType.SCP268)
                 ev.IsAllowed = false;
         }
     }

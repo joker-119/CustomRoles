@@ -24,7 +24,7 @@ namespace CustomRoles.Configs
         public string CustomRolesFilename { get; set; } = "global.yml";
         
         public RoleConfigs RoleConfigs;
-        public List<string> EnabledZombies = new List<string>();
+        public readonly List<string> EnabledZombies = new List<string>();
 
         public void LoadConfigs()
         {
