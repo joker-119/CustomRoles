@@ -23,7 +23,7 @@ namespace CustomRoles.Roles
         public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.RoleType;
         public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.MaxHealth;
         public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.Name;
-        protected override string Description { get; set; } = $"An entity that appears as a shapeless void, that moves slowly but grows in power the more biological material it consumes. Capable of causing wide-spread power outages.\n\nUse client command \".special\" to trigger a blackout. This can be keyboudn with \"cmdbind KEY .special\"";
+        protected override string Description { get; set; } = $"An entity that appears as a shapeless void, that moves slowly but grows in power the more biological material it consumes. Capable of causing wide-spread power outages.\n\nUse client command \".special\" to trigger a blackout. This can be keybound with \"cmdbind KEY .special\"";
 
         protected override int AbilityCooldown { get; set; } = Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.AbilityCooldown;
 
