@@ -12,7 +12,6 @@ namespace CustomRoles.Roles
         public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.MedicZombieCfg.RoleType;
         public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.MedicZombieCfg.MaxHealth;
         public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.MedicZombieCfg.Name;
-
         public override int AbilityCooldown { get; set; } =
             Plugin.Singleton.Config.RoleConfigs.MedicZombieCfg.AbilityCooldown;
 
