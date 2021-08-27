@@ -4,6 +4,12 @@ using MEC;
 
 namespace CustomRoles.Abilities
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Features.Items;
+    using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Firearms.BasicMessages;
+    using Firearm = Exiled.API.Features.Items.Firearm;
+
     public class BlackoutAbility : CustomAbility
     {
         public override string Name { get; set; } = "Blackout";
@@ -30,7 +36,10 @@ namespace CustomRoles.Abilities
         {
             Cassie.Message("pitch_0.15 .g7");
             foreach (Room room in Map.Rooms)
-                room.TurnOffLights(Duration);
+            {
+                if (room.Zone != ZoneType.Surface)
+                    room.TurnOffLights(Duration);
+            }
 
             Coroutines.Add(Timing.RunCoroutine(Keter(Duration)));
         }
@@ -53,15 +62,7 @@ namespace CustomRoles.Abilities
         }
         private static bool HasLightSource(Player player)
         {
-            if (player.CurrentItem.id == ItemType.Flashlight || player.ReferenceHub.weaponManager.NetworksyncFlash)
-                return true;
-            
-            WeaponManager.Weapon weapon = player.ReferenceHub.weaponManager.weapons[player.ReferenceHub.weaponManager.curWeapon];
-            if (weapon == null || player.CurrentItem.modOther < 0 ||
-                player.CurrentItem.modOther >= weapon.mod_others.Length)
-                return false;
-            WeaponManager.Weapon.WeaponMod modOther = weapon.mod_others[player.CurrentItem.modOther];
-            return modOther != null && !string.IsNullOrEmpty(modOther.name) && (modOther.name.ToLower().Contains("flash"));
+            return (player.CurrentItem is Flashlight flashlight && flashlight.Active) || (player.CurrentItem is Firearm firearm && firearm.Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled));
         }
     }
 }

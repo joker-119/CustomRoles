@@ -46,39 +46,39 @@
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\References\CommandSystem.Core.dll</HintPath>
         </Reference>
-        <Reference Include="CustomItems, Version=2.3.1.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="CustomItems, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\CustomItems\CustomItems\bin\Debug\CustomItems.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.API, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.API.dll</HintPath>
+        <Reference Include="Exiled.API, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-alpha.57\lib\net472\Exiled.API.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Bootstrap, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Bootstrap.dll</HintPath>
+        <Reference Include="Exiled.Bootstrap, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-alpha.57\lib\net472\Exiled.Bootstrap.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CreditTags, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.CreditTags.dll</HintPath>
+        <Reference Include="Exiled.CreditTags, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-alpha.57\lib\net472\Exiled.CreditTags.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CustomItems, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.CustomItems.dll</HintPath>
+        <Reference Include="Exiled.CustomItems, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-alpha.57\lib\net472\Exiled.CustomItems.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Events, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Events.dll</HintPath>
+        <Reference Include="Exiled.Events, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-alpha.57\lib\net472\Exiled.Events.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Loader, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Loader.dll</HintPath>
+        <Reference Include="Exiled.Loader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-alpha.57\lib\net472\Exiled.Loader.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Permissions, Version=2.11.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Permissions.dll</HintPath>
+        <Reference Include="Exiled.Permissions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-alpha.57\lib\net472\Exiled.Permissions.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.2.11.1\lib\net472\Exiled.Updater.dll</HintPath>
+          <HintPath>..\packages\EXILED.3.0.0-alpha.57\lib\net472\Exiled.Updater.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -104,35 +104,50 @@
     <ItemGroup>
         <Compile Include="Abilities\ActiveCamo.cs" />
         <Compile Include="Abilities\BlackoutAbility.cs" />
+        <Compile Include="Abilities\ChargeAbility.cs" />
         <Compile Include="Abilities\CustomAbility.cs" />
         <Compile Include="Abilities\HealingMist.cs" />
-        <Compile Include="API\AbilityNames.cs" />
+        <Compile Include="Abilities\ProjectileAbility.cs" />
+        <Compile Include="Abilities\ZombieMist.cs" />
         <Compile Include="API\API.cs" />
         <Compile Include="API\CustomRole.cs" />
-        <Compile Include="Commands\Abilities\ActiveCamoCommand.cs" />
-        <Compile Include="Commands\Abilities\BlackoutCommand.cs" />
-        <Compile Include="Commands\Abilities\TestCommand.cs" />
-        <Compile Include="Commands\UseAbilityCommand.cs" />
+        <Compile Include="Commands\Abilities\UseAbilityCommand.cs" />
+        <Compile Include="Commands\TestCommand.cs" />
         <Compile Include="Configs\Config.cs" />
         <Compile Include="Configs\RoleConfigs.cs" />
+        <Compile Include="Configs\Roles\BallisticZombieConfig.cs" />
+        <Compile Include="Configs\Roles\BerserkZombieConfig.cs" />
+        <Compile Include="Configs\Roles\ChargerZombie.cs" />
         <Compile Include="Configs\Roles\DemolitionistConfig.cs" />
         <Compile Include="Configs\Roles\DwarfConfig.cs" />
-        <Compile Include="Configs\Roles\JuggernautZombieConfig.cs" />
+        <Compile Include="Configs\Roles\DwarfZombieConfig.cs" />
         <Compile Include="Configs\Roles\MedicConfig.cs" />
+        <Compile Include="Configs\Roles\MedicZombieConfig.cs" />
+        <Compile Include="Configs\Roles\PDZombieConfig.cs" />
         <Compile Include="Configs\Roles\PhantomConfig.cs" />
+        <Compile Include="Configs\Roles\PlaugeZombieConfig.cs" />
         <Compile Include="Configs\Roles\Scp575Config.cs" />
-        <Compile Include="Configs\Roles\ShotgunnerConfig.cs" />
+        <Compile Include="Configs\Roles\TankZombieConfig.cs" />
         <Compile Include="EventHandlers.cs" />
         <Compile Include="Methods.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Roles\BallisticZombie.cs" />
+        <Compile Include="Roles\BerserkZombie.cs" />
+        <Compile Include="Roles\ChargerZombie.cs" />
         <Compile Include="Roles\Demolitionist.cs" />
         <Compile Include="Roles\Dwarf.cs" />
-        <Compile Include="Roles\JuggernautZombie.cs" />
+        <Compile Include="Roles\DwarfZombie.cs" />
         <Compile Include="Roles\Medic.cs" />
+        <Compile Include="Roles\MedicZombie.cs" />
+        <Compile Include="Roles\PDZombie.cs" />
         <Compile Include="Roles\Phantom.cs" />
+        <Compile Include="Roles\PlagueZombie.cs" />
         <Compile Include="Roles\Scp575.cs" />
-        <Compile Include="Roles\Shotgunner.cs" />
+        <Compile Include="Roles\TankZombie.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Components" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />

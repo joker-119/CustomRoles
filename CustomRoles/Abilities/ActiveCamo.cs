@@ -30,8 +30,8 @@ namespace CustomRoles.Abilities
                 Exiled.Events.Handlers.Player.InteractingElevator += OnInteractingElevator;
                 Exiled.Events.Handlers.Player.InteractingLocker += OnInteractingLocker;
                 Log.Debug($"{Name} enabled for {Duration}");
-                Player.EnableEffect<Scp268>(Duration, true);
-                Coroutines.Add(Timing.CallDelayed(14.99f, () => Player.EnableEffect<Scp268>()));
+                Player.EnableEffect<Invisible>(Duration, true);
+                Coroutines.Add(Timing.CallDelayed(14.99f, () => Player.EnableEffect<Invisible>()));
                 
                 ShowMessage();
 
@@ -53,7 +53,7 @@ namespace CustomRoles.Abilities
             Exiled.Events.Handlers.Player.InteractingLocker -= OnInteractingLocker;
             foreach (CoroutineHandle handle in Coroutines)
                 Timing.KillCoroutines(handle);
-            Player.DisableEffect(EffectType.Scp268);
+            Player.DisableEffect(EffectType.Invisible);
         }
 
         private void OnShooting(ShootingEventArgs ev)
@@ -67,25 +67,25 @@ namespace CustomRoles.Abilities
         private void OnInteractingLocker(InteractingLockerEventArgs ev)
         {
             if (ev.Player == Player)
-                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Scp268>(Duration, true));
+                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Invisible>(Duration, true));
         }
 
         private void OnInteractingElevator(InteractingElevatorEventArgs ev)
         {
             if (ev.Player == Player)
-                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Scp268>(Duration, true));
+                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Invisible>(Duration, true));
         }
 
         private void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
             if (ev.Player == Player)
-                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Scp268>(Duration, true));
+                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Invisible>(Duration, true));
         }
 
         private void OnInteracted(InteractedEventArgs ev)
         {
             if (ev.Player == Player)
-                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Scp268>(Duration, true));
+                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Invisible>(Duration, true));
         }
     }
 }

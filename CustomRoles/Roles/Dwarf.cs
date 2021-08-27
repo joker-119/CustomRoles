@@ -27,7 +27,7 @@ namespace CustomRoles.Roles
         protected override void Add()
         {
             if (Type != RoleType.None)
-                Player.SetRole(Type, true);
+                Player.SetRole(Type, SpawnReason.ForceClass, true);
 
             Timing.CallDelayed(1.5f, () =>
             {
@@ -41,9 +41,11 @@ namespace CustomRoles.Roles
                 foreach (string itemName in Inventory)
                     TryAddItem(itemName);
 
-                Player.Ammo[0] = 100;
-                Player.Ammo[1] = 100;
-                Player.Ammo[2] = 100;
+                Player.Ammo[ItemType.Ammo9x19] = 100;
+                Player.Ammo[ItemType.Ammo12gauge] = 100;
+                Player.Ammo[ItemType.Ammo44cal] = 100;
+                Player.Ammo[ItemType.Ammo556x45] = 100;
+                Player.Ammo[ItemType.Ammo762x39] = 100;
 
                 if (Type.GetSide() != Side.Scp)
                     Player.MaxHealth = MaxHealth;

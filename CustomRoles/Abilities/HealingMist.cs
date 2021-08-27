@@ -14,7 +14,7 @@ namespace CustomRoles.Abilities
         protected override float Duration { get; set; } = Plugin.Singleton.Config.RoleConfigs.MediCfg.AbilityDuration;
         private float HealAmount { get; set; } = Plugin.Singleton.Config.RoleConfigs.MediCfg.AbilityHealAmount;
 
-        private float ProtectionAmount { get; set; } = Plugin.Singleton.Config.RoleConfigs.MediCfg.AbilityFinaleProtection;
+        private ushort ProtectionAmount { get; set; } = Plugin.Singleton.Config.RoleConfigs.MediCfg.AbilityFinaleProtection;
 
         private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
 

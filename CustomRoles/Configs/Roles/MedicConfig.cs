@@ -5,7 +5,7 @@ namespace CustomRoles.Configs.Roles
     public class MedicConfig
     {
         public string Name { get; set; } = "Medic";
-        public RoleType RoleType { get; set; } = RoleType.NtfScientist;
+        public RoleType RoleType { get; set; } = RoleType.NtfSpecialist;
         public int MaxHealth { get; set; } = 120;
         public int AbilityCooldown { get; set; } = 90;
         public List<string> Inventory { get; set; } = new List<string>
@@ -20,7 +20,7 @@ namespace CustomRoles.Configs.Roles
         };
 
         public float AbilityDuration { get; set; } = 15f;
-        public float AbilityHealAmount { get; set; } = 6f;
-        public float AbilityFinaleProtection { get; set; } = 45f;
+        public float AbilityHealAmount { get; set; } = 6;
+        public ushort AbilityFinaleProtection { get; set; } = 45;
     }
 }

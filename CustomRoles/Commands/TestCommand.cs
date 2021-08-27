@@ -5,6 +5,9 @@ using Exiled.API.Features;
 
 namespace CustomRoles.Commands.Abilities
 {
+    using CustomRoles.API;
+    using UnityEngine;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class TestCommand : ICommand
     {
@@ -29,6 +32,11 @@ namespace CustomRoles.Commands.Abilities
 
             switch (args[2])
             {
+                case "roles":
+                    response = string.Empty;
+                    foreach (CustomRole role in target.GetPlayerRoles())
+                        response += $"{role.Name}\n";
+                    return true;
                 case "575":
                     target.GameObject.AddComponent<Scp575>();
                     break;
@@ -46,11 +54,32 @@ namespace CustomRoles.Commands.Abilities
                 case "dwarf":
                     target.GameObject.AddComponent<Dwarf>();
                     break;
-                case "shotgunner":
-                    target.GameObject.AddComponent<Shotgunner>();
-                    break;
                 case "medic":
                     target.GameObject.AddComponent<Medic>();
+                    break;
+                case "berserk":
+                    target.GameObject.AddComponent<BerserkZombie>();
+                    break;
+                case "charger":
+                    target.GameObject.AddComponent<ChargerZombie>();
+                    break;
+                case "medicz":
+                    target.GameObject.AddComponent<MedicZombie>();
+                    break;
+                case "plague":
+                    target.GameObject.AddComponent<PlagueZombie>();
+                    break;
+                case "ballistic":
+                    target.GameObject.AddComponent<BallisticZombie>();
+                    break;
+                case "dwarfz":
+                    target.GameObject.AddComponent<DwarfZombie>();
+                    break;
+                case "pdz":
+                    target.GameObject.AddComponent<PDZombie>();
+                    break;
+                case "tank":
+                    target.GameObject.AddComponent<TankZombie>();
                     break;
             }
 

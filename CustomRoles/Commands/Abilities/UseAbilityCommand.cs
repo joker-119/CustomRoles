@@ -7,6 +7,8 @@ using Exiled.API.Features;
 
 namespace CustomRoles.Commands
 {
+    using UnityEngine;
+
     [CommandHandler(typeof(ClientCommandHandler))]
     public class UseAbilityCommand : ICommand
     {
@@ -21,7 +23,7 @@ namespace CustomRoles.Commands
                 Log.Debug($"{nameof(UseAbilityCommand)}: Checking {player.Nickname} for usability of {role.Name}");
                 if (!role.CanUseAbility(out DateTime usableTime))
                 {
-                    response = $"You cannot use the ability for {role.Name} for another {(usableTime - DateTime.Now).TotalSeconds} seconds.\n";
+                    response = $"You cannot use the ability for {role.Name} for another {Math.Round((usableTime - DateTime.Now).TotalSeconds, 2)} seconds.\n";
                     player.ShowHint(response);
                     return false;
                 }

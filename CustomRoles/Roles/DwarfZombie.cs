@@ -31,19 +31,21 @@ namespace CustomRoles.Roles
         }
         protected override void LoadEvents()
         {
-            Log.Debug($"{Name} loading events.");
+            Log.Debug($"{Name}:{nameof(LoadEvents)} loading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting += OnHurt;
         }
 
         protected override void UnloadEvents()
         {
-            Log.Debug($"{Name} unloading events.");
+            Log.Debug($"{Name}:{nameof(UnloadEvents)} unloading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting -= OnHurt;
         }
 
         private void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Target == Player && ev.DamageType == DamageTypes.Scp207) ev.IsAllowed = false;
+            if (ev.Target == Player && ev.DamageType == DamageTypes.Scp207) 
+                ev.IsAllowed = false;
+            
             if (ev.Attacker == Player)
             {
                 ev.Amount *= 0.7f;
