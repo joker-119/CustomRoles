@@ -5,42 +5,46 @@ using UnityEngine;
 
 namespace CustomRoles.Abilities
 {
-    public class HealingMist : CustomAbility
+    using Exiled.CustomRoles.API.Features;
+
+    public class HealingMist : ActiveAbility
     {
         public override string Name { get; set; } = "Healing Mist";
-        protected override string Description { get; set; } =
+        public override string Description { get; set; } =
             "Activates a short-term spray of chemicals which will heal and protect allies for a short duration.";
 
-        protected override float Duration { get; set; } = Plugin.Singleton.Config.RoleConfigs.MediCfg.AbilityDuration;
-        private float HealAmount { get; set; } = Plugin.Singleton.Config.RoleConfigs.MediCfg.AbilityHealAmount;
+        public override float Duration { get; set; } = 15f;
+        public override float Cooldown { get; set; } = 180f;
+        public float HealAmount { get; set; } = 6;
 
-        private ushort ProtectionAmount { get; set; } = Plugin.Singleton.Config.RoleConfigs.MediCfg.AbilityFinaleProtection;
+        public ushort ProtectionAmount { get; set; } = 45;
 
         private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
 
-        protected override void LoadEvents()
+        protected override void AbilityUsed(Player player)
         {
-            ActivateMist();
+            ActivateMist(player);
         }
 
-        protected override void UnloadEvents()
+        protected override void UnSubscribeEvents()
         {
             foreach (CoroutineHandle handle in Coroutines)
                 Timing.KillCoroutines(handle);
+            base.UnSubscribeEvents();
         }
 
-        private void ActivateMist()
+        private void ActivateMist(Player ply)
         {
-            foreach (Player player in Exiled.API.Features.Player.List)
-                if (player.Side == Player.Side && player != Player)
-                    Coroutines.Add(Timing.RunCoroutine(DoMist(player)));
+            foreach (Player player in Player.List)
+                if (player.Side == ply.Side && player != ply)
+                    Coroutines.Add(Timing.RunCoroutine(DoMist(ply, player)));
         }
 
-        private IEnumerator<float> DoMist(Player player)
+        private IEnumerator<float> DoMist(Player activator, Player player)
         {
             for (int i = 0; i < Duration; i++)
             {
-                if (player.Health + HealAmount >= player.MaxHealth || Vector3.Distance(player.Position, Player.Position) > 12.01f)
+                if (player.Health + HealAmount >= player.MaxHealth || Vector3.Distance(player.Position, activator.Position) > 12.01f)
                     continue;
 
                 player.Health += HealAmount;
@@ -48,7 +52,7 @@ namespace CustomRoles.Abilities
                 yield return Timing.WaitForSeconds(0.75f);
             }
 
-            if (Vector3.Distance(player.Position, Player.Position) < 12f)
+            if ((activator.Position - player.Position).sqrMagnitude < 144f)
                 player.ArtificialHealth += ProtectionAmount;
         }
     }

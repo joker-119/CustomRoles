@@ -1,9 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using CustomPlayerEffects;
-using CustomRoles.API;
 using CustomRoles.Roles;
-using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using MEC;
@@ -11,23 +6,14 @@ using Respawning;
 
 namespace CustomRoles
 {
-    using System.Net;
-    using UnityEngine;
+    using System.Linq;
+    using Exiled.CustomRoles.API;
+    using Exiled.CustomRoles.API.Features;
 
     public class EventHandlers
     {
         private readonly Plugin plugin;
         public EventHandlers(Plugin plugin) => this.plugin = plugin;
-
-        public void OnWaitingForPlayers()
-        {
-            if (!plugin.Methods.CheckForCustomItems())
-            {
-                Log.Error($"Unable to find Custom Items plugin. This plugin will now be disabled.");
-                
-                plugin.OnDisabled();
-            }
-        }
 
         public void OnRoundStarted()
         {
@@ -44,13 +30,13 @@ namespace CustomRoles
                 {
                     case RoleType.Scp106 when spawn575:
                     {
-                        player.GameObject.AddComponent<Scp575>();
+                        CustomRole.Get(typeof(Scp575))?.AddRole(player);
                         
                         break;
                     }
                     case RoleType.FacilityGuard when !isPhantom && spawnPhantom:
                     {
-                        player.GameObject.AddComponent<Phantom>();
+                        CustomRole.Get(typeof(Phantom))?.AddRole(player);
                         
                         isPhantom = true;
                         break;
@@ -60,7 +46,7 @@ namespace CustomRoles
                     {
                         if (spawnDwarf && !isDwarf)
                         {
-                            player.GameObject.AddComponent<Dwarf>();
+                            CustomRole.Get(typeof(Dwarf))?.AddRole(player);
                             isDwarf = true;
                         }
 
@@ -89,17 +75,17 @@ namespace CustomRoles
                     int r = plugin.Rng.Next(ev.Players.Count);
                     if (plugin.Rng.Next(0, 1) == 0)
                     {
-                        if (ev.Players[r].GetPlayerRoles().Any()) 
+                        if (ev.Players[r].GetCustomRoles().Any()) 
                             return;
                         Log.Debug($"{nameof(OnRespawningTeam)}: Spawning medic!");
-                        ev.Players[r].GameObject.AddComponent<Medic>();
+                        CustomRole.Get("Medic").AddRole(ev.Players[r]);
                     }
                     else
                     {
-                        if (ev.Players[r].GetPlayerRoles().Any()) 
+                        if (ev.Players[r].GetCustomRoles().Any()) 
                             return;
                         Log.Debug($"{nameof(OnRespawningTeam)}: Spawning Demo!");
-                        ev.Players[r].GameObject.AddComponent<Demolitionist>();
+                        CustomRole.Get("Demolitionist").AddRole(ev.Players[r]);
                     }
 
                     ev.Players.RemoveAt(r);
@@ -111,18 +97,9 @@ namespace CustomRoles
 
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            foreach (CustomRole role in ev.Player.GetPlayerRoles())
-            {
-                if (ev.NewRole == RoleType.Spectator || role.Type != ev.NewRole)
-                {
-                    Log.Debug($"Destroying {role.Name} for {ev.Player.Nickname}");
-                    Object.Destroy(role);
-                }
-            }
-
             if (ev.NewRole == RoleType.Scp0492)
             {
-                if (ev.Player.GetPlayerRoles().Any()) 
+                if (ev.Player.GetCustomRoles().Any()) 
                     return;
                 Log.Debug($"{nameof(OnChangingRole)}: Trying to spawn new zombie.");
                 if (plugin.Rng.Next(100) <= 45)

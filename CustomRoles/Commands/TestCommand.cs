@@ -5,8 +5,8 @@ using Exiled.API.Features;
 
 namespace CustomRoles.Commands.Abilities
 {
-    using CustomRoles.API;
-    using UnityEngine;
+    using Exiled.CustomRoles.API;
+    using Exiled.CustomRoles.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class TestCommand : ICommand
@@ -34,52 +34,51 @@ namespace CustomRoles.Commands.Abilities
             {
                 case "roles":
                     response = string.Empty;
-                    foreach (CustomRole role in target.GetPlayerRoles())
+                    foreach (CustomRole role in target.GetCustomRoles())
                         response += $"{role.Name}\n";
                     return true;
                 case "575":
-                    target.GameObject.AddComponent<Scp575>();
+                    CustomRole.Get(typeof(Scp575)).AddRole(target);
                     break;
                 case "power":
-                    if (target.GameObject.GetComponent<Scp575>() == null)
+                    foreach (CustomRole role in target.GetCustomRoles())
                     {
-                        response = "The target must be 575 first.";
-                        return false;
+                        if (role is Scp575 scp575)
+                            scp575.IncreasePower(target);
                     }
-                    target.GameObject.GetComponent<Scp575>().IncreasePower();
                     break;
                 case "phantom":
-                    target.GameObject.AddComponent<Phantom>();
+                    CustomRole.Get(typeof(Phantom)).AddRole(target);
                     break;
                 case "dwarf":
-                    target.GameObject.AddComponent<Dwarf>();
+                    CustomRole.Get(typeof(Dwarf)).AddRole(target);
                     break;
                 case "medic":
-                    target.GameObject.AddComponent<Medic>();
+                    CustomRole.Get(typeof(Medic)).AddRole(target);
                     break;
                 case "berserk":
-                    target.GameObject.AddComponent<BerserkZombie>();
+                    CustomRole.Get(typeof(BerserkZombie)).AddRole(target);
                     break;
                 case "charger":
-                    target.GameObject.AddComponent<ChargerZombie>();
+                    CustomRole.Get(typeof(ChargerZombie)).AddRole(target);
                     break;
                 case "medicz":
-                    target.GameObject.AddComponent<MedicZombie>();
+                    CustomRole.Get(typeof(MedicZombie)).AddRole(target);
                     break;
                 case "plague":
-                    target.GameObject.AddComponent<PlagueZombie>();
+                    CustomRole.Get(typeof(PlagueZombie)).AddRole(target);
                     break;
                 case "ballistic":
-                    target.GameObject.AddComponent<BallisticZombie>();
+                    CustomRole.Get(typeof(BallisticZombie)).AddRole(target);
                     break;
                 case "dwarfz":
-                    target.GameObject.AddComponent<DwarfZombie>();
+                    CustomRole.Get(typeof(DwarfZombie)).AddRole(target);
                     break;
                 case "pdz":
-                    target.GameObject.AddComponent<PDZombie>();
+                    CustomRole.Get(typeof(PDZombie)).AddRole(target);
                     break;
                 case "tank":
-                    target.GameObject.AddComponent<TankZombie>();
+                    CustomRole.Get(typeof(TankZombie)).AddRole(target);
                     break;
             }
 

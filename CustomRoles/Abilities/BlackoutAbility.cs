@@ -6,33 +6,37 @@ namespace CustomRoles.Abilities
 {
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
+    using Exiled.CustomRoles.API.Features;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.BasicMessages;
     using Firearm = Exiled.API.Features.Items.Firearm;
 
-    public class BlackoutAbility : CustomAbility
+    public class BlackoutAbility : ActiveAbility
     {
         public override string Name { get; set; } = "Blackout";
 
-        protected override string Description { get; set; } =
+        public override string Description { get; set; } =
             "Causes all rooms in the facility to lose lighting. Damages players caught in the dark.";
 
-        protected override float Duration { get; set; } = Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.AbilityDuration;
+        public override float Duration { get; set; } = 120f;
+
+        public override float Cooldown { get; set; } = 90f;
+        public float KeterDamage { get; set; } = 5;
+        public string KeterHint { get; set; } = "You have been damaged by SCP-575!";
         private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
 
-        protected override void LoadEvents()
+        protected override void AbilityUsed(Player player)
         {
-            ShowMessage();
-            DoBlackout();
+            DoBlackout(player);
         }
 
-        protected override void UnloadEvents()
+        protected override void AbilityRemoved(Player player)
         {
             foreach (CoroutineHandle handle in Coroutines)
                 Timing.KillCoroutines(handle);
         }
 
-        private void DoBlackout()
+        private void DoBlackout(Player player)
         {
             Cassie.Message("pitch_0.15 .g7");
             foreach (Room room in Map.Rooms)
@@ -41,20 +45,18 @@ namespace CustomRoles.Abilities
                     room.TurnOffLights(Duration);
             }
 
-            Coroutines.Add(Timing.RunCoroutine(Keter(Duration)));
+            Coroutines.Add(Timing.RunCoroutine(Keter(player, Duration)));
         }
 
-        private IEnumerator<float> Keter(float dur)
+        private IEnumerator<float> Keter(Player ply, float dur)
         {
             do
             {
                 foreach (Player player in Player.List)
                     if (player.CurrentRoom.LightsOff && !HasLightSource(player) && player.IsHuman)
                     {
-                        player.Hurt(Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.KeterDamage, DamageTypes.Bleeding,
-                            Player.Nickname, Player.Id);
-                        player.ShowHint(Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.KeterBroadcast,
-                            Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.KeterBroadcastDuration);
+                        player.Hurt(KeterDamage, DamageTypes.Bleeding, ply.Nickname, ply.Id);
+                        player.ShowHint(KeterHint,5f);
                     }
 
                 yield return Timing.WaitForSeconds(5f);

@@ -1,48 +1,28 @@
-using CustomRoles.API;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-
 namespace CustomRoles.Roles
 {
+    using System.Collections.Generic;
+    using CustomRoles.Abilities;
+    using Exiled.CustomRoles.API.Features;
+
     public class BerserkZombie : CustomRole
     {
-        public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.BerserkZombieCfg.RoleType;
-        public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.BerserkZombieCfg.MaxHealth;
-        public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.BerserkZombieCfg.Name;
+        public override uint Id { get; set; } = 2;
+        public override RoleType Role { get; set; } = RoleType.Scp0492;
+        public override int MaxHealth { get; set; } = 250;
+        public override string Name { get; set; } = "Berserk Zombie";
 
-        protected override string Description { get; set; } =
-            "A zombie that gains more speed when they kill someone.";
+        public override string Description { get; set; } = "A zombie that gains more speed when they kill someone.";
 
-        protected override void LoadEvents()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
-            Log.Debug($"{Name}:{nameof(LoadEvents)}: loading events.", Plugin.Singleton.Config.Debug);
-            Exiled.Events.Handlers.Player.Hurting += OnHurt;
-            Exiled.Events.Handlers.Player.Died += OnDied;
-        }
-
-        protected override void UnloadEvents()
-        {
-            Log.Debug($"{Name}:{nameof(UnloadEvents)}: unloading events.", Plugin.Singleton.Config.Debug);
-            Exiled.Events.Handlers.Player.Hurting -= OnHurt;
-            Exiled.Events.Handlers.Player.Died -= OnDied;
-        }
-
-        public void OnHurt(HurtingEventArgs ev)
-        {
-            if (ev.Target == Player && ev.DamageType == DamageTypes.Scp207) 
-                ev.IsAllowed = false;
-            
-            if (ev.Attacker == Player)
+            new SpeedOnKill
             {
-                ev.Amount *= 2f;
-            }
-        }
-
-        public void OnDied(DiedEventArgs ev)
-        {
-            if (ev.Killer == Player) 
-                Player.EnableEffect(EffectType.Scp207, 10f, true);
-        }
+                IntensityLimit = 2,
+            },
+            new HealOnKill
+            {
+                HealAmount = 100f,
+            },
+        };
     }
 }

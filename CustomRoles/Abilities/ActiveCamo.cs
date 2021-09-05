@@ -1,41 +1,44 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using CustomPlayerEffects;
-using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using MEC;
 
 namespace CustomRoles.Abilities
 {
-    public class ActiveCamo : CustomAbility
+    using System.Linq;
+    using Exiled.CustomRoles.API.Features;
+
+    public class ActiveCamo : ActiveAbility
     {
         public override string Name { get; set; } = "Active Camo";
 
-        protected override string Description { get; set; } =
+        public override string Description { get; set; } =
             "Activates a camouflage effect that acts like SCP-268 but doesn't break on interacting with objects, only when shooting.";
 
-        protected override float Duration { get; set; } = 30f;
+        public override float Duration { get; set; } = 30f;
+        public override float Cooldown { get; set; } = 120f;
+
         private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
 
-        protected override void LoadEvents()
+        protected override void SubscribeEvents()
+        {
+            Exiled.Events.Handlers.Player.Shooting += OnShooting;
+            Exiled.Events.Handlers.Player.Interacted += OnInteracted;
+            Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
+            Exiled.Events.Handlers.Player.InteractingElevator += OnInteractingElevator;
+            Exiled.Events.Handlers.Player.InteractingLocker += OnInteractingLocker;
+            base.SubscribeEvents();
+        }
+
+        protected override void AbilityUsed(Player player)
         {
             try
             {
-                Log.Info($"{Name} starting");
-                Exiled.Events.Handlers.Player.Shooting += OnShooting;
-                Exiled.Events.Handlers.Player.Interacted += OnInteracted;
-                Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
-                Exiled.Events.Handlers.Player.InteractingElevator += OnInteractingElevator;
-                Exiled.Events.Handlers.Player.InteractingLocker += OnInteractingLocker;
+                ActivePlayers.Add(player);
                 Log.Debug($"{Name} enabled for {Duration}");
-                Player.EnableEffect<Invisible>(Duration, true);
-                Coroutines.Add(Timing.CallDelayed(14.99f, () => Player.EnableEffect<Invisible>()));
-                
-                ShowMessage();
-
-                Coroutines.Add(Timing.CallDelayed(Duration, () => Destroy(this)));
+                player.EnableEffect<Invisible>(Duration);
             }
             catch (Exception e)
             {
@@ -43,9 +46,8 @@ namespace CustomRoles.Abilities
             }
         }
 
-        protected override void UnloadEvents()
+        protected override void UnSubscribeEvents()
         {
-            Log.Debug($"{Name} destroyed.");
             Exiled.Events.Handlers.Player.Shooting -= OnShooting;
             Exiled.Events.Handlers.Player.Interacted -= OnInteracted;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
@@ -53,39 +55,45 @@ namespace CustomRoles.Abilities
             Exiled.Events.Handlers.Player.InteractingLocker -= OnInteractingLocker;
             foreach (CoroutineHandle handle in Coroutines)
                 Timing.KillCoroutines(handle);
-            Player.DisableEffect(EffectType.Invisible);
+            foreach (Player player in ActivePlayers.ToList())
+                EndAbility(player);
+        }
+
+        protected override void AbilityEnded(Player player)
+        {
+            player.DisableEffect<Invisible>();
         }
 
         private void OnShooting(ShootingEventArgs ev)
         {
-            if (Player == ev.Shooter)
+            if (Check(ev.Shooter))
             {
-                Destroy(this);
+                AbilityEnded(ev.Shooter);
             }
         }
         
         private void OnInteractingLocker(InteractingLockerEventArgs ev)
         {
-            if (ev.Player == Player)
-                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Invisible>(Duration, true));
+            if (Check(ev.Player))
+                Timing.CallDelayed(0.05f, () => ev.Player.EnableEffect<Invisible>(Duration, true));
         }
 
         private void OnInteractingElevator(InteractingElevatorEventArgs ev)
         {
-            if (ev.Player == Player)
-                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Invisible>(Duration, true));
+            if (Check(ev.Player))
+                Timing.CallDelayed(0.05f, () => ev.Player.EnableEffect<Invisible>(Duration, true));
         }
 
         private void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            if (ev.Player == Player)
-                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Invisible>(Duration, true));
+            if (Check(ev.Player))
+                Timing.CallDelayed(0.05f, () => ev.Player.EnableEffect<Invisible>(Duration, true));
         }
 
         private void OnInteracted(InteractedEventArgs ev)
         {
-            if (ev.Player == Player)
-                Timing.CallDelayed(0.05f, () => Player.EnableEffect<Invisible>(Duration, true));
+            if (Check(ev.Player))
+                Timing.CallDelayed(0.05f, () => ev.Player.EnableEffect<Invisible>(Duration, true));
         }
     }
 }

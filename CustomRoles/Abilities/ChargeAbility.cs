@@ -2,68 +2,66 @@ namespace CustomRoles.Abilities
 {
     using System;
     using System.Collections.Generic;
-    using CustomRoles.Roles;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
-    using PlayableScps.Messages;
     using UnityEngine;
 
-    public class ChargeAbility : CustomAbility
+    public class ChargeAbility : ActiveAbility
     {
         public override string Name { get; set; } = "Charge";
-        protected override string Description { get; set; } = "Charges towards the target location.";
+        public override string Description { get; set; } = "Charges towards the target location.";
+        public override float Duration { get; set; } = 0f;
+        public override float Cooldown { get; set; } = 45f;
 
-        protected override void LoadEvents()
+        protected override void AbilityUsed(Player player)
         {
-            if (RunRaycast(out RaycastHit hit))
+            if (RunRaycast(player, out RaycastHit hit))
             {
-                Log.Debug($"{Player.Nickname} -- {Player.Position} - {hit.point}");
-                bool line = Physics.Linecast(hit.point, hit.point + (Vector3.down * 5f), out RaycastHit lineHit, Player.ReferenceHub.playerMovementSync.CollidableSurfaces);
+                Log.Debug($"{player.Nickname} -- {player.Position} - {hit.point}");
+                bool line = Physics.Linecast(hit.point, hit.point + (Vector3.down * 5f), out RaycastHit lineHit, player.ReferenceHub.playerMovementSync.CollidableSurfaces);
                 if (!line)
                 {
-                    Player.ShowHint("You cannot charge straight up walls, silly.\nYour cooldown has been lowered to 5sec.");
-                    ChargerZombie component = Player.GameObject.GetComponent<ChargerZombie>();
-                    if (component != null)
-                    {
-                        component.UsedAbility = DateTime.Now - TimeSpan.FromSeconds(component.AbilityCooldown - 5);
-                    }
+                    player.ShowHint("You cannot charge straight up walls, silly.\nYour cooldown has been lowered to 5sec.");
+                    LastUsed[player] = DateTime.Now + TimeSpan.FromSeconds(5);
+                    
                     return;
                 }
-                Log.Debug($"{Player.Nickname} -- {lineHit.point}");
-                Timing.RunCoroutine(MovePlayer(hit));
+                Log.Debug($"{player.Nickname} -- {lineHit.point}");
+                Timing.RunCoroutine(MovePlayer(player, hit));
             }
         }
 
-        public bool RunRaycast(out RaycastHit hit) => Physics.Raycast(Player.Position + Player.CameraTransform.forward, Player.CameraTransform.forward, out hit, 200f, StandardHitregBase.HitregMask);
+        public bool RunRaycast(Player player, out RaycastHit hit) => Physics.Raycast(player.Position + player.CameraTransform.forward, player.CameraTransform.forward, out hit, 200f, StandardHitregBase.HitregMask);
 
-        public IEnumerator<float> MovePlayer(RaycastHit hit)
+        public IEnumerator<float> MovePlayer(Player player, RaycastHit hit)
         {
-            while ((Player.Position - hit.point).sqrMagnitude >= 2.5f)
+            while ((player.Position - hit.point).sqrMagnitude >= 2.5f)
             {
-                Player.Position = Vector3.MoveTowards(Player.Position, hit.point, 0.5f);
+                player.Position = Vector3.MoveTowards(player.Position, hit.point, 0.5f);
 
                 yield return Timing.WaitForSeconds(0.00025f);
             }
 
-            Timing.CallDelayed(0.5f, () => Player.EnableEffect(EffectType.Ensnared, 5f));
+            Timing.CallDelayed(0.5f, () => player.EnableEffect(EffectType.Ensnared, 5f));
             
             Player target = Player.Get(hit.collider.GetComponentInParent<ReferenceHub>());
             if (target != null)
             {
                 if ((target.Position - hit.point).sqrMagnitude >= 3f)
                 {
-                    target.Hurt(35f, DamageTypes.Scp0492, Player.Nickname, Player.Id);
+                    target.Hurt(35f, DamageTypes.Scp0492, player.Nickname, player.Id);
                     target.EnableEffect(EffectType.Ensnared, 5f);
                 }
                 else
-                    Player.Hurt(10f, DamageTypes.Falldown, Player.Nickname, Player.Id);
+                    player.Hurt(10f, DamageTypes.Falldown, player.Nickname, player.Id);
             }
             else
-                Player.Hurt(10f, DamageTypes.Falldown, Player.Nickname, Player.Id);
+                player.Hurt(10f, DamageTypes.Falldown, player.Nickname, player.Id);
 
-            Destroy(this);
+            EndAbility(player);
         }
     }
 }
