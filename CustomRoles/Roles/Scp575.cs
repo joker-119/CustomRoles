@@ -86,7 +86,7 @@ namespace CustomRoles.Roles
         {
             if (consumptionStacks < Plugin.Singleton.Config.RoleConfigs.Scp575Cfg.AbilityPowerLevelRequirement)
             {
-                Player.ShowHint($"You are unable to use Blackout until you are power level 10. You are currently at {consumptionStacks.toString()}. Gain power levels by killing players.");
+                Player.ShowHint($"You are unable to use Blackout until you are power level 10. You are currently at {consumptionStacks.ToString()}. Gain power levels by killing players.");
                 usableTime = DateTime.Now;
                 return false;
             }
