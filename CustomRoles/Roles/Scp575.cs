@@ -35,7 +35,7 @@ namespace CustomRoles.Roles
 
         public float FlashbangBaseDamage { get; set; } = 450f;
 
-        public float FlashbangFalloffMultiplier { get; set; } = 30f;
+        public float FlashbangFalloffMultiplier { get; set; } = 20f;
 
         public bool ResetConsumptionOnFlashed { get; set; } = true;
 
@@ -136,7 +136,7 @@ namespace CustomRoles.Roles
         {
             if (ConsumptionStacks[player] < AbilityStackRequirement)
             {
-                player.ShowHint($"You are unable to use Blackout until you are power level 10. You are currently at {ConsumptionStacks[player]}. Gain power levels by killing players.");
+                player.ShowHint($"You are unable to use Blackout until you are power level {AbilityStackRequirement}. You are currently at {ConsumptionStacks[player]}. Gain power levels by killing players.");
                 return false;
             }
 
@@ -267,7 +267,7 @@ namespace CustomRoles.Roles
                         ConsumptionStacks[player]--;
                 }
 
-                player.ShowHint($"You now have {ConsumptionStacks} stacks of Consumption!", 10);
+                player.ShowHint($"You now have {ConsumptionStacks[player]} stacks of Consumption!", 10);
                 int newIntensity = ConsumptionStacks[player] / (MaxConsumption / 2);
                 player.ChangeEffectIntensity(EffectType.Scp207, (byte)newIntensity);
             }
@@ -312,7 +312,7 @@ namespace CustomRoles.Roles
 
             int newIntensity = ConsumptionStacks[player] / (MaxConsumption / 2);
             player.ChangeEffectIntensity(EffectType.Scp207, (byte)newIntensity);
-            player.ShowHint($"You now have {ConsumptionStacks} stacks of Consumption!");
+            player.ShowHint($"You now have {ConsumptionStacks[player]} stacks of Consumption!");
         }
 
         private IEnumerator<float> Invisibility(Player player)
