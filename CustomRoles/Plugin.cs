@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using CustomRoles.Abilities;
 using CustomRoles.Configs;
 using Exiled.API.Features;
 using MapEvents = Exiled.Events.Handlers.Map;
@@ -14,8 +13,6 @@ using WarheadEvents = Exiled.Events.Handlers.Warhead;
 
 namespace CustomRoles
 {
-    using Mirror;
-    using UnityEngine;
     using Random = System.Random;
     using Version = System.Version;
 
@@ -24,8 +21,8 @@ namespace CustomRoles
         public override string Author { get; } = "Galaxy119";
         public override string Name { get; } = "CustomRoles";
         public override string Prefix { get; } = "CustomRoles";
-        public override Version Version { get; } = new Version(1, 3, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(2, 9, 3);
+        public override Version Version { get; } = new Version(2, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
 
         public List<Player> StopRagdollList = new List<Player>();
         public Methods Methods { get; private set; }
@@ -41,12 +38,12 @@ namespace CustomRoles
             Methods = new Methods(this);
             
             Config.LoadConfigs();
-            
+            Methods.RegisterRoles();
+
             Exiled.Events.Handlers.Player.ChangingRole += EventHandlers.OnChangingRole;
             Exiled.Events.Handlers.Server.RoundStarted += EventHandlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RespawningTeam += EventHandlers.OnRespawningTeam;
-            Exiled.Events.Handlers.Server.ReloadedConfigs += EventHandlers.OnReloadedConfigs;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
+            Exiled.Events.Handlers.Server.ReloadedConfigs += EventHandlers.OnReloadedConfigs; 
             Exiled.Events.Handlers.Scp049.FinishingRecall += EventHandlers.FinishingRecall;
             Exiled.Events.Handlers.Player.SpawningRagdoll += EventHandlers.OnSpawningRagdoll;
             base.OnEnabled();
@@ -54,11 +51,12 @@ namespace CustomRoles
 
         public override void OnDisabled()
         {
+            Methods.UnregisterRoles();
+            
             Exiled.Events.Handlers.Player.ChangingRole -= EventHandlers.OnChangingRole;
             Exiled.Events.Handlers.Server.RoundStarted -= EventHandlers.OnRoundStarted;
             Exiled.Events.Handlers.Server.RespawningTeam -= EventHandlers.OnRespawningTeam;
             Exiled.Events.Handlers.Server.ReloadedConfigs -= EventHandlers.OnReloadedConfigs;
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
             EventHandlers = null;
             Methods = null;
 

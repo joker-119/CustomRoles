@@ -1,16 +1,22 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using CustomRoles.API;
-using CustomRoles.Roles;
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Loader;
 
 namespace CustomRoles.Configs
 {
+    using Exiled.Loader.Features.Configs;
+    using Exiled.Loader.Features.Configs.CustomConverters;
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NamingConventions;
+    using YamlDotNet.Serialization.NodeDeserializers;
+
     public class Config : IConfig
     {
+        public Roles RoleConfigs;
+
         [Description("Whether or not this plugin is enabled.")]
         public bool IsEnabled { get; set; } = true;
         
@@ -18,46 +24,43 @@ namespace CustomRoles.Configs
         public bool Debug { get; set; } = true;
         
         [Description("The folder path where role configs will be stored.")]
-        public string CustomRolesFolderPath { get; set; } = Path.Combine(Paths.Configs, "CustomRoles");
+        public string RolesFolder { get; set; } = Path.Combine(Paths.Configs, "CustomRoles");
         
         [Description("The file name to load role configs from.")]
-        public string CustomRolesFilename { get; set; } = "global.yml";
+        public string RolesFile { get; set; } = "global.yml";
+
+        [Description("A list of zombie class names that are enabled on this server.")]
+        public List<string> EnabledZombies { get; set; } = new List<string>();
         
-        public RoleConfigs RoleConfigs;
-        public readonly List<string> EnabledZombies = new List<string>();
+        private ISerializer Serializer = new SerializerBuilder().WithTypeConverter(new VectorsConverter())
+            .WithTypeInspector(i => new CommentGatheringTypeInspector(i))
+            .WithEmissionPhaseObjectGraphVisitor(a => new CommentsObjectGraphVisitor(a.InnerVisitor))
+            .WithNamingConvention(UnderscoredNamingConvention.Instance).IgnoreFields().Build();
+        
+        public static IDeserializer Deserializer = new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
 
         public void LoadConfigs()
         {
-            if (!Directory.Exists(CustomRolesFolderPath))
-                Directory.CreateDirectory(CustomRolesFolderPath);
+            if (!Directory.Exists(RolesFolder))
+                Directory.CreateDirectory(RolesFolder);
 
-            string filePath = Path.Combine(CustomRolesFolderPath, CustomRolesFilename);
-
+            string filePath = Path.Combine(RolesFolder, RolesFile);
+            Log.Info($"{filePath}");
             if (!File.Exists(filePath))
             {
-                RoleConfigs = new RoleConfigs();
-                File.WriteAllText(filePath, Loader.Serializer.Serialize(RoleConfigs));
+                RoleConfigs = new Roles();
+                File.WriteAllText(filePath, Serializer.Serialize(RoleConfigs));
             }
             else
             {
-                RoleConfigs = Loader.Deserializer.Deserialize<RoleConfigs>(File.ReadAllText(filePath));
-                File.WriteAllText(filePath, Loader.Serializer.Serialize(RoleConfigs));
+                RoleConfigs = Deserializer.Deserialize<Roles>(File.ReadAllText(filePath));
+                File.WriteAllText(filePath, Serializer.Serialize(RoleConfigs));
             }
-            
-            if (RoleConfigs.BallisticCfg.Enabled)
-                EnabledZombies.Add(nameof(BallisticZombie));
-            if (RoleConfigs.PlagueCfg.Enabled)
-                EnabledZombies.Add(nameof(PlagueZombie));
-            if (RoleConfigs.BerserkZombieCfg.Enabled)
-                EnabledZombies.Add(nameof(BerserkZombie));
-            if (RoleConfigs.DwarfZombieCfg.Enabled)
-                EnabledZombies.Add(nameof(DwarfZombie));
-            if (RoleConfigs.MedicZombieCfg.Enabled)
-                EnabledZombies.Add(nameof(MedicZombie));
-            if (RoleConfigs.TankZombieCfg.Enabled)
-                EnabledZombies.Add(nameof(TankZombie));
-            if (RoleConfigs.PDZombieCfg.Enabled)
-                EnabledZombies.Add(nameof(PDZombie));
         }
     }
 }

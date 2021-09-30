@@ -1,5 +1,3 @@
-using System;
-using CustomRoles.API;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
@@ -10,47 +8,41 @@ namespace CustomRoles.Roles
     using System.Collections.Generic;
     using CustomPlayerEffects;
     using CustomRoles.Abilities;
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
-    using Mirror;
-    using UnityEngine;
+    using Exiled.CustomRoles.API.Features;
 
     public class PlagueZombie : CustomRole
     {
-        public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.PlagueCfg.RoleType;
-        public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.PlagueCfg.MaxHealth;
-        public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.PlagueCfg.Name;
-        public override int AbilityCooldown { get; set; } = 60;
+        public override uint Id { get; set; } = 11;
+        public override RoleType Role { get; set; } = RoleType.Scp0492;
+        public override int MaxHealth { get; set; } = 500;
+        public override string Name { get; set; } = "Plague Zombie";
 
-        protected override string Description { get; set; } = 
+        public override string Description { get; set; } = 
             "A slower and weaker zombie that is infectious with SCP-008. You can launch a projectile that will poison enemies near where it hits with the console command `.special`.\nIt is recommended you keybind this by running the console command `cmdbind g .special`.\nThis keybind applies to all roles with special abilities.";
 
         public static List<Pickup> Grenades = new List<Pickup>();
 
-        public override string UseAbility()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
-            gameObject.AddComponent<ProjectileAbility>();
-            return "Ability used.";
-        }
+            new ProjectileAbility(),
+            new MoveSpeedReduction(),
+        };
 
-        protected override void RoleAdded()
-        {
-            Timing.CallDelayed(2.5f, () =>
-            {
-                Player.EnableEffect(EffectType.SinkHole);
-            });
-        }
-
-        protected override void RoleRemoved()
-        {
-            Player.DisableEffect(EffectType.SinkHole);
-        }
-
-        protected override void LoadEvents()
+        protected override void SubscribeEvents()
         {
             Log.Debug($"{Name} loading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting += OnHurt;
             Exiled.Events.Handlers.Map.ExplodingGrenade += OnExplodingGrenade;
+            base.SubscribeEvents();
+        }
+
+        protected override void UnSubscribeEvents()
+        {
+            Log.Debug($"{Name} unloading events.", Plugin.Singleton.Config.Debug);
+            Exiled.Events.Handlers.Player.Hurting -= OnHurt;
+            Exiled.Events.Handlers.Map.ExplodingGrenade -= OnExplodingGrenade;
+            base.UnSubscribeEvents();
         }
 
         private void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
@@ -70,13 +62,6 @@ namespace CustomRoles.Roles
             }
         }
 
-        protected override void UnloadEvents()
-        {
-            Log.Debug($"{Name} unloading events.", Plugin.Singleton.Config.Debug);
-            Exiled.Events.Handlers.Player.Hurting -= OnHurt;
-            Exiled.Events.Handlers.Map.ExplodingGrenade -= OnExplodingGrenade;
-        }
-
         private void OnHurt(HurtingEventArgs ev)
         {
             if (ev.Target.IsHuman && (ev.Target.Health - ev.Amount) <= 0 && (ev.Target.TryGetEffect(EffectType.Poisoned, out PlayerEffect poisoned) && poisoned.Intensity > 0))
@@ -87,7 +72,7 @@ namespace CustomRoles.Roles
                 ev.Target.SetRole(RoleType.Scp0492, SpawnReason.ForceClass, true);
             }
 
-            if (ev.Attacker != Player) 
+            if (!Check(ev.Attacker)) 
                 return;
 
             if (ev.Target.Team == Team.SCP)
@@ -96,7 +81,7 @@ namespace CustomRoles.Roles
                 return;
             }
             
-            if (ev.DamageType == DamageTypes.Grenade)
+            if (ev.DamageType.Equals(DamageTypes.Grenade))
             {
                 ev.Amount = 0;
                 ev.Target.Hurt(30, DamageTypes.Poison, ev.Attacker.Nickname, ev.Attacker.Id);

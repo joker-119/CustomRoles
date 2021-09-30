@@ -1,28 +1,31 @@
 using System.Collections.Generic;
 using CustomRoles.Abilities;
-using CustomRoles.API;
-using Exiled.API.Features;
 using Exiled.Events.EventArgs;
-using MEC;
 using UnityEngine;
 
 namespace CustomRoles.Roles
 {
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Spawn;
+    using Exiled.CustomRoles.API.Features;
 
     public class Phantom : CustomRole
     {
-        public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.PhantomCfg.RoleType;
-        public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.PhantomCfg.MaxHealth;
-        public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.PhantomCfg.Name;
-        protected override string Description { get; set; } = "A Chaos Insurgency outfitted with an active-camo suit that allows them to go invisible at will.\n\nUse the Client console command \".special\" to activate this ability. This can be keybound with \"cmdbind KEY .special\"";
-
-        public override int AbilityCooldown { get; set; } =
-            Plugin.Singleton.Config.RoleConfigs.PhantomCfg.AbilityCooldown;
-
-        protected override Dictionary<Vector3, float> SpawnLocations { get; set; } = new Dictionary<Vector3, float>
+        public override uint Id { get; set; } = 10;
+        public override RoleType Role { get; set; } = RoleType.ChaosConscript;
+        public override int MaxHealth { get; set; } = 120;
+        public override string Name { get; set; } = "Chaos Phantom";
+        public override string Description { get; set; } = "A Chaos Insurgency outfitted with an active-camo suit that allows them to go invisible at will.\n\nUse the Client console command \".special\" to activate this ability. This can be keybound with \"cmdbind KEY .special\"";
+        protected override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
         {
-            { RoleType.FacilityGuard.GetRandomSpawnProperties().Item1, 100 },
+            RoleSpawnPoints = new List<RoleSpawnPoint>
+            {
+                new RoleSpawnPoint
+                {
+                    Role = RoleType.FacilityGuard,
+                    Chance = 100,
+                }
+            }
         };
 
         protected override List<string> Inventory { get; set; } = new List<string>
@@ -37,41 +40,42 @@ namespace CustomRoles.Roles
             $"{ItemType.SCP268}",
         };
 
-        public override string UseAbility()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
-            Player.GameObject.AddComponent<ActiveCamo>();
-            return "Ability used.";
-        }
+            new ActiveCamo(),
+        };
 
-        protected override void LoadEvents()
+        protected override void SubscribeEvents()
         {
             Exiled.Events.Handlers.Player.DroppingItem += OnDroppingItem;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
             Exiled.Events.Handlers.Player.UsingItem += OnUsingMedicalItem;
+            base.SubscribeEvents();
         }
 
         private void OnUsingMedicalItem(UsingItemEventArgs ev)
         {
-            if (ev.Player == Player && ev.Item.Type == ItemType.SCP268)
+            if (Check(ev.Player) && ev.Item.Type == ItemType.SCP268)
                 ev.IsAllowed = false;
         }
 
-        protected override void UnloadEvents()
+        protected override void UnSubscribeEvents()
         {
             Exiled.Events.Handlers.Player.DroppingItem -= OnDroppingItem;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
             Exiled.Events.Handlers.Player.UsingItem -= OnUsingMedicalItem;
+            base.UnSubscribeEvents();
         }
 
         private void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
-            if (ev.Player == Player && ev.Pickup.Type == ItemType.SCP268)
+            if (Check(ev.Player) && ev.Pickup.Type == ItemType.SCP268)
                 ev.IsAllowed = false;
         }
 
         private void OnDroppingItem(DroppingItemEventArgs ev)
         {
-            if (ev.Player == Player && ev.Item.Type == ItemType.SCP268)
+            if (Check(ev.Player) && ev.Item.Type == ItemType.SCP268)
                 ev.IsAllowed = false;
         }
     }

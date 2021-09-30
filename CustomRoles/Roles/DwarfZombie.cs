@@ -1,4 +1,3 @@
-using CustomRoles.API;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
@@ -7,46 +6,52 @@ using UnityEngine;
 
 namespace CustomRoles.Roles
 {
+    using Exiled.CustomRoles.API.Features;
+
     public class DwarfZombie : CustomRole
     {
-        public override RoleType Type { get; set; } = Plugin.Singleton.Config.RoleConfigs.DwarfZombieCfg.RoleType;
-        public override int MaxHealth { get; set; } = Plugin.Singleton.Config.RoleConfigs.DwarfZombieCfg.MaxHealth;
-        public override string Name { get; set; } = Plugin.Singleton.Config.RoleConfigs.DwarfZombieCfg.Name;
+        public override uint Id { get; set; } = 6;
+        public override RoleType Role { get; set; } = RoleType.Scp0492;
+        public override int MaxHealth { get; set; } = 450;
+        public override string Name { get; set; } = "Dwarf Zombie";
 
-        protected override string Description { get; set; } =
+        public override string Description { get; set; } =
             "A weaker, smaller, amd faster zombie than its brothers.";
-        protected override void RoleAdded()
+        protected override void SubscribeEvents()
+        {
+            Log.Debug($"{Name}:{nameof(SubscribeEvents)} loading events.", Plugin.Singleton.Config.Debug);
+            Exiled.Events.Handlers.Player.Hurting += OnHurt;
+            base.SubscribeEvents();
+        }
+
+        protected override void RoleAdded(Player player)
         {
             Timing.CallDelayed(2.5f, () =>
             {
-                Player.Scale = new Vector3(0.75f, 0.75f, 0.75f);
-                Player.EnableEffect(EffectType.Scp207);
+                player.Scale = new Vector3(0.75f, 0.75f, 0.75f);
+                player.EnableEffect(EffectType.Scp207);
             });
         }
 
-        protected override void RoleRemoved()
+        protected override void UnSubscribeEvents()
         {
-            Player.DisableEffect(EffectType.Scp207);
-            Player.Scale = Vector3.one;
-        }
-        protected override void LoadEvents()
-        {
-            Log.Debug($"{Name}:{nameof(LoadEvents)} loading events.", Plugin.Singleton.Config.Debug);
-            Exiled.Events.Handlers.Player.Hurting += OnHurt;
+            Log.Debug($"{Name}:{nameof(UnSubscribeEvents)} unloading events.", Plugin.Singleton.Config.Debug);
+            Exiled.Events.Handlers.Player.Hurting -= OnHurt;
+            base.UnSubscribeEvents();
         }
 
-        protected override void UnloadEvents()
+        protected override void RoleRemoved(Player player)
         {
-            Log.Debug($"{Name}:{nameof(UnloadEvents)} unloading events.", Plugin.Singleton.Config.Debug);
-            Exiled.Events.Handlers.Player.Hurting -= OnHurt;
+            player.DisableEffect(EffectType.Scp207);
+            player.Scale = Vector3.one;
         }
 
         private void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Target == Player && ev.DamageType == DamageTypes.Scp207) 
+            if (Check(ev.Target) && ev.DamageType.Equals(DamageTypes.Scp207)) 
                 ev.IsAllowed = false;
             
-            if (ev.Attacker == Player)
+            if (Check(ev.Attacker))
             {
                 ev.Amount *= 0.7f;
             }
