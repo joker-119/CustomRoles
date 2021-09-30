@@ -136,7 +136,7 @@ namespace CustomRoles.Roles
         {
             if (ConsumptionStacks[player] < AbilityStackRequirement)
             {
-                player.ShowHint($"You are unable to use Blackout until you are power level 10. You are currently at {ConsumptionStacks}. Gain power levels by killing players.");
+                player.ShowHint($"You are unable to use Blackout until you are power level 10. You are currently at {ConsumptionStacks[player]}. Gain power levels by killing players.");
                 return false;
             }
 
