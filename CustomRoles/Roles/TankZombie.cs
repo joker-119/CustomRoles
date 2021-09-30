@@ -19,7 +19,8 @@ namespace CustomRoles.Roles
 
         public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
-            new ReactiveHume()
+            new ReactiveHume(),
+            new MoveSpeedReduction(),
         };
 
         protected override void RoleAdded(Player player)
@@ -27,10 +28,6 @@ namespace CustomRoles.Roles
             Log.Debug($"{Name}: Setting Max AHP and Decay", Plugin.Singleton.Config.Debug);
             player.MaxArtificialHealth = 500;
             player.ArtificialHealthDecay = 1.5f;
-            Timing.CallDelayed(2.5f, () =>
-            {
-                player.EnableEffect(EffectType.SinkHole);
-            });
         }
 
         protected override void RoleRemoved(Player player)
@@ -39,7 +36,6 @@ namespace CustomRoles.Roles
             player.MaxArtificialHealth = 75;
             player.ArtificialHealth = 0;
             player.ArtificialHealthDecay = 0.75f;
-            player.DisableEffect(EffectType.SinkHole);
         }
     }
 }

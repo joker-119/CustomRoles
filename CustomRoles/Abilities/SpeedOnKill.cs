@@ -1,6 +1,7 @@
 namespace CustomRoles.Abilities
 {
     using CustomPlayerEffects;
+    using Exiled.API.Enums;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -29,7 +30,10 @@ namespace CustomRoles.Abilities
             {
                 byte curIntensity = ev.Killer.GetEffectIntensity<Scp207>();
                 if (curIntensity < IntensityLimit)
+                {
                     ev.Killer.ChangeEffectIntensity<Scp207>((byte)(curIntensity + 1));
+                    ev.Killer.GetEffect(EffectType.Scp207).Duration = Duration;
+                }
             }
         }
     }

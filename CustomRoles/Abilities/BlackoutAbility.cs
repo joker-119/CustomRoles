@@ -20,7 +20,7 @@ namespace CustomRoles.Abilities
 
         public override float Duration { get; set; } = 120f;
 
-        public override float Cooldown { get; set; } = 90f;
+        public override float Cooldown { get; set; } = 180f;
         public float KeterDamage { get; set; } = 5;
         public string KeterHint { get; set; } = "You have been damaged by SCP-575!";
         private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();

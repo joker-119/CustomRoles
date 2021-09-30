@@ -5,6 +5,8 @@ using MEC;
 
 namespace CustomRoles.Roles
 {
+    using System.Collections.Generic;
+    using CustomRoles.Abilities;
     using Exiled.CustomRoles.API.Features;
 
     public class MedicZombie : CustomRole
@@ -16,18 +18,11 @@ namespace CustomRoles.Roles
 
         public override string Description { get; set; } = "A slightly slower and weaker zombie that heals nearby SCPs";
 
-        protected override void RoleAdded(Player player)
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
-            Timing.CallDelayed(2.5f, () =>
-            {
-                player.EnableEffect(EffectType.SinkHole);
-            });
-        }
-
-        protected override void RoleRemoved(Player player)
-        {
-            player.DisableEffect(EffectType.SinkHole);
-        }
+            new HealingMist(),
+            new MoveSpeedReduction(),
+        };
 
         protected override void SubscribeEvents()
         {

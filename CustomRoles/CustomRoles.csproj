@@ -34,9 +34,6 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="0Harmony, Version=2.0.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\0Harmony.dll</HintPath>
-        </Reference>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\References\Assembly-CSharp-Publicized.dll</HintPath>
         </Reference>
@@ -47,25 +44,40 @@
           <HintPath>..\..\References\CommandSystem.Core.dll</HintPath>
         </Reference>
         <Reference Include="Exiled.API, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.API.dll</HintPath>
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.API.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Exiled.Bootstrap, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Bootstrap.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.CreditTags, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.CreditTags.dll</HintPath>
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.CreditTags.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.CustomItems, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.CustomItems.dll</HintPath>
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.CustomItems.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.CustomRoles, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.CustomRoles.dll</HintPath>
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.CustomRoles.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.Events, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.Events.dll</HintPath>
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Events.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.Loader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.Loader.dll</HintPath>
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Loader.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.Permissions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.Permissions.dll</HintPath>
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Permissions.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Updater.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\References\Mirror.dll</HintPath>
@@ -94,6 +106,7 @@
         <Compile Include="Abilities\HealingMist.cs" />
         <Compile Include="Abilities\HealOnKill.cs" />
         <Compile Include="Abilities\Martyrdom.cs" />
+        <Compile Include="Abilities\MoveSpeedReduction.cs" />
         <Compile Include="Abilities\ProjectileAbility.cs" />
         <Compile Include="Abilities\ReactiveHume.cs" />
         <Compile Include="Abilities\SpeedOnKill.cs" />

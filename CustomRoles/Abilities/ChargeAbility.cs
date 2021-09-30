@@ -15,6 +15,9 @@ namespace CustomRoles.Abilities
         public override string Description { get; set; } = "Charges towards the target location.";
         public override float Duration { get; set; } = 0f;
         public override float Cooldown { get; set; } = 45f;
+        public float ContactDamage { get; set; } = 15f;
+        public float AccuracyMultiplier { get; set; } = 2f;
+        public float EnsnareDuration { get; set; } = 5f;
 
         protected override void AbilityUsed(Player player)
         {
@@ -45,21 +48,21 @@ namespace CustomRoles.Abilities
                 yield return Timing.WaitForSeconds(0.00025f);
             }
 
-            Timing.CallDelayed(0.5f, () => player.EnableEffect(EffectType.Ensnared, 5f));
+            Timing.CallDelayed(0.5f, () => player.EnableEffect(EffectType.Ensnared, EnsnareDuration));
             
             Player target = Player.Get(hit.collider.GetComponentInParent<ReferenceHub>());
             if (target != null)
             {
                 if ((target.Position - hit.point).sqrMagnitude >= 3f)
                 {
-                    target.Hurt(35f, DamageTypes.Scp0492, player.Nickname, player.Id);
-                    target.EnableEffect(EffectType.Ensnared, 5f);
+                    target.Hurt(ContactDamage * AccuracyMultiplier, DamageTypes.Scp0492, player.Nickname, player.Id);
+                    target.EnableEffect(EffectType.Ensnared, EnsnareDuration);
                 }
                 else
-                    player.Hurt(10f, DamageTypes.Falldown, player.Nickname, player.Id);
+                    player.Hurt(ContactDamage, DamageTypes.Falldown, player.Nickname, player.Id);
             }
             else
-                player.Hurt(10f, DamageTypes.Falldown, player.Nickname, player.Id);
+                player.Hurt(ContactDamage, DamageTypes.Falldown, player.Nickname, player.Id);
 
             EndAbility(player);
         }

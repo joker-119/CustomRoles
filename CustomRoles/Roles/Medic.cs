@@ -5,7 +5,6 @@ using Exiled.Events.EventArgs;
 
 namespace CustomRoles.Roles
 {
-    using Exiled.API;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
 
