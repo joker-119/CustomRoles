@@ -145,7 +145,7 @@ namespace CustomRoles.Roles
             if (!flag)
                 player.ShowHint($"You must wait another {Math.Round((DateTime.Now - usableTime).TotalSeconds, 2)} more seconds to use this ability.");
 
-            return DateTime.Now > usableTime;
+            return flag;
         }
 
         private void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev)
