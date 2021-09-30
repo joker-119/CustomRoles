@@ -1,6 +1,7 @@
 namespace CustomRoles.Abilities
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using CustomRoles.Roles;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
@@ -16,7 +17,11 @@ namespace CustomRoles.Abilities
         public override string Description { get; set; } = "Shoots an item in the direction you are facing.";
         public override float Duration { get; set; } = 1f;
         public override float Cooldown { get; set; } = 35f;
+
+        [Description("The speed of the projectile.")]
         public float Speed { get; set; } = 8f;
+
+        [Description("How high the projectile arcs upwards when thrown.")]
         public float ArcHeight { get; set; } = 3f;
 
         protected override void AbilityUsed(Player player)

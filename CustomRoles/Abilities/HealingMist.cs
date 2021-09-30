@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace CustomRoles.Abilities
 {
+    using System.ComponentModel;
     using Exiled.CustomRoles.API.Features;
 
     public class HealingMist : ActiveAbility
@@ -15,8 +16,11 @@ namespace CustomRoles.Abilities
 
         public override float Duration { get; set; } = 15f;
         public override float Cooldown { get; set; } = 180f;
+
+        [Description("The amount healed every second the ability is active.")]
         public float HealAmount { get; set; } = 6;
 
+        [Description("The amount of AHP given when the ability ends.")]
         public ushort ProtectionAmount { get; set; } = 45;
 
         private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();

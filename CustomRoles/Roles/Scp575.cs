@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace CustomRoles.Roles
 {
+    using System.ComponentModel;
     using Dissonance.Integrations.MirrorIgnorance;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Spawn;
@@ -25,20 +26,28 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = "SCP-575";
         public override string Description { get; set; } = $"An entity that appears as a shapeless void, that moves slowly but grows in power the more biological material it consumes. Capable of causing wide-spread power outages.\n\nUse client command \".special\" to trigger a blackout. This can be keyboudn with \"cmdbind KEY .special\"";
 
+        [Description("The base(minimum) damage his hits will deal.")]
         public float BaseDamage { get; set; } = 30;
 
+        [Description("Damage calculation is base x (consumptionStacks / this value)")]
         public int DamageScalar { get; set; } = 2;
 
+        [Description("The maximum number of consumption stacks 575 can have.")]
         public int MaxConsumption { get; set; } = 10;
 
+        [Description("The amount of consumption stacks he must have to use his ability.")]
         public int AbilityStackRequirement { get; set; } = 5;
 
+        [Description("The base(maximum) damage a flashbang will deal to 575.")]
         public float FlashbangBaseDamage { get; set; } = 450f;
 
+        [Description("The amount of damage removed from the base amount for every 1ft away from the grenade he is.")]
         public float FlashbangFalloffMultiplier { get; set; } = 20f;
 
+        [Description("Whether or not consumption stacks are removed when he is hit with a flashbang.")]
         public bool ResetConsumptionOnFlashed { get; set; } = true;
 
+        [Description("Whether or not 575 is teleported to a random HCZ room when flashbanged.")]
         public bool TeleportOnFlashed { get; set; } = true;
 
         protected override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties

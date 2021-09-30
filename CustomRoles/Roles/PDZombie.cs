@@ -6,6 +6,7 @@ using Exiled.Events.EventArgs;
 
 namespace CustomRoles.Roles
 {
+    using System.ComponentModel;
     using Exiled.CustomRoles.API.Features;
 
     public class PDZombie : CustomRole
@@ -17,6 +18,7 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A zombie with ballistic damage resistance, but is instantly killed by flash grenades. Has a 25% chance when hitting someone to teleport them to the Pocket Dimension";
 
+        [Description("The chance the zombie has on each melee hit to teleport the target to the pocket dimension.")]
         public int TeleportChance { get; set; } = 25;
 
         protected override void SubscribeEvents()

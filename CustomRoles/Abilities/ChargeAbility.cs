@@ -2,6 +2,7 @@ namespace CustomRoles.Abilities
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
@@ -15,8 +16,14 @@ namespace CustomRoles.Abilities
         public override string Description { get; set; } = "Charges towards the target location.";
         public override float Duration { get; set; } = 0f;
         public override float Cooldown { get; set; } = 45f;
+
+        [Description("The amount of damage inflicted when the player collides with something.")]
         public float ContactDamage { get; set; } = 15f;
+
+        [Description("The bonus multiplier if the target player wasn't moving.")]
         public float AccuracyMultiplier { get; set; } = 2f;
+
+        [Description("How long the ensnare effect lasts.")]
         public float EnsnareDuration { get; set; } = 5f;
 
         protected override void AbilityUsed(Player player)

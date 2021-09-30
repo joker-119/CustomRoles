@@ -4,6 +4,7 @@ using MEC;
 
 namespace CustomRoles.Abilities
 {
+    using System.ComponentModel;
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
     using Exiled.CustomRoles.API.Features;
@@ -21,7 +22,11 @@ namespace CustomRoles.Abilities
         public override float Duration { get; set; } = 120f;
 
         public override float Cooldown { get; set; } = 180f;
+
+        [Description("How much damage human players will take, at 5-second intervals, while in a blackedout room without a light.")]
         public float KeterDamage { get; set; } = 5;
+
+        [Description("The message sent to players who are damaged by the blackout.")]
         public string KeterHint { get; set; } = "You have been damaged by SCP-575!";
         private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
 

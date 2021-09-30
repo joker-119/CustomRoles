@@ -1,5 +1,6 @@
 namespace CustomRoles.Abilities
 {
+    using System.ComponentModel;
     using CustomPlayerEffects;
     using Exiled.API.Enums;
     using Exiled.CustomRoles.API.Features;
@@ -10,6 +11,8 @@ namespace CustomRoles.Abilities
         public override string Name { get; set; } = "Speed on Kill";
         public override string Description { get; set; } = "Gives the user speed when they kill another player.";
         public float Duration { get; set; } = 5f;
+        
+        [Description("The highest intensity level of SCP-207 speed this ability can give.")]
         public byte IntensityLimit { get; set; } = 2;
 
         protected override void SubscribeEvents()

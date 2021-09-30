@@ -1,6 +1,7 @@
 namespace CustomRoles.Abilities
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -12,11 +13,23 @@ namespace CustomRoles.Abilities
     {
         public override string Name { get; set; } = "Heal on Kill";
         public override string Description { get; set; } = "Heals the player when they kill someone.";
+
+        [Description("How much health to give the player.")]
         public float HealAmount { get; set; } = 25f;
+
+        [Description("Whether or not this heal can exceed their max health.")]
         public bool HealOverMax { get; set; } = false;
+
+        [Description("Whether or not this heal is applied gradually over time (true) or instantly (false)")]
         public bool HealOverTime { get; set; } = true;
+
+        [Description("How long the heal over time effect lasts, if used.")]
         public float HealOverTimeDuration { get; set; } = 10f;
+
+        [Description("How often (in seconds) the heal over time effect ticks, if used.")]
         public float HealOverTimeTickFrequency { get; set; } = 1.0f;
+
+        [Description("Whether or not the heal over time effect is ended early if the player takes damage.")]
         public bool DamageInterruptsHot { get; set; } = true;
 
         private Dictionary<Player, CoroutineHandle> ActiveHoTs = new Dictionary<Player, CoroutineHandle>();
