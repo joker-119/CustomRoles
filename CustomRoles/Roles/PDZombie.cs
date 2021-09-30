@@ -16,8 +16,6 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = "Pocket Dimension Zombie";
         public override string Description { get; set; } =
             "A zombie with ballistic damage resistance, but is instantly killed by flash grenades. Has a 25% chance when hitting someone to teleport them to the Pocket Dimension";
-        
-        protected override void RoleAdded(Player player) => Log.Debug($"{Name} added to {player.Nickname}", Plugin.Singleton.Config.Debug);
 
         protected override void SubscribeEvents()
         {

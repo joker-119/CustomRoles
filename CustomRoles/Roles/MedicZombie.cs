@@ -20,21 +20,9 @@ namespace CustomRoles.Roles
 
         public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
-            new HealingMist()
+            new HealingMist(),
+            new MoveSpeedReduction(),
         };
-
-        protected override void RoleAdded(Player player)
-        {
-            Timing.CallDelayed(2.5f, () =>
-            {
-                player.EnableEffect(EffectType.SinkHole);
-            });
-        }
-
-        protected override void RoleRemoved(Player player)
-        {
-            player.DisableEffect(EffectType.SinkHole);
-        }
 
         protected override void SubscribeEvents()
         {

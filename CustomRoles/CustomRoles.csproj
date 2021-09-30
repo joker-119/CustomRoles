@@ -106,6 +106,7 @@
         <Compile Include="Abilities\HealingMist.cs" />
         <Compile Include="Abilities\HealOnKill.cs" />
         <Compile Include="Abilities\Martyrdom.cs" />
+        <Compile Include="Abilities\MoveSpeedReduction.cs" />
         <Compile Include="Abilities\ProjectileAbility.cs" />
         <Compile Include="Abilities\ReactiveHume.cs" />
         <Compile Include="Abilities\SpeedOnKill.cs" />
