@@ -109,8 +109,6 @@ namespace CustomRoles
                 }
             }
         }
-        
-        public void OnReloadedConfigs() => plugin.Config.LoadConfigs();
 
         public void FinishingRecall(FinishingRecallEventArgs ev)
         {
