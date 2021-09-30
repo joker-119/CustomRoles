@@ -69,7 +69,7 @@ Additionally, he is damaged for a large amount if he is closer than 20ft from th
 Below is a table of all the current abilities, followed by a description of them. 
 
 AbilityName | Type | Duration | Cooldown | Description
-:---: | :---: :---: | :---: | :------
+:---: | :---: | :---: | :---: | :------
 ActiveCamo | Active | 30s | 90s | Turns the user invisible when used. While invisible they may interact with objects, use items, and throw grenades without breaking their invisibility, however shooting a gun or starting to charge a micro will break their invisibility early.
 Blackout | Active | 2min | 3min | Causes most rooms inside the facility to lose lightning for the duration. While active, any human player in an affected room will take damage every 5 seconds that they do not have a light source in their hand.
 Charge | Active | N/A | 45s | Causes the player to charge forward in a straight line very quickly. Upon colliding with a solid object, or another player, the user of the ability is ensnared for 5 seconds. If they collided with another player, that player is also ensnared for the same duration, and take 15 damage (if the player was not moving at the time, this value is doubled). If instead they collide with a non-player object (such as a wall/door), the user takes 15 damage instead.
