@@ -17,6 +17,8 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A zombie with ballistic damage resistance, but is instantly killed by flash grenades. Has a 25% chance when hitting someone to teleport them to the Pocket Dimension";
 
+        public int TeleportChance { get; set; } = 25;
+
         protected override void SubscribeEvents()
         {
             Log.Debug($"{Name}:{nameof(SubscribeEvents)}: loading events.", Plugin.Singleton.Config.Debug);
@@ -39,7 +41,7 @@ namespace CustomRoles.Roles
             {
                 int chance = Plugin.Singleton.Rng.Next(100);
                 
-                if (chance < 25)
+                if (chance < TeleportChance)
                     ev.Target.EnableEffect(EffectType.Corroding);
             }
 
