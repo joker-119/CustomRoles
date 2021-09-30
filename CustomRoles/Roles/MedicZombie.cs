@@ -5,6 +5,8 @@ using MEC;
 
 namespace CustomRoles.Roles
 {
+    using System.Collections.Generic;
+    using CustomRoles.Abilities;
     using Exiled.CustomRoles.API.Features;
 
     public class MedicZombie : CustomRole
@@ -15,6 +17,11 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = "Medic Zombie";
 
         public override string Description { get; set; } = "A slightly slower and weaker zombie that heals nearby SCPs";
+
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
+        {
+            new HealingMist()
+        };
 
         protected override void RoleAdded(Player player)
         {

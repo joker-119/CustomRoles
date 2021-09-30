@@ -44,7 +44,7 @@ namespace CustomRoles.Abilities
         {
             for (int i = 0; i < Duration; i++)
             {
-                if (player.Health + HealAmount >= player.MaxHealth || Vector3.Distance(player.Position, activator.Position) > 12.01f)
+                if (player.Health + HealAmount >= player.MaxHealth || (player.Position - activator.Position).sqrMagnitude > 144f)
                     continue;
 
                 player.Health += HealAmount;

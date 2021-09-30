@@ -20,7 +20,7 @@ namespace CustomRoles.Roles
             ItemType.GrenadeHE.ToString(),
             ItemType.GrenadeHE.ToString(),
             ItemType.GrenadeHE.ToString(),
-            ItemType.GrenadeHE.ToString(),
+            ItemType.Radio.ToString(),
         };
 
         public override string Description { get; set; } =
