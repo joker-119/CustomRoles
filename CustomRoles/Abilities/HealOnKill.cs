@@ -2,15 +2,15 @@ namespace CustomRoles.Abilities
 {
     using System.Collections.Generic;
     using System.ComponentModel;
-    using Exiled.CustomRoles.API.Features;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using Generics;
     using MEC;
     using UnityEngine;
-    using Player = Exiled.API.Features.Player;
 
-    public class HealOnKill : PassiveAbility
+    public class HealOnKill : PassiveAbilityResolvable
     {
+        private readonly Dictionary<Player, CoroutineHandle> _activeHoTs = new();
         public override string Name { get; set; } = "Heal on Kill";
         public override string Description { get; set; } = "Heals the player when they kill someone.";
 
@@ -32,7 +32,6 @@ namespace CustomRoles.Abilities
         [Description("Whether or not the heal over time effect is ended early if the player takes damage.")]
         public bool DamageInterruptsHot { get; set; } = true;
 
-        private Dictionary<Player, CoroutineHandle> ActiveHoTs = new Dictionary<Player, CoroutineHandle>();
         protected override void SubscribeEvents()
         {
             Exiled.Events.Handlers.Player.Dying += OnDying;
@@ -54,7 +53,7 @@ namespace CustomRoles.Abilities
             if (Check(ev.Killer))
             {
                 if (HealOverTime)
-                    ActiveHoTs[ev.Killer] = Timing.RunCoroutine(DoHealOverTime(ev.Killer));
+                    _activeHoTs[ev.Killer] = Timing.RunCoroutine(DoHealOverTime(ev.Killer));
                 ev.Killer.Heal(HealAmount, HealOverMax);
             }
         }
@@ -62,18 +61,16 @@ namespace CustomRoles.Abilities
         private void OnHurting(HurtingEventArgs ev)
         {
             if (Check(ev.Target))
-            {
-                if (DamageInterruptsHot && ActiveHoTs.ContainsKey(ev.Target))
-                    Timing.KillCoroutines(ActiveHoTs[ev.Target]);
-            }
+                if (DamageInterruptsHot && _activeHoTs.ContainsKey(ev.Target))
+                    Timing.KillCoroutines(_activeHoTs[ev.Target]);
         }
 
         private IEnumerator<float> DoHealOverTime(Player player)
         {
-            float tickAmount = HealAmount / HealOverTimeDuration;
-            int tickCount = Mathf.FloorToInt(HealOverTimeDuration / HealOverTimeTickFrequency);
+            var tickAmount = HealAmount / HealOverTimeDuration;
+            var tickCount = Mathf.FloorToInt(HealOverTimeDuration / HealOverTimeTickFrequency);
 
-            for (int i = 0; i < tickCount; i++)
+            for (var i = 0; i < tickCount; i++)
             {
                 player.Heal(tickAmount, HealOverMax);
                 yield return Timing.WaitForSeconds(HealOverTimeTickFrequency);

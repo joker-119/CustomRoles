@@ -1,19 +1,20 @@
-using MEC;
-using UnityEngine;
-
 namespace CustomRoles.Roles
 {
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
+    using MEC;
+    using UnityEngine;
 
     public class Dwarf : CustomRole
     {
-        public override uint Id { get; set; } = 4;
+        public override uint Id { get; set; } = 5;
         public override RoleType Role { get; set; } = RoleType.None;
         public override int MaxHealth { get; set; } = 100;
         public override string Name { get; set; } = "Dwarf";
+
         public override string Description { get; set; } =
             "A normal player who has unlimited stamina, and is slightly smaller than normal.";
+
         protected override bool KeepInventoryOnSpawn { get; set; } = true;
         protected override bool KeepRoleOnDeath { get; set; } = true;
         protected override bool RemovalKillsPlayer { get; set; } = false;

@@ -3,27 +3,28 @@ namespace CustomRoles.Abilities
     using System.ComponentModel;
     using CustomPlayerEffects;
     using Exiled.API.Enums;
-    using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Handlers;
+    using Generics;
 
-    public class SpeedOnKill : PassiveAbility
+    public class SpeedOnKill : PassiveAbilityResolvable
     {
         public override string Name { get; set; } = "Speed on Kill";
         public override string Description { get; set; } = "Gives the user speed when they kill another player.";
         public float Duration { get; set; } = 5f;
-        
+
         [Description("The highest intensity level of SCP-207 speed this ability can give.")]
         public byte IntensityLimit { get; set; } = 2;
 
         protected override void SubscribeEvents()
         {
-            Exiled.Events.Handlers.Player.Dying += OnDying;
+            Player.Dying += OnDying;
             base.SubscribeEvents();
         }
 
         protected override void UnSubscribeEvents()
         {
-            Exiled.Events.Handlers.Player.Dying -= OnDying;
+            Player.Dying -= OnDying;
             base.UnSubscribeEvents();
         }
 
@@ -31,7 +32,7 @@ namespace CustomRoles.Abilities
         {
             if (Check(ev.Killer))
             {
-                byte curIntensity = ev.Killer.GetEffectIntensity<Scp207>();
+                var curIntensity = ev.Killer.GetEffectIntensity<Scp207>();
                 if (curIntensity < IntensityLimit)
                 {
                     ev.Killer.ChangeEffectIntensity<Scp207>((byte)(curIntensity + 1));

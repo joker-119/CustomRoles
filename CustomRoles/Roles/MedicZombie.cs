@@ -1,13 +1,11 @@
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-using MEC;
-
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
-    using CustomRoles.Abilities;
+    using Abilities;
+    using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
+    using Exiled.Events.EventArgs;
+    using Player = Exiled.Events.Handlers.Player;
 
     public class MedicZombie : CustomRole
     {
@@ -18,31 +16,29 @@ namespace CustomRoles.Roles
 
         public override string Description { get; set; } = "A slightly slower and weaker zombie that heals nearby SCPs";
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
+        public override List<CustomAbility> CustomAbilities { get; set; } = new()
         {
             new HealingMist(),
-            new MoveSpeedReduction(),
+            new MoveSpeedReduction()
         };
 
         protected override void SubscribeEvents()
         {
             Log.Debug($"{Name} loading events.");
-            Exiled.Events.Handlers.Player.Hurting += OnHurt;
+            Player.Hurting += OnHurt;
             base.SubscribeEvents();
         }
+
         protected override void UnSubscribeEvents()
         {
             Log.Debug($"{Name} unloading events.");
-            Exiled.Events.Handlers.Player.Hurting -= OnHurt;
+            Player.Hurting -= OnHurt;
             base.UnSubscribeEvents();
         }
 
         public void OnHurt(HurtingEventArgs ev)
         {
-            if (Check(ev.Attacker))
-            {
-                ev.Amount *= 0.75f;
-            }
+            if (Check(ev.Attacker)) ev.Amount *= 0.75f;
         }
     }
 }

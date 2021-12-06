@@ -1,12 +1,11 @@
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-using MEC;
-using UnityEngine;
-
 namespace CustomRoles.Roles
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
+    using Exiled.Events.EventArgs;
+    using MEC;
+    using UnityEngine;
 
     public class DwarfZombie : CustomRole
     {
@@ -17,6 +16,7 @@ namespace CustomRoles.Roles
 
         public override string Description { get; set; } =
             "A weaker, smaller, amd faster zombie than its brothers.";
+
         protected override void SubscribeEvents()
         {
             Log.Debug($"{Name}:{nameof(SubscribeEvents)} loading events.", Plugin.Singleton.Config.Debug);
@@ -48,9 +48,9 @@ namespace CustomRoles.Roles
 
         private void OnHurt(HurtingEventArgs ev)
         {
-            if (Check(ev.Target) && ev.DamageType.Equals(DamageTypes.Scp207)) 
+            if (Check(ev.Target) && ev.Handler.Type == DamageType.Scp207)
                 ev.IsAllowed = false;
-            
+
             if (Check(ev.Attacker))
             {
                 ev.Amount *= 0.7f;
