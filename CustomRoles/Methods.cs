@@ -1,27 +1,31 @@
-using CustomRoles.Roles;
-using Exiled.API.Features;
-using Exiled.API.Interfaces;
-
 namespace CustomRoles
 {
+    using Exiled.API.Features;
     using Exiled.CustomRoles.API;
     using Exiled.CustomRoles.API.Features;
+    using Roles;
 
     public class Methods
     {
         private readonly Plugin plugin;
-        public Methods(Plugin plugin) => this.plugin = plugin;
+
+        public Methods(Plugin plugin)
+        {
+            this.plugin = plugin;
+        }
 
         public void SelectRandomZombieType(Player player)
         {
-            int r = plugin.Rng.Next(plugin.Config.EnabledZombies.Count - 1);
-            Log.Debug($"{nameof(SelectRandomZombieType)}: {plugin.Config.EnabledZombies.Count} -- {plugin.Config.EnabledZombies[r]} -- Ex: {nameof(BallisticZombie)} - {nameof(PlagueZombie)}");
-            string name = plugin.Config.EnabledZombies[r];
-            if (!CustomRole.TryGet(name, out CustomRole role))
+            var r = plugin.Rng.Next(plugin.Config.EnabledZombies.Count - 1);
+            Log.Debug(
+                $"{nameof(SelectRandomZombieType)}: {plugin.Config.EnabledZombies.Count} -- {plugin.Config.EnabledZombies[r]} -- Ex: {nameof(BallisticZombie)} - {nameof(PlagueZombie)}");
+            var name = plugin.Config.EnabledZombies[r];
+            if (!CustomRole.TryGet(name, out var role))
             {
                 Log.Warn($"{nameof(SelectRandomZombieType)}: {name} is not a valid custom role.");
                 return;
             }
+
             role.AddRole(player);
         }
 
@@ -41,7 +45,7 @@ namespace CustomRoles
             Plugin.Singleton.Config.RoleConfigs.Scp575s?.Register();
             Plugin.Singleton.Config.RoleConfigs.TankZombies?.Register();
         }
-        
+
         public void UnregisterRoles()
         {
             Plugin.Singleton.Config.RoleConfigs.BallisticZombies?.Unregister();

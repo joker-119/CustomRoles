@@ -11,6 +11,7 @@
         <AssemblyName>CustomRoles</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,74 +36,79 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\Assembly-CSharp-Publicized.dll</HintPath>
+            <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\Assembly-CSharp-firstpass.dll</HintPath>
+            <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\CommandSystem.Core.dll</HintPath>
+            <HintPath>$(EXILED_REFERENCES)\CommandSystem.Core.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.API, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.API.dll</HintPath>
+        <Reference Include="Exiled.API, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.API.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Bootstrap, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Bootstrap.dll</HintPath>
+        <Reference Include="Exiled.Bootstrap, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Bootstrap.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CreditTags, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.CreditTags.dll</HintPath>
+        <Reference Include="Exiled.CreditTags, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.CreditTags.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CustomItems, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.CustomItems.dll</HintPath>
+        <Reference Include="Exiled.CustomItems, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.CustomItems.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CustomRoles, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.CustomRoles.dll</HintPath>
+        <Reference Include="Exiled.CustomRoles, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.CustomRoles.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Events, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Events.dll</HintPath>
+        <Reference Include="Exiled.Events, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Events.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Loader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Loader.dll</HintPath>
+        <Reference Include="Exiled.Loader, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Loader.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Permissions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Permissions.dll</HintPath>
+        <Reference Include="Exiled.Permissions, Version=4.1.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Permissions.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.3.0.0-beta\lib\net472\Exiled.Updater.dll</HintPath>
+          <HintPath>..\packages\EXILED.4.1.2\lib\net472\Exiled.Updater.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\Mirror.dll</HintPath>
+            <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
         </Reference>
         <Reference Include="System" />
+        <Reference Include="System.ComponentModel.DataAnnotations" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
         <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\UnityEngine.dll</HintPath>
+            <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\UnityEngine.PhysicsModule.dll</HintPath>
+            <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
         </Reference>
         <Reference Include="YamlDotNet, Version=9.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e">
-          <HintPath>..\..\EXILED\bin\Release\YamlDotNet.dll</HintPath>
+            <HintPath>..\packages\YamlDotNet.9.1.4\lib\net45\YamlDotNet.dll</HintPath>
+            <Private>True</Private>
         </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Abilities\ActiveCamo.cs" />
         <Compile Include="Abilities\BlackoutAbility.cs" />
         <Compile Include="Abilities\ChargeAbility.cs" />
+        <Compile Include="Abilities\Generics\ActiveAbilityResolvable.cs" />
+        <Compile Include="Abilities\Generics\IResolvableAbility.cs" />
+        <Compile Include="Abilities\Generics\PassiveAbilityResolvable.cs" />
         <Compile Include="Abilities\HealingMist.cs" />
         <Compile Include="Abilities\HealOnKill.cs" />
         <Compile Include="Abilities\Martyrdom.cs" />
@@ -111,7 +117,12 @@
         <Compile Include="Abilities\ReactiveHume.cs" />
         <Compile Include="Abilities\SpeedOnKill.cs" />
         <Compile Include="Commands\TestCommand.cs" />
+        <Compile Include="Configs\AbstractNodeNodeTypeResolver.cs" />
+        <Compile Include="Configs\AggregateExpectationTypeResolver.cs" />
         <Compile Include="Configs\Config.cs" />
+        <Compile Include="Configs\IParserExtension.cs" />
+        <Compile Include="Configs\ITypeDiscriminator.cs" />
+        <Compile Include="Configs\ParsingEventBuffer.cs" />
         <Compile Include="Configs\Roles.cs" />
         <Compile Include="EventHandlers.cs" />
         <Compile Include="Methods.cs" />
@@ -123,7 +134,6 @@
         <Compile Include="Roles\Demolitionist.cs" />
         <Compile Include="Roles\Dwarf.cs" />
         <Compile Include="Roles\DwarfZombie.cs" />
-        <Compile Include="Roles\GenericRole.cs" />
         <Compile Include="Roles\Medic.cs" />
         <Compile Include="Roles\MedicZombie.cs" />
         <Compile Include="Roles\PDZombie.cs" />
@@ -133,11 +143,7 @@
         <Compile Include="Roles\TankZombie.cs" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="API" />
-      <Folder Include="Components" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Include="packages.config" />
+        <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

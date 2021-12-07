@@ -2,16 +2,16 @@ namespace CustomRoles.Abilities
 {
     using System.Collections.Generic;
     using System.ComponentModel;
-    using CustomRoles.Roles;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.CustomRoles.API.Features;
+    using Generics;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
     using Mirror;
+    using Roles;
     using UnityEngine;
 
-    public class ProjectileAbility : ActiveAbility
+    public class ProjectileAbility : ActiveAbilityResolvable
     {
         public override string Name { get; set; } = "Projectile";
         public override string Description { get; set; } = "Shoots an item in the direction you are facing.";
@@ -26,38 +26,45 @@ namespace CustomRoles.Abilities
 
         protected override void AbilityUsed(Player player)
         {
-            Vector3 target = Vector3.zero;
-            if (RunRaycast(player, out RaycastHit hit))
+            var target = Vector3.zero;
+            if (RunRaycast(player, out var hit))
             {
                 if ((player.Position - hit.point).sqrMagnitude > 400)
                 {
                     target = Vector3.MoveTowards(player.Position, hit.point, 20f);
 
-                    if (Physics.Linecast(target, Vector3.down * 20f, out RaycastHit lineHit, player.ReferenceHub.playerMovementSync.CollidableSurfaces))
+                    if (Physics.Linecast(target, Vector3.down * 20f, out var lineHit,
+                        player.ReferenceHub.playerMovementSync.CollidableSurfaces))
                         target = lineHit.point;
                 }
                 else
+                {
                     target = hit.point;
+                }
 
-                Pickup pickup = new Item(ItemType.SCP018).Spawn(player.CameraTransform.position);
+                var pickup = new Item(ItemType.SCP018).Spawn(player.CameraTransform.position);
                 NetworkServer.UnSpawn(pickup.Base.gameObject);
                 pickup.Base.gameObject.transform.localScale = Vector3.one * 2f;
                 NetworkServer.Spawn(pickup.Base.gameObject);
-                Rigidbody body = pickup.Base.GetComponent<Rigidbody>();
+                var body = pickup.Base.GetComponent<Rigidbody>();
                 body.useGravity = false;
                 body.isKinematic = false;
                 Timing.RunCoroutine(Update(pickup, target));
             }
         }
 
-        public bool RunRaycast(Player player, out RaycastHit hit) => Physics.Raycast(player.Position + player.CameraTransform.forward, player.CameraTransform.forward, out hit, 200f, StandardHitregBase.HitregMask);
+        public bool RunRaycast(Player player, out RaycastHit hit)
+        {
+            return Physics.Raycast(player.Position + player.CameraTransform.forward, player.CameraTransform.forward,
+                out hit, 200f, StandardHitregBase.HitregMask);
+        }
 
         private IEnumerator<float> Update(Pickup pickup, Vector3 target)
         {
-            bool deleted = false;
-            Vector3 startPosition = pickup.Position;
-            float stepScale = Speed / Vector3.Distance(startPosition, target);
-            float progress = 0f;
+            var deleted = false;
+            var startPosition = pickup.Position;
+            var stepScale = Speed / Vector3.Distance(startPosition, target);
+            var progress = 0f;
             for (;;)
             {
                 if (deleted)
@@ -66,10 +73,10 @@ namespace CustomRoles.Abilities
                 progress = Mathf.Min(progress + Time.deltaTime * stepScale, 1.0f);
 
                 // Turn this 0-1 value into a parabola that goes from 0 to 1, then back to 0.
-                float parabola = 1.0f - 4.0f * (progress - 0.5f) * (progress - 0.5f);
+                var parabola = 1.0f - 4.0f * (progress - 0.5f) * (progress - 0.5f);
 
                 // Travel in a straight line from our start position to the target.        
-                Vector3 nextPos = Vector3.Lerp(startPosition, target, progress);
+                var nextPos = Vector3.Lerp(startPosition, target, progress);
 
                 // Then add a vertical arc in excess of this.
                 nextPos.y += parabola * ArcHeight;
@@ -87,6 +94,9 @@ namespace CustomRoles.Abilities
             }
         }
 
-        private void Arrived(Vector3 target) => PlagueZombie.Grenades.Add(new ExplosiveGrenade(ItemType.GrenadeHE).Spawn(target));
+        private void Arrived(Vector3 target)
+        {
+            PlagueZombie.Grenades.Add(new ExplosiveGrenade(ItemType.GrenadeHE).Spawn(target));
+        }
     }
 }

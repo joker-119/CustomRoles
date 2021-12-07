@@ -1,7 +1,7 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
-    using CustomRoles.Abilities;
+    using Abilities;
     using Exiled.CustomRoles.API.Features;
 
     public class BerserkZombie : CustomRole
@@ -13,16 +13,16 @@ namespace CustomRoles.Roles
 
         public override string Description { get; set; } = "A zombie that gains more speed when they kill someone.";
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
+        public override List<CustomAbility> CustomAbilities { get; set; } = new()
         {
             new SpeedOnKill
             {
-                IntensityLimit = 2,
+                IntensityLimit = 2
             },
             new HealOnKill
             {
-                HealAmount = 100f,
-            },
+                HealAmount = 100f
+            }
         };
     }
 }

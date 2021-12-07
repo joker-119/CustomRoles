@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using CustomRoles.Abilities;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-
 namespace CustomRoles.Roles
 {
+    using System.Collections.Generic;
+    using Abilities;
+    using Exiled.API.Features;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
+    using Exiled.Events.EventArgs;
+    using Player = Exiled.Events.Handlers.Player;
 
     public class Medic : CustomRole
     {
@@ -18,7 +18,7 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A medic, equipped with a Medigun, TranqGun, EMP Grenade, and has the ability to activate a mist of healing chemicals around them, protecting nearby allies.\nYou can use \".special\" to activate a spray of healing mist to heal and fortify nearby allies.\nYou can keybind this ability with \"cmdbind KEY .special\"";
 
-        protected override List<string> Inventory { get; set; } = new List<string>
+        protected override List<string> Inventory { get; set; } = new()
         {
             "MG-119",
             "TG-119",
@@ -29,34 +29,34 @@ namespace CustomRoles.Roles
             $"{ItemType.KeycardNTFLieutenant}"
         };
 
-        protected override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
+        protected override SpawnProperties SpawnProperties { get; set; } = new()
         {
             RoleSpawnPoints = new List<RoleSpawnPoint>
             {
-                new RoleSpawnPoint
+                new()
                 {
                     Role = RoleType.NtfSpecialist,
-                    Chance = 100,
+                    Chance = 100
                 }
             }
         };
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
+        public override List<CustomAbility> CustomAbilities { get; set; } = new()
         {
-            new HealingMist(),
+            new HealingMist()
         };
 
         protected override void SubscribeEvents()
         {
             Log.Debug($"{nameof(SubscribeEvents)}: Loading medic events..");
-            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
+            Player.PickingUpItem += OnPickingUpItem;
             base.SubscribeEvents();
         }
 
         protected override void UnSubscribeEvents()
         {
             Log.Debug($"{nameof(UnSubscribeEvents)}: Unloading medic events..");
-            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
+            Player.PickingUpItem -= OnPickingUpItem;
             base.UnSubscribeEvents();
         }
 

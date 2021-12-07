@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using CustomPlayerEffects;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-using MEC;
-
 namespace CustomRoles.Abilities
 {
+    using System;
     using System.Linq;
-    using Exiled.CustomRoles.API.Features;
+    using CustomPlayerEffects;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs;
+    using Generics;
+    using MEC;
 
-    public class ActiveCamo : ActiveAbility
+    public class ActiveCamo : ActiveAbilityResolvable
     {
         public override string Name { get; set; } = "Active Camo";
 
@@ -19,8 +17,6 @@ namespace CustomRoles.Abilities
 
         public override float Duration { get; set; } = 30f;
         public override float Cooldown { get; set; } = 120f;
-
-        private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
 
         protected override void SubscribeEvents()
         {
@@ -53,9 +49,7 @@ namespace CustomRoles.Abilities
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.InteractingElevator -= OnInteractingElevator;
             Exiled.Events.Handlers.Player.InteractingLocker -= OnInteractingLocker;
-            foreach (CoroutineHandle handle in Coroutines)
-                Timing.KillCoroutines(handle);
-            foreach (Player player in ActivePlayers.ToList())
+            foreach (var player in ActivePlayers.ToList())
                 EndAbility(player);
         }
 
@@ -66,12 +60,9 @@ namespace CustomRoles.Abilities
 
         private void OnShooting(ShootingEventArgs ev)
         {
-            if (Check(ev.Shooter))
-            {
-                AbilityEnded(ev.Shooter);
-            }
+            if (Check(ev.Shooter)) AbilityEnded(ev.Shooter);
         }
-        
+
         private void OnInteractingLocker(InteractingLockerEventArgs ev)
         {
             if (Check(ev.Player))
