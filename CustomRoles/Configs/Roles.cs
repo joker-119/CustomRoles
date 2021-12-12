@@ -5,67 +5,67 @@ namespace CustomRoles.Configs
 
     public class Roles
     {
-        public List<BallisticZombie> BallisticZombies { get; set; } = new List<BallisticZombie>
+        public List<BallisticZombie> BallisticZombies { get; set; } = new()
         {
-            new BallisticZombie(),
+            new BallisticZombie()
         };
 
-        public List<BerserkZombie> BerserkZombies { get; set; } = new List<BerserkZombie>
+        public List<BerserkZombie> BerserkZombies { get; set; } = new()
         {
-            new BerserkZombie(),
+            new BerserkZombie()
         };
 
-        public List<ChargerZombie> ChargerZombies { get; set; } = new List<ChargerZombie>
+        public List<ChargerZombie> ChargerZombies { get; set; } = new()
         {
-            new ChargerZombie(),
+            new ChargerZombie()
         };
 
-        public List<Demolitionist> Demolitionists { get; set; } = new List<Demolitionist>
+        public List<Demolitionist> Demolitionists { get; set; } = new()
         {
             new Demolitionist()
         };
 
-        public List<Dwarf> Dwarves { get; set; } = new List<Dwarf>
+        public List<Dwarf> Dwarves { get; set; } = new()
         {
             new Dwarf()
         };
 
-        public List<DwarfZombie> DwarfZombies { get; set; } = new List<DwarfZombie>
+        public List<DwarfZombie> DwarfZombies { get; set; } = new()
         {
             new DwarfZombie()
         };
 
-        public List<Medic> Medics { get; set; } = new List<Medic>
+        public List<Medic> Medics { get; set; } = new()
         {
             new Medic()
         };
 
-        public List<MedicZombie> MedicZombies { get; set; } = new List<MedicZombie>
+        public List<MedicZombie> MedicZombies { get; set; } = new()
         {
             new MedicZombie()
         };
 
-        public List<PDZombie> PdZombies { get; set; } = new List<PDZombie>
+        public List<PDZombie> PdZombies { get; set; } = new()
         {
             new PDZombie()
         };
 
-        public List<Phantom> Phantoms { get; set; } = new List<Phantom>
+        public List<Phantom> Phantoms { get; set; } = new()
         {
             new Phantom()
         };
 
-        public List<PlagueZombie> PlagueZombies { get; set; } = new List<PlagueZombie>
+        public List<PlagueZombie> PlagueZombies { get; set; } = new()
         {
             new PlagueZombie()
         };
 
-        public List<Scp575> Scp575s { get; set; } = new List<Scp575>
+        public List<Scp575> Scp575s { get; set; } = new()
         {
             new Scp575()
         };
 
-        public List<TankZombie> TankZombies { get; set; } = new List<TankZombie>
+        public List<TankZombie> TankZombies { get; set; } = new()
         {
             new TankZombie()
         };

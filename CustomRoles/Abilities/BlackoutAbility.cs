@@ -1,19 +1,19 @@
-using System.Collections.Generic;
-using Exiled.API.Features;
-using MEC;
-
 namespace CustomRoles.Abilities
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Exiled.API.Enums;
+    using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.CustomRoles.API.Features;
+    using Generics;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using MEC;
     using Firearm = Exiled.API.Features.Items.Firearm;
 
-    public class BlackoutAbility : ActiveAbility
+    public class BlackoutAbility : ActiveAbilityResolvable
     {
+        private readonly List<CoroutineHandle> _coroutines = new();
         public override string Name { get; set; } = "Blackout";
 
         public override string Description { get; set; } =
@@ -28,7 +28,6 @@ namespace CustomRoles.Abilities
 
         [Description("The message sent to players who are damaged by the blackout.")]
         public string KeterHint { get; set; } = "You have been damaged by SCP-575!";
-        private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
 
         protected override void AbilityUsed(Player player)
         {
@@ -37,39 +36,40 @@ namespace CustomRoles.Abilities
 
         protected override void AbilityRemoved(Player player)
         {
-            foreach (CoroutineHandle handle in Coroutines)
+            foreach (var handle in _coroutines)
                 Timing.KillCoroutines(handle);
         }
 
         private void DoBlackout(Player player)
         {
             Cassie.Message("pitch_0.15 .g7");
-            foreach (Room room in Map.Rooms)
-            {
+            foreach (var room in Map.Rooms)
                 if (room.Zone != ZoneType.Surface)
                     room.TurnOffLights(Duration);
-            }
 
-            Coroutines.Add(Timing.RunCoroutine(Keter(player, Duration)));
+            _coroutines.Add(Timing.RunCoroutine(Keter(player, Duration)));
         }
 
         private IEnumerator<float> Keter(Player ply, float dur)
         {
             do
             {
-                foreach (Player player in Player.List)
+                foreach (var player in Player.List)
                     if (player.CurrentRoom.LightsOff && !HasLightSource(player) && player.IsHuman)
                     {
-                        player.Hurt(KeterDamage, DamageTypes.Bleeding, ply.Nickname, ply.Id);
-                        player.ShowHint(KeterHint,5f);
+                        player.Hurt(DamageType.Bleeding.ToString(), KeterDamage);
+                        player.ShowHint(KeterHint, 5f);
                     }
 
                 yield return Timing.WaitForSeconds(5f);
             } while ((dur -= 5f) > 5f);
         }
+
         private static bool HasLightSource(Player player)
         {
-            return (player.CurrentItem is Flashlight flashlight && flashlight.Active) || (player.CurrentItem is Firearm firearm && firearm.Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled));
+            return player.CurrentItem is Flashlight flashlight && flashlight.Active ||
+                   player.CurrentItem is Firearm firearm &&
+                   firearm.Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
         }
     }
 }

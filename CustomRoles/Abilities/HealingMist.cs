@@ -1,16 +1,16 @@
-using System.Collections.Generic;
-using Exiled.API.Features;
-using MEC;
-using UnityEngine;
-
 namespace CustomRoles.Abilities
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
-    using Exiled.CustomRoles.API.Features;
+    using Exiled.API.Features;
+    using Generics;
+    using MEC;
 
-    public class HealingMist : ActiveAbility
+    public class HealingMist : ActiveAbilityResolvable
     {
+        private readonly List<CoroutineHandle> _coroutines = new();
         public override string Name { get; set; } = "Healing Mist";
+
         public override string Description { get; set; } =
             "Activates a short-term spray of chemicals which will heal and protect allies for a short duration.";
 
@@ -23,8 +23,6 @@ namespace CustomRoles.Abilities
         [Description("The amount of AHP given when the ability ends.")]
         public ushort ProtectionAmount { get; set; } = 45;
 
-        private List<CoroutineHandle> Coroutines = new List<CoroutineHandle>();
-
         protected override void AbilityUsed(Player player)
         {
             ActivateMist(player);
@@ -32,23 +30,24 @@ namespace CustomRoles.Abilities
 
         protected override void UnSubscribeEvents()
         {
-            foreach (CoroutineHandle handle in Coroutines)
+            foreach (var handle in _coroutines)
                 Timing.KillCoroutines(handle);
             base.UnSubscribeEvents();
         }
 
         private void ActivateMist(Player ply)
         {
-            foreach (Player player in Player.List)
+            foreach (var player in Player.List)
                 if (player.Side == ply.Side && player != ply)
-                    Coroutines.Add(Timing.RunCoroutine(DoMist(ply, player)));
+                    _coroutines.Add(Timing.RunCoroutine(DoMist(ply, player)));
         }
 
         private IEnumerator<float> DoMist(Player activator, Player player)
         {
-            for (int i = 0; i < Duration; i++)
+            for (var i = 0; i < Duration; i++)
             {
-                if (player.Health + HealAmount >= player.MaxHealth || (player.Position - activator.Position).sqrMagnitude > 144f)
+                if (player.Health + HealAmount >= player.MaxHealth ||
+                    (player.Position - activator.Position).sqrMagnitude > 144f)
                     continue;
 
                 player.Health += HealAmount;

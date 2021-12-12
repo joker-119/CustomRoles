@@ -5,12 +5,13 @@ namespace CustomRoles.Abilities
     using System.ComponentModel;
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.CustomRoles.API.Features;
+    using Generics;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
+    using PlayerStatsSystem;
     using UnityEngine;
 
-    public class ChargeAbility : ActiveAbility
+    public class ChargeAbility : ActiveAbilityResolvable
     {
         public override string Name { get; set; } = "Charge";
         public override string Description { get; set; } = "Charges towards the target location.";
@@ -28,23 +29,30 @@ namespace CustomRoles.Abilities
 
         protected override void AbilityUsed(Player player)
         {
-            if (RunRaycast(player, out RaycastHit hit))
+            if (RunRaycast(player, out var hit))
             {
                 Log.Debug($"{player.Nickname} -- {player.Position} - {hit.point}");
-                bool line = Physics.Linecast(hit.point, hit.point + (Vector3.down * 5f), out RaycastHit lineHit, player.ReferenceHub.playerMovementSync.CollidableSurfaces);
+                var line = Physics.Linecast(hit.point, hit.point + Vector3.down * 5f, out var lineHit,
+                    player.ReferenceHub.playerMovementSync.CollidableSurfaces);
                 if (!line)
                 {
-                    player.ShowHint("You cannot charge straight up walls, silly.\nYour cooldown has been lowered to 5sec.");
+                    player.ShowHint(
+                        "You cannot charge straight up walls, silly.\nYour cooldown has been lowered to 5sec.");
                     LastUsed[player] = DateTime.Now + TimeSpan.FromSeconds(5);
-                    
+
                     return;
                 }
+
                 Log.Debug($"{player.Nickname} -- {lineHit.point}");
                 Timing.RunCoroutine(MovePlayer(player, hit));
             }
         }
 
-        public bool RunRaycast(Player player, out RaycastHit hit) => Physics.Raycast(player.Position + player.CameraTransform.forward, player.CameraTransform.forward, out hit, 200f, StandardHitregBase.HitregMask);
+        public bool RunRaycast(Player player, out RaycastHit hit)
+        {
+            return Physics.Raycast(player.Position + player.CameraTransform.forward, player.CameraTransform.forward,
+                out hit, 200f, StandardHitregBase.HitregMask);
+        }
 
         public IEnumerator<float> MovePlayer(Player player, RaycastHit hit)
         {
@@ -56,20 +64,25 @@ namespace CustomRoles.Abilities
             }
 
             Timing.CallDelayed(0.5f, () => player.EnableEffect(EffectType.Ensnared, EnsnareDuration));
-            
-            Player target = Player.Get(hit.collider.GetComponentInParent<ReferenceHub>());
+
+            var target = Player.Get(hit.collider.GetComponentInParent<ReferenceHub>());
             if (target != null)
             {
                 if ((target.Position - hit.point).sqrMagnitude >= 3f)
                 {
-                    target.Hurt(ContactDamage * AccuracyMultiplier, DamageTypes.Scp0492, player.Nickname, player.Id);
+                    target.Hurt(new ScpDamageHandler(player.ReferenceHub, ContactDamage * AccuracyMultiplier,
+                        DeathTranslations.Zombie));
                     target.EnableEffect(EffectType.Ensnared, EnsnareDuration);
                 }
                 else
-                    player.Hurt(ContactDamage, DamageTypes.Falldown, player.Nickname, player.Id);
+                {
+                    player.Hurt(new UniversalDamageHandler(ContactDamage, DeathTranslations.Falldown));
+                }
             }
             else
-                player.Hurt(ContactDamage, DamageTypes.Falldown, player.Nickname, player.Id);
+            {
+                player.Hurt(new UniversalDamageHandler(ContactDamage, DeathTranslations.Falldown));
+            }
 
             EndAbility(player);
         }

@@ -1,28 +1,27 @@
-using System;
-using CommandSystem;
-using CustomRoles.Roles;
-using Exiled.API.Features;
-
 namespace CustomRoles.Commands.Abilities
 {
+    using System;
+    using CommandSystem;
+    using Exiled.API.Features;
     using Exiled.CustomRoles.API;
     using Exiled.CustomRoles.API.Features;
+    using Roles;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class TestCommand : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            string[] args = arguments.Array;
+            var args = arguments.Array;
             if (args == null)
             {
                 response = "You need arguments.";
                 return false;
             }
-            
-            Player player = Player.Get(((CommandSender)sender).SenderId);
+
+            var player = Player.Get(((CommandSender)sender).SenderId);
             Log.Debug(args[1]);
-            Player target = Player.Get(args[1]);
+            var target = Player.Get(args[1]);
 
             if (target == null)
             {
@@ -34,18 +33,16 @@ namespace CustomRoles.Commands.Abilities
             {
                 case "roles":
                     response = string.Empty;
-                    foreach (CustomRole role in target.GetCustomRoles())
+                    foreach (var role in target.GetCustomRoles())
                         response += $"{role.Name}\n";
                     return true;
                 case "575":
                     CustomRole.Get(typeof(Scp575)).AddRole(target);
                     break;
                 case "power":
-                    foreach (CustomRole role in target.GetCustomRoles())
-                    {
+                    foreach (var role in target.GetCustomRoles())
                         if (role is Scp575 scp575)
                             scp575.IncreasePower(target);
-                    }
                     break;
                 case "phantom":
                     CustomRole.Get(typeof(Phantom)).AddRole(target);
@@ -87,7 +84,7 @@ namespace CustomRoles.Commands.Abilities
         }
 
         public string Command { get; } = "roletest";
-        public string[] Aliases { get; } = new[] { "rtest" };
+        public string[] Aliases { get; } = { "rtest" };
         public string Description { get; } = "thing";
     }
 }
