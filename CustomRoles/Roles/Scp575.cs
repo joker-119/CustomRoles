@@ -14,7 +14,10 @@ namespace CustomRoles.Roles
     using Exiled.API.Extensions;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
+    using Footprinting;
+    using Mirror;
     using PlayableScps;
+    using PlayerStatsSystem;
 
     public class Scp575 : CustomRole
     {
@@ -187,17 +190,9 @@ namespace CustomRoles.Roles
             {
                 Log.Warn($"Adding {ev.Target.Nickname} to stop doll list.");
                 Plugin.Singleton.StopRagdollList.Add(ev.Target);
-                Role role = CharacterClassManager._staticClasses.SafeGet(Role);
-                Ragdoll.Info info = new Ragdoll.Info
-                {
-                    ClassColor = role.classColor,
-                    DeathCause = ev.HitInformation,
-                    FullName = "SCP-575",
-                    Nick = ev.Target.Nickname,
-                    ownerHLAPI_id = ev.Target.GameObject.GetComponent<MirrorIgnorancePlayer>().PlayerId,
-                    PlayerId = ev.Target.Id,
-                };
-                Exiled.API.Features.Ragdoll.Spawn(CharacterClassManager._staticClasses.SafeGet(ev.Target.Role), info, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), default, false, false);
+                RagdollInfo info = new RagdollInfo(ev.Target.ReferenceHub, ev.Handler.Base, Role, ev.Target.Position,
+                    Quaternion.Euler(ev.Target.Rotation), ev.Target.Nickname, NetworkTime.time);
+                Exiled.API.Features.Ragdoll.Spawn(info);
             }
         }
 
@@ -205,17 +200,17 @@ namespace CustomRoles.Roles
         {
             if (Check(ev.Target))
             {
-                if (ev.DamageType.Equals(DamageTypes.Scp207))
+                if (ev.Handler.Type == DamageType.Scp207)
                     ev.Amount = 0.0f;
-                else if (ev.DamageType.Equals(DamageTypes.Grenade))
+                else if (ev.Handler.Type == DamageType.Explosion)
                     ev.Amount *= 0.40f;
-                else if (!ev.DamageType.Equals(DamageTypes.Nuke))
-                    ev.Amount *= 0.70f;
-                else if (ev.DamageType.Equals(DamageTypes.Contain))
+                else if (ev.Handler.Type == DamageType.Recontainment)
                 {
                     ev.Amount = 0;
                     ev.IsAllowed = false;
                 }
+                else if (ev.Handler.Type != DamageType.Warhead)
+                    ev.Amount *= 0.70f;
             }
         }
 
@@ -250,7 +245,7 @@ namespace CustomRoles.Roles
 
                         Log.Debug($"{nameof(OnExplodingGrenade)}: Damage: {damage} - {dist} {player.Nickname}",
                             Plugin.Singleton.Config.Debug);
-                        player.Hurt(damage, DamageTypes.Nuke, ev.Thrower.Nickname, ev.Thrower.Id);
+                        player.Hurt(new ExplosionDamageHandler(ev.Thrower != null ? ev.Thrower.Footprint : new Footprint(Server.Host.ReferenceHub), Vector3.zero, damage, 0));
                         DoFlashEffect(player, dist);
                     }
                 }
@@ -307,7 +302,7 @@ namespace CustomRoles.Roles
             if (Check(ev.Scp106))
             {
                 ev.IsAllowed = false;
-                ev.Player.Hurt(Mathf.Max(BaseDamage, BaseDamage * (ConsumptionStacks[ev.Scp106] / DamageScalar)), DamageTypes.RagdollLess, ev.Scp106.Nickname, ev.Scp106.Id);
+                ev.Player.Hurt(new ScpDamageHandler(ev.Scp106.ReferenceHub, Mathf.Max(BaseDamage, BaseDamage * (ConsumptionStacks[ev.Scp106] / DamageScalar)), DeathTranslations.PocketDecay));
             }
         }
 

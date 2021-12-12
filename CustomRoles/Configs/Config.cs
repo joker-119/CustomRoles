@@ -45,7 +45,7 @@ namespace CustomRoles.Configs
         public string RolesFile { get; set; } = "global.yml";
 
         [Description("A list of zombie class names that are enabled on this server.")]
-        public List<string> EnabledZombies { get; set; } = new();
+        public List<string> EnabledZombies { get; set; } = new List<string>();
 
         [Description("Whether or not this plugin is enabled.")]
         public bool IsEnabled { get; set; } = true;
