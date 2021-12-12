@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CustomRoles.Roles
 {
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
 
@@ -29,5 +30,6 @@ namespace CustomRoles.Roles
             player.IsUsingStamina = true;
             player.Scale = Vector3.one;
         }
+        
     }
 }

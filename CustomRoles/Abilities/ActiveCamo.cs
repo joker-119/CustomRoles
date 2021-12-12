@@ -57,6 +57,7 @@ namespace CustomRoles.Abilities
                 Timing.KillCoroutines(handle);
             foreach (Player player in ActivePlayers.ToList())
                 EndAbility(player);
+            base.UnSubscribeEvents();
         }
 
         protected override void AbilityEnded(Player player)

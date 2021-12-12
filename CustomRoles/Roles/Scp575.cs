@@ -197,7 +197,7 @@ namespace CustomRoles.Roles
                     ownerHLAPI_id = ev.Target.GameObject.GetComponent<MirrorIgnorancePlayer>().PlayerId,
                     PlayerId = ev.Target.Id,
                 };
-                Exiled.API.Features.Ragdoll.Spawn(CharacterClassManager._staticClasses.SafeGet(ev.Target.Role), info, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation));
+                Exiled.API.Features.Ragdoll.Spawn(CharacterClassManager._staticClasses.SafeGet(ev.Target.Role), info, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), default, false, false);
             }
         }
 
@@ -233,7 +233,7 @@ namespace CustomRoles.Roles
 
         private void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
-            if (!ev.IsFrag)
+            if (ev.GrenadeType == GrenadeType.Flashbang)
             {
                 foreach (Player player in TrackedPlayers)
                 {
