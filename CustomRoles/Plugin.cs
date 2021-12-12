@@ -17,7 +17,7 @@ namespace CustomRoles
         public override string Author { get; } = "Galaxy119";
         public override string Name { get; } = "CustomRoles";
         public override string Prefix { get; } = "CustomRoles";
-        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(4, 1, 5);
         public Methods Methods { get; private set; }
         public EventHandlers EventHandlers { get; private set; }
 
