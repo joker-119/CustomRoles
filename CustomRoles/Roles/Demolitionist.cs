@@ -10,7 +10,7 @@ namespace CustomRoles.Roles
         public override int MaxHealth { get; set; } = 120;
         public override string Name { get; set; } = "Demolitionist";
 
-        protected override List<string> Inventory { get; set; } = new()
+        protected override List<string> Inventory { get; set; } = new List<string>
         {
             "GL-119",
             "C4-119",

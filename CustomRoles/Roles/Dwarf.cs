@@ -1,6 +1,5 @@
 namespace CustomRoles.Roles
 {
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
     using MEC;

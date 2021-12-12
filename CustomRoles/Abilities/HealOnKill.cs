@@ -2,15 +2,15 @@ namespace CustomRoles.Abilities
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using CustomRoles.Abilities.Generics;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Generics;
     using MEC;
     using UnityEngine;
 
     public class HealOnKill : PassiveAbilityResolvable
     {
-        private readonly Dictionary<Player, CoroutineHandle> _activeHoTs = new();
+        private readonly Dictionary<Player, CoroutineHandle> _activeHoTs = new Dictionary<Player, CoroutineHandle>();
         public override string Name { get; set; } = "Heal on Kill";
         public override string Description { get; set; } = "Heals the player when they kill someone.";
 

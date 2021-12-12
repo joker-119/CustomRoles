@@ -1,7 +1,7 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
-    using Abilities;
+    using CustomRoles.Abilities;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
@@ -13,7 +13,7 @@ namespace CustomRoles.Roles
 
     public class PlagueZombie : CustomRole
     {
-        public static List<Pickup> Grenades = new();
+        public static List<Pickup> Grenades = new List<Pickup>();
         public override uint Id { get; set; } = 11;
         public override RoleType Role { get; set; } = RoleType.Scp0492;
         public override int MaxHealth { get; set; } = 500;
@@ -22,7 +22,7 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A slower and weaker zombie that is infectious with SCP-008. You can launch a projectile that will poison enemies near where it hits with the console command `.special`.\nIt is recommended you keybind this by running the console command `cmdbind g .special`.\nThis keybind applies to all roles with special abilities.";
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
             new ProjectileAbility(),
             new MoveSpeedReduction()

@@ -1,8 +1,8 @@
 namespace CustomRoles.Abilities
 {
+    using CustomRoles.Abilities.Generics;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Generics;
     using Player = Exiled.Events.Handlers.Player;
 
     public class ReactiveHume : PassiveAbilityResolvable

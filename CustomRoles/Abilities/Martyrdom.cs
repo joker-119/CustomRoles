@@ -1,9 +1,9 @@
 namespace CustomRoles.Abilities
 {
+    using CustomRoles.Abilities.Generics;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
-    using Generics;
     using InventorySystem.Items.ThrowableProjectiles;
 
     public class Martyrdom : PassiveAbilityResolvable

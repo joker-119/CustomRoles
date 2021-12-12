@@ -2,13 +2,13 @@ namespace CustomRoles.Abilities
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using CustomRoles.Abilities.Generics;
     using Exiled.API.Features;
-    using Generics;
     using MEC;
 
     public class HealingMist : ActiveAbilityResolvable
     {
-        private readonly List<CoroutineHandle> _coroutines = new();
+        private readonly List<CoroutineHandle> _coroutines = new List<CoroutineHandle>();
         public override string Name { get; set; } = "Healing Mist";
 
         public override string Description { get; set; } =

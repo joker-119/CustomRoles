@@ -2,7 +2,7 @@ namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
     using System.ComponentModel;
-    using Abilities;
+    using CustomRoles.Abilities;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
     using PlayerStatsSystem;
@@ -24,7 +24,7 @@ namespace CustomRoles.Roles
         [Description("The rate at which his hume shield will decay.")]
         public float HumeDecayRate { get; set; } = 1.5f;
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
             new ReactiveHume(),
             new MoveSpeedReduction()

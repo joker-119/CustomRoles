@@ -2,13 +2,13 @@ namespace CustomRoles.Abilities
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using CustomRoles.Abilities.Generics;
+    using CustomRoles.Roles;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Generics;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
     using Mirror;
-    using Roles;
     using UnityEngine;
 
     public class ProjectileAbility : ActiveAbilityResolvable

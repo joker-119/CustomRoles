@@ -1,23 +1,25 @@
-using System;
-using System.Collections.Generic;
-using CustomRoles.Abilities;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-using MEC;
-using UnityEngine;
-
 namespace CustomRoles.Roles
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
-    using Dissonance.Integrations.MirrorIgnorance;
-    using Exiled.API.Extensions;
+    using CustomRoles.Abilities;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
+    using Exiled.Events.EventArgs;
+    using Exiled.Events.Handlers;
     using Footprinting;
+    using MEC;
     using Mirror;
     using PlayableScps;
     using PlayerStatsSystem;
+    using UnityEngine;
+    using Cassie = Exiled.API.Features.Cassie;
+    using Map = Exiled.Events.Handlers.Map;
+    using Player = Exiled.API.Features.Player;
+    using Server = Exiled.API.Features.Server;
 
     public class Scp575 : CustomRole
     {
@@ -27,7 +29,7 @@ namespace CustomRoles.Roles
         public override RoleType Role { get; set; } = RoleType.Scp0492;
         public override int MaxHealth { get; set; } = 550;
         public override string Name { get; set; } = "SCP-575";
-        public override string Description { get; set; } = $"An entity that appears as a shapeless void, that moves slowly but grows in power the more biological material it consumes. Capable of causing wide-spread power outages.\n\nUse client command \".special\" to trigger a blackout. This can be keyboudn with \"cmdbind KEY .special\"";
+        public override string Description { get; set; } = "An entity that appears as a shapeless void, that moves slowly but grows in power the more biological material it consumes. Capable of causing wide-spread power outages.\n\nUse client command \".special\" to trigger a blackout. This can be keyboudn with \"cmdbind KEY .special\"";
 
         [Description("The base(minimum) damage his hits will deal.")]
         public float BaseDamage { get; set; } = 30;
@@ -123,10 +125,10 @@ namespace CustomRoles.Roles
             Log.Debug($"{Name} loading events.");
             Exiled.Events.Handlers.Player.Dying += OnDying;
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
-            Exiled.Events.Handlers.Scp106.Teleporting += OnTeleporting;
-            Exiled.Events.Handlers.Scp106.CreatingPortal += OnCreatingPortal;
-            Exiled.Events.Handlers.Map.ExplodingGrenade += OnExplodingGrenade;
-            Exiled.Events.Handlers.Map.AnnouncingScpTermination += OnAnnouncingScpTermination;
+            Scp106.Teleporting += OnTeleporting;
+            Scp106.CreatingPortal += OnCreatingPortal;
+            Map.ExplodingGrenade += OnExplodingGrenade;
+            Map.AnnouncingScpTermination += OnAnnouncingScpTermination;
             Exiled.Events.Handlers.Player.EnteringPocketDimension += OnEnteringPocketDimension;
             base.SubscribeEvents();
         }
@@ -136,10 +138,10 @@ namespace CustomRoles.Roles
             Log.Debug($"{Name} unloading events.");
             Exiled.Events.Handlers.Player.Dying -= OnDying;
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
-            Exiled.Events.Handlers.Scp106.Teleporting -= OnTeleporting;
-            Exiled.Events.Handlers.Scp106.CreatingPortal -= OnCreatingPortal;
-            Exiled.Events.Handlers.Map.ExplodingGrenade -= OnExplodingGrenade;
-            Exiled.Events.Handlers.Map.AnnouncingScpTermination -= OnAnnouncingScpTermination;
+            Scp106.Teleporting -= OnTeleporting;
+            Scp106.CreatingPortal -= OnCreatingPortal;
+            Map.ExplodingGrenade -= OnExplodingGrenade;
+            Map.AnnouncingScpTermination -= OnAnnouncingScpTermination;
             Exiled.Events.Handlers.Player.EnteringPocketDimension -= OnEnteringPocketDimension;
             base.UnSubscribeEvents();
         }
@@ -192,7 +194,7 @@ namespace CustomRoles.Roles
                 Plugin.Singleton.StopRagdollList.Add(ev.Target);
                 RagdollInfo info = new RagdollInfo(ev.Target.ReferenceHub, ev.Handler.Base, Role, ev.Target.Position,
                     Quaternion.Euler(ev.Target.Rotation), ev.Target.Nickname, NetworkTime.time);
-                Exiled.API.Features.Ragdoll.Spawn(info);
+                Ragdoll.Spawn(info);
             }
         }
 
@@ -290,7 +292,7 @@ namespace CustomRoles.Roles
                         break;
                     }
 
-                    Door hczArmoryDoor = Map.GetDoorByName("HCZ_ARMORY");
+                    Door hczArmoryDoor = Exiled.API.Features.Map.GetDoorByName("HCZ_ARMORY");
                     Transform transform = hczArmoryDoor.Base.transform;
                     player.Position = transform.position + transform.forward * 2f;
                 });

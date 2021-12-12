@@ -3,9 +3,9 @@ namespace CustomRoles.Abilities
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using CustomRoles.Abilities.Generics;
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Generics;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
     using PlayerStatsSystem;

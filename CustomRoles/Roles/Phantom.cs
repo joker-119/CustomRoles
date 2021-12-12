@@ -1,7 +1,7 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
-    using Abilities;
+    using CustomRoles.Abilities;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
@@ -17,11 +17,11 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A Chaos Insurgency outfitted with an active-camo suit that allows them to go invisible at will.\n\nUse the Client console command \".special\" to activate this ability. This can be keybound with \"cmdbind KEY .special\"";
 
-        protected override SpawnProperties SpawnProperties { get; set; } = new()
+        protected override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
         {
             RoleSpawnPoints = new List<RoleSpawnPoint>
             {
-                new()
+                new RoleSpawnPoint
                 {
                     Role = RoleType.FacilityGuard,
                     Chance = 100
@@ -29,7 +29,7 @@ namespace CustomRoles.Roles
             }
         };
 
-        protected override List<string> Inventory { get; set; } = new()
+        protected override List<string> Inventory { get; set; } = new List<string>
         {
             "SR-119",
             "IG-119",
@@ -41,7 +41,7 @@ namespace CustomRoles.Roles
             $"{ItemType.SCP268}"
         };
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
             new ActiveCamo()
         };

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Abilities.Generics;
+    using CustomRoles.Abilities.Generics;
     using Exiled.CustomRoles.API.Features;
     using YamlDotNet.Core.Events;
     using YamlDotNet.Serialization;

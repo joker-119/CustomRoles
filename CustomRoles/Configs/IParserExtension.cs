@@ -26,14 +26,15 @@
 
                         parser.SkipThisAndNestedEvents();
                         break;
-                    case MappingStart or SequenceStart:
+                    case MappingStart _:
+                    case  SequenceStart _:
                         parser.SkipThisAndNestedEvents();
                         break;
                     default:
                         parser.MoveNext();
                         break;
                 }
-            } while (parser.Current is not null);
+            } while (parser.Current != null);
 
             key = null;
             value = null;

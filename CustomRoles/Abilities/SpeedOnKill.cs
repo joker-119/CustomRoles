@@ -2,10 +2,10 @@ namespace CustomRoles.Abilities
 {
     using System.ComponentModel;
     using CustomPlayerEffects;
+    using CustomRoles.Abilities.Generics;
     using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
-    using Generics;
 
     public class SpeedOnKill : PassiveAbilityResolvable
     {

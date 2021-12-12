@@ -2,7 +2,7 @@ namespace CustomRoles
 {
     using System;
     using System.Collections.Generic;
-    using Configs;
+    using CustomRoles.Configs;
     using Exiled.API.Features;
     using PlayerEvents = Exiled.Events.Handlers.Player;
     using Scp049Events = Exiled.Events.Handlers.Scp049;
@@ -11,14 +11,13 @@ namespace CustomRoles
     public class Plugin : Plugin<Config>
     {
         public static Plugin Singleton;
-        public Random Rng = new();
+        public Random Rng = new Random();
 
-        public readonly List<Player> StopRagdollList = new();
+        public readonly List<Player> StopRagdollList = new List<Player>();
         public override string Author { get; } = "Galaxy119";
         public override string Name { get; } = "CustomRoles";
         public override string Prefix { get; } = "CustomRoles";
-        public override Version Version { get; } = new(2, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new(3, 0, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
         public Methods Methods { get; private set; }
         public EventHandlers EventHandlers { get; private set; }
 

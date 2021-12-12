@@ -2,10 +2,10 @@ namespace CustomRoles.Commands.Abilities
 {
     using System;
     using CommandSystem;
+    using CustomRoles.Roles;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API;
     using Exiled.CustomRoles.API.Features;
-    using Roles;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class TestCommand : ICommand

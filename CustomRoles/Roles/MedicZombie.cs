@@ -1,7 +1,7 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
-    using Abilities;
+    using CustomRoles.Abilities;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
@@ -16,7 +16,7 @@ namespace CustomRoles.Roles
 
         public override string Description { get; set; } = "A slightly slower and weaker zombie that heals nearby SCPs";
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
             new HealingMist(),
             new MoveSpeedReduction()

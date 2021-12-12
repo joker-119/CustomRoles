@@ -3,9 +3,9 @@ namespace CustomRoles.Abilities
     using System;
     using System.Linq;
     using CustomPlayerEffects;
+    using CustomRoles.Abilities.Generics;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Generics;
     using MEC;
 
     public class ActiveCamo : ActiveAbilityResolvable

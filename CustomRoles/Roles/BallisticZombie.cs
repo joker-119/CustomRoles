@@ -1,7 +1,7 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
-    using Abilities;
+    using CustomRoles.Abilities;
     using Exiled.CustomRoles.API.Features;
 
     public class BallisticZombie : CustomRole
@@ -14,7 +14,7 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A regular zombie that will explode when killed.";
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
             new Martyrdom()
         };

@@ -21,7 +21,7 @@
         public bool MoveNext()
         {
             _current = _current.Next;
-            return _current is not null;
+            return _current != null;
         }
 
         public void Reset()

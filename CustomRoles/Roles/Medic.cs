@@ -1,7 +1,7 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
-    using Abilities;
+    using CustomRoles.Abilities;
     using Exiled.API.Features;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
@@ -18,7 +18,7 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A medic, equipped with a Medigun, TranqGun, EMP Grenade, and has the ability to activate a mist of healing chemicals around them, protecting nearby allies.\nYou can use \".special\" to activate a spray of healing mist to heal and fortify nearby allies.\nYou can keybind this ability with \"cmdbind KEY .special\"";
 
-        protected override List<string> Inventory { get; set; } = new()
+        protected override List<string> Inventory { get; set; } = new List<string>
         {
             "MG-119",
             "TG-119",
@@ -29,11 +29,11 @@ namespace CustomRoles.Roles
             $"{ItemType.KeycardNTFLieutenant}"
         };
 
-        protected override SpawnProperties SpawnProperties { get; set; } = new()
+        protected override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
         {
             RoleSpawnPoints = new List<RoleSpawnPoint>
             {
-                new()
+                new RoleSpawnPoint
                 {
                     Role = RoleType.NtfSpecialist,
                     Chance = 100
@@ -41,7 +41,7 @@ namespace CustomRoles.Roles
             }
         };
 
-        public override List<CustomAbility> CustomAbilities { get; set; } = new()
+        public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
             new HealingMist()
         };

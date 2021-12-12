@@ -1,8 +1,8 @@
 namespace CustomRoles.Abilities
 {
+    using CustomRoles.Abilities.Generics;
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Generics;
     using MEC;
 
     public class MoveSpeedReduction : PassiveAbilityResolvable

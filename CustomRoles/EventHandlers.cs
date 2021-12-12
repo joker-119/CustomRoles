@@ -1,13 +1,13 @@
 namespace CustomRoles
 {
     using System.Linq;
+    using CustomRoles.Roles;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using MEC;
     using Respawning;
-    using Roles;
 
     public class EventHandlers
     {
