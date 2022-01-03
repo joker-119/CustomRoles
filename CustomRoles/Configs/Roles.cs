@@ -60,11 +60,6 @@ namespace CustomRoles.Configs
             new PlagueZombie()
         };
 
-        public List<Scp575> Scp575s { get; set; } = new List<Scp575>
-        {
-            new Scp575()
-        };
-
         public List<TankZombie> TankZombies { get; set; } = new List<TankZombie>
         {
             new TankZombie()

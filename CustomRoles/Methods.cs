@@ -42,7 +42,6 @@ namespace CustomRoles
             Plugin.Singleton.Config.RoleConfigs.PdZombies?.Register();
             Plugin.Singleton.Config.RoleConfigs.Phantoms?.Register();
             Plugin.Singleton.Config.RoleConfigs.PlagueZombies?.Register();
-            Plugin.Singleton.Config.RoleConfigs.Scp575s?.Register();
             Plugin.Singleton.Config.RoleConfigs.TankZombies?.Register();
         }
 
@@ -59,7 +58,6 @@ namespace CustomRoles
             Plugin.Singleton.Config.RoleConfigs.PdZombies?.Unregister();
             Plugin.Singleton.Config.RoleConfigs.Phantoms?.Unregister();
             Plugin.Singleton.Config.RoleConfigs.PlagueZombies?.Unregister();
-            Plugin.Singleton.Config.RoleConfigs.Scp575s?.Unregister();
             Plugin.Singleton.Config.RoleConfigs.TankZombies?.Unregister();
         }
     }

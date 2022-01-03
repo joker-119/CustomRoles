@@ -36,14 +36,6 @@ namespace CustomRoles.Commands.Abilities
                     foreach (var role in target.GetCustomRoles())
                         response += $"{role.Name}\n";
                     return true;
-                case "575":
-                    CustomRole.Get(typeof(Scp575)).AddRole(target);
-                    break;
-                case "power":
-                    foreach (var role in target.GetCustomRoles())
-                        if (role is Scp575 scp575)
-                            scp575.IncreasePower(target);
-                    break;
                 case "phantom":
                     CustomRole.Get(typeof(Phantom)).AddRole(target);
                     break;

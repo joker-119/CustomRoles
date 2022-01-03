@@ -22,20 +22,12 @@ namespace CustomRoles
         {
             var isPhantom = false;
             var isDwarf = false;
-
-            var spawn575 = plugin.Rng.Next(100) <= 50;
             var spawnPhantom = plugin.Rng.Next(100) <= 20;
             var spawnDwarf = plugin.Rng.Next(100) <= 35;
 
             foreach (var player in Player.List)
                 switch (player.Role)
                 {
-                    case RoleType.Scp106 when spawn575:
-                    {
-                        CustomRole.Get(typeof(Scp575))?.AddRole(player);
-
-                        break;
-                    }
                     case RoleType.FacilityGuard when !isPhantom && spawnPhantom:
                     {
                         CustomRole.Get(typeof(Phantom))?.AddRole(player);

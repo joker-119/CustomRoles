@@ -44,40 +44,40 @@
         <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>$(EXILED_REFERENCES)\CommandSystem.Core.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.API, Version=4.1.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.API.dll</HintPath>
+        <Reference Include="Exiled.API, Version=4.1.7.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.API.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Bootstrap, Version=4.1.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.Bootstrap.dll</HintPath>
+        <Reference Include="Exiled.Bootstrap, Version=4.1.7.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.Bootstrap.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CreditTags, Version=4.1.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.CreditTags.dll</HintPath>
+        <Reference Include="Exiled.CreditTags, Version=4.1.7.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.CreditTags.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CustomItems, Version=4.1.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.CustomItems.dll</HintPath>
+        <Reference Include="Exiled.CustomItems, Version=4.1.7.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.CustomItems.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.CustomRoles, Version=4.1.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.CustomRoles.dll</HintPath>
+        <Reference Include="Exiled.CustomRoles, Version=4.1.7.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.CustomRoles.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Events, Version=4.1.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.Events.dll</HintPath>
+        <Reference Include="Exiled.Events, Version=4.1.7.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.Events.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Loader, Version=4.1.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.Loader.dll</HintPath>
+        <Reference Include="Exiled.Loader, Version=4.1.7.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.Loader.dll</HintPath>
           <Private>True</Private>
         </Reference>
-        <Reference Include="Exiled.Permissions, Version=4.1.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.Permissions.dll</HintPath>
+        <Reference Include="Exiled.Permissions, Version=4.1.7.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.Permissions.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\EXILED.4.1.5\lib\net472\Exiled.Updater.dll</HintPath>
+          <HintPath>..\packages\EXILED.4.1.7\lib\net472\Exiled.Updater.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -104,7 +104,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Abilities\ActiveCamo.cs" />
-        <Compile Include="Abilities\BlackoutAbility.cs" />
         <Compile Include="Abilities\ChargeAbility.cs" />
         <Compile Include="Abilities\Generics\ActiveAbilityResolvable.cs" />
         <Compile Include="Abilities\Generics\IResolvableAbility.cs" />
@@ -139,7 +138,6 @@
         <Compile Include="Roles\PDZombie.cs" />
         <Compile Include="Roles\Phantom.cs" />
         <Compile Include="Roles\PlagueZombie.cs" />
-        <Compile Include="Roles\Scp575.cs" />
         <Compile Include="Roles\TankZombie.cs" />
     </ItemGroup>
     <ItemGroup>

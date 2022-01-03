@@ -38,7 +38,7 @@ namespace CustomRoles.Abilities
                 {
                     player.ShowHint(
                         "You cannot charge straight up walls, silly.\nYour cooldown has been lowered to 5sec.");
-                    LastUsed[player] = DateTime.Now + TimeSpan.FromSeconds(5);
+                    Timing.CallDelayed(0.5f, () => LastUsed[player] = DateTime.Now + TimeSpan.FromSeconds(5));
 
                     return;
                 }
