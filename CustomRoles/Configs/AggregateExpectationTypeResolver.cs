@@ -19,7 +19,7 @@
         {
             _targetKey = namingConvention.Apply(TargetKey);
             _typeLookup = new Dictionary<string, Type>();
-            foreach (var t in Assembly
+            foreach (Type t in Assembly
                 .GetExecutingAssembly()
                 .GetTypes()
                 .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T)))
@@ -33,8 +33,8 @@
         {
             if (buffer.TryFindMappingEntry(
                 scalar => _targetKey == scalar.Value,
-                out var key,
-                out var value))
+                out Scalar key,
+                out ParsingEvent value))
             {
                 if (value is Scalar valueScalar)
                 {
@@ -58,9 +58,9 @@
 
         private Type CheckName(string value)
         {
-            if (_typeLookup.TryGetValue(value, out var childType)) return childType;
+            if (_typeLookup.TryGetValue(value, out Type childType)) return childType;
 
-            var known = string.Join(",", _typeLookup.Keys);
+            string known = string.Join(",", _typeLookup.Keys);
             throw new Exception(
                 $"Could not match `{_targetKey}: {value}` to a known expectation. Expecting one of: {known}");
         }

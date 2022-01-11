@@ -12,16 +12,16 @@ namespace CustomRoles.Commands.Abilities
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var args = arguments.Array;
+            string[] args = arguments.Array;
             if (args == null)
             {
                 response = "You need arguments.";
                 return false;
             }
 
-            var player = Player.Get(((CommandSender)sender).SenderId);
+            Player player = Player.Get(((CommandSender)sender).SenderId);
             Log.Debug(args[1]);
-            var target = Player.Get(args[1]);
+            Player target = Player.Get(args[1]);
 
             if (target == null)
             {
@@ -33,7 +33,7 @@ namespace CustomRoles.Commands.Abilities
             {
                 case "roles":
                     response = string.Empty;
-                    foreach (var role in target.GetCustomRoles())
+                    foreach (CustomRole role in target.GetCustomRoles())
                         response += $"{role.Name}\n";
                     return true;
                 case "phantom":

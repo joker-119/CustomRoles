@@ -5,6 +5,7 @@ namespace CustomRoles.Abilities
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using InventorySystem.Items.ThrowableProjectiles;
+    using Item = Exiled.API.Features.Items.Item;
 
     public class Martyrdom : PassiveAbilityResolvable
     {
@@ -17,17 +18,16 @@ namespace CustomRoles.Abilities
             base.SubscribeEvents();
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
             Player.Dying -= OnDying;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void OnDying(DyingEventArgs ev)
         {
             if (Check(ev.Target))
-                ((EffectGrenade)new ExplosiveGrenade(ItemType.GrenadeHE).Spawn(ev.Target.Position).Base)
-                    .ServerActivate();
+                ((ExplosiveGrenade)Item.Create(ItemType.GrenadeHE)).SpawnActive(ev.Target.Position, ev.Target);
         }
     }
 }

@@ -1,10 +1,12 @@
 namespace CustomRoles.Roles
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using MEC;
     using UnityEngine;
 
+    [ExiledSerializable]
     public class Dwarf : CustomRole
     {
         public override uint Id { get; set; } = 5;
@@ -15,9 +17,11 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A normal player who has unlimited stamina, and is slightly smaller than normal.";
 
-        protected override bool KeepInventoryOnSpawn { get; set; } = true;
-        protected override bool KeepRoleOnDeath { get; set; } = true;
-        protected override bool RemovalKillsPlayer { get; set; } = false;
+        public override string CustomInfo { get; set; } = "Dwarf";
+
+        public override bool KeepInventoryOnSpawn { get; set; } = true;
+        public override bool KeepRoleOnDeath { get; set; } = true;
+        public override bool RemovalKillsPlayer { get; set; } = false;
 
         protected override void RoleAdded(Player player)
         {

@@ -20,12 +20,12 @@ namespace CustomRoles
 
         public void OnRoundStarted()
         {
-            var isPhantom = false;
-            var isDwarf = false;
-            var spawnPhantom = plugin.Rng.Next(100) <= 20;
-            var spawnDwarf = plugin.Rng.Next(100) <= 35;
+            bool isPhantom = false;
+            bool isDwarf = false;
+            bool spawnPhantom = plugin.Rng.Next(100) <= 20;
+            bool spawnDwarf = plugin.Rng.Next(100) <= 35;
 
-            foreach (var player in Player.List)
+            foreach (Player player in Player.List)
                 switch (player.Role)
                 {
                     case RoleType.FacilityGuard when !isPhantom && spawnPhantom:
@@ -56,7 +56,7 @@ namespace CustomRoles
                 Log.Warn(
                     $"{nameof(OnRespawningTeam)}: The respawn list is empty ?!? -- {ev.NextKnownTeam} / {ev.MaximumRespawnAmount}");
 
-                foreach (var player in Player.Get(RoleType.Spectator))
+                foreach (Player player in Player.Get(RoleType.Spectator))
                     ev.Players.Add(player);
                 ev.MaximumRespawnAmount = ev.Players.Count;
             }
@@ -65,7 +65,7 @@ namespace CustomRoles
                 if (plugin.Rng.Next(100) <= 40)
                 {
                     Log.Debug($"{nameof(OnRespawningTeam)}: Spawning NTF Special");
-                    var r = plugin.Rng.Next(ev.Players.Count);
+                    int r = plugin.Rng.Next(ev.Players.Count);
                     if (plugin.Rng.Next(0, 1) == 0)
                     {
                         if (ev.Players[r].GetCustomRoles().Any())

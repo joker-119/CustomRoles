@@ -42,16 +42,16 @@ namespace CustomRoles.Abilities
             }
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
             Exiled.Events.Handlers.Player.Shooting -= OnShooting;
             Exiled.Events.Handlers.Player.Interacted -= OnInteracted;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.InteractingElevator -= OnInteractingElevator;
             Exiled.Events.Handlers.Player.InteractingLocker -= OnInteractingLocker;
-            foreach (var player in ActivePlayers.ToList())
+            foreach (Player player in ActivePlayers.ToList())
                 EndAbility(player);
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         protected override void AbilityEnded(Player player)

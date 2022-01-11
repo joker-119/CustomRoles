@@ -55,7 +55,7 @@ namespace CustomRoles.Configs
             if (!Directory.Exists(RolesFolder))
                 Directory.CreateDirectory(RolesFolder);
 
-            var filePath = Path.Combine(RolesFolder, RolesFile);
+            string filePath = Path.Combine(RolesFolder, RolesFile);
             if (!File.Exists(filePath))
             {
                 RoleConfigs = new Roles();

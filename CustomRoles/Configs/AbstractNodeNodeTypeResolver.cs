@@ -22,17 +22,17 @@
         public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer,
             out object value)
         {
-            if (!reader.Accept<MappingStart>(out var mapping))
+            if (!reader.Accept<MappingStart>(out MappingStart mapping))
             {
                 value = null;
                 return false;
             }
 
-            var supportedTypes = _typeDiscriminators.Where(t => t.BaseType == expectedType).ToList();
+            List<ITypeDiscriminator> supportedTypes = _typeDiscriminators.Where(t => t.BaseType == expectedType).ToList();
             if (!supportedTypes.Any())
                 return _original.Deserialize(reader, expectedType, nestedObjectDeserializer, out value);
 
-            var start = reader.Current.Start;
+            Mark start = reader.Current.Start;
             Type actualType;
             ParsingEventBuffer buffer;
             try
@@ -52,10 +52,10 @@
         private static Type CheckWithDiscriminators(Type expectedType, IEnumerable<ITypeDiscriminator> supportedTypes,
             ParsingEventBuffer buffer)
         {
-            foreach (var discriminator in supportedTypes)
+            foreach (ITypeDiscriminator discriminator in supportedTypes)
             {
                 buffer.Reset();
-                if (!discriminator.TryResolve(buffer, out var actualType)) continue;
+                if (!discriminator.TryResolve(buffer, out Type actualType)) continue;
                 return actualType;
             }
 
@@ -65,12 +65,12 @@
 
         private static LinkedList<ParsingEvent> ReadNestedMapping(IParser reader)
         {
-            var result = new LinkedList<ParsingEvent>();
+            LinkedList<ParsingEvent> result = new LinkedList<ParsingEvent>();
             result.AddLast(reader.Consume<MappingStart>());
-            var depth = 0;
+            int depth = 0;
             do
             {
-                var next = reader.Consume<ParsingEvent>();
+                ParsingEvent next = reader.Consume<ParsingEvent>();
                 depth += next.NestingIncrease;
                 result.AddLast(next);
             } while (depth >= 0);

@@ -18,10 +18,10 @@ namespace CustomRoles.Abilities
             base.SubscribeEvents();
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
             Player.Hurting -= OnHurting;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void OnHurting(HurtingEventArgs ev)
@@ -32,12 +32,12 @@ namespace CustomRoles.Abilities
             }
             else if (Check(ev.Target))
             {
-                var perc = ev.Target.ArtificialHealth / ev.Target.MaxArtificialHealth;
-                var reduction = ev.Amount * (perc * .8f);
+                float perc = ev.Target.ArtificialHealth / ev.Target.MaxArtificialHealth;
+                float reduction = ev.Amount * (perc * .8f);
                 Log.Debug(
                     $"{Name}: AHP: {ev.Target.ArtificialHealth} -- Reducing incoming damage by: ({perc * 100}%) -- Base: {ev.Amount} New: {ev.Amount - reduction}",
                     Plugin.Singleton.Config.Debug);
-                var amountToAdd = ev.Amount * 0.75f;
+                float amountToAdd = ev.Amount * 0.75f;
                 if (ev.Target.ArtificialHealth + amountToAdd > ev.Target.MaxArtificialHealth)
                     ev.Target.ArtificialHealth = (ushort)ev.Target.MaxArtificialHealth;
                 else

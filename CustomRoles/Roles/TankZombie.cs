@@ -4,9 +4,11 @@ namespace CustomRoles.Roles
     using System.ComponentModel;
     using CustomRoles.Abilities;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using PlayerStatsSystem;
 
+    [ExiledSerializable]
     public class TankZombie : CustomRole
     {
         public override uint Id { get; set; } = 13;
@@ -16,6 +18,8 @@ namespace CustomRoles.Roles
 
         public override string Description { get; set; } =
             "A slightly slower zombie with double the regular health. As you take damage your AHP meter will fill. The higher it's value, the less damage you take.";
+
+        public override string CustomInfo { get; set; } = "Juggernaut Zombie";
 
         [Description(
             "The maximum value of his hume shield. Higher values take longer for the hume to fill, meaning he takes more damage before reaching the maximum reduction from his shield.")]

@@ -28,23 +28,23 @@ namespace CustomRoles.Abilities
             ActivateMist(player);
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
-            foreach (var handle in _coroutines)
+            foreach (CoroutineHandle handle in _coroutines)
                 Timing.KillCoroutines(handle);
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void ActivateMist(Player ply)
         {
-            foreach (var player in Player.List)
+            foreach (Player player in Player.List)
                 if (player.Side == ply.Side && player != ply)
                     _coroutines.Add(Timing.RunCoroutine(DoMist(ply, player)));
         }
 
         private IEnumerator<float> DoMist(Player activator, Player player)
         {
-            for (var i = 0; i < Duration; i++)
+            for (int i = 0; i < Duration; i++)
             {
                 if (player.Health + HealAmount >= player.MaxHealth ||
                     (player.Position - activator.Position).sqrMagnitude > 144f)

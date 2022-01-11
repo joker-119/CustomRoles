@@ -29,10 +29,10 @@ namespace CustomRoles.Abilities
 
         protected override void AbilityUsed(Player player)
         {
-            if (RunRaycast(player, out var hit))
+            if (RunRaycast(player, out RaycastHit hit))
             {
                 Log.Debug($"{player.Nickname} -- {player.Position} - {hit.point}");
-                var line = Physics.Linecast(hit.point, hit.point + Vector3.down * 5f, out var lineHit,
+                bool line = Physics.Linecast(hit.point, hit.point + Vector3.down * 5f, out RaycastHit lineHit,
                     player.ReferenceHub.playerMovementSync.CollidableSurfaces);
                 if (!line)
                 {
@@ -65,7 +65,7 @@ namespace CustomRoles.Abilities
 
             Timing.CallDelayed(0.5f, () => player.EnableEffect(EffectType.Ensnared, EnsnareDuration));
 
-            var target = Player.Get(hit.collider.GetComponentInParent<ReferenceHub>());
+            Player target = Player.Get(hit.collider.GetComponentInParent<ReferenceHub>());
             if (target != null)
             {
                 if ((target.Position - hit.point).sqrMagnitude >= 3f)

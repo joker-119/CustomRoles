@@ -4,6 +4,7 @@ namespace CustomRoles
     using System.Collections.Generic;
     using CustomRoles.Configs;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features;
     using PlayerEvents = Exiled.Events.Handlers.Player;
     using Scp049Events = Exiled.Events.Handlers.Scp049;
     using ServerEvents = Exiled.Events.Handlers.Server;
@@ -28,7 +29,7 @@ namespace CustomRoles
             Methods = new Methods(this);
 
             Config.LoadConfigs();
-            Methods.RegisterRoles();
+            CustomRole.RegisterRoles();
 
             PlayerEvents.ChangingRole += EventHandlers.OnChangingRole;
             ServerEvents.RoundStarted += EventHandlers.OnRoundStarted;
@@ -41,7 +42,7 @@ namespace CustomRoles
 
         public override void OnDisabled()
         {
-            Methods.UnregisterRoles();
+            CustomRole.UnregisterRoles();
 
             PlayerEvents.ChangingRole -= EventHandlers.OnChangingRole;
             ServerEvents.RoundStarted -= EventHandlers.OnRoundStarted;

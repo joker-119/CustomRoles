@@ -2,11 +2,13 @@ namespace CustomRoles.Roles
 {
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using MEC;
     using UnityEngine;
 
+    [ExiledSerializable]
     public class DwarfZombie : CustomRole
     {
         public override uint Id { get; set; } = 6;
@@ -16,6 +18,8 @@ namespace CustomRoles.Roles
 
         public override string Description { get; set; } =
             "A weaker, smaller, amd faster zombie than its brothers.";
+
+        public override string CustomInfo { get; set; } = "Dwarf Zombie";
 
         protected override void SubscribeEvents()
         {
@@ -33,11 +37,11 @@ namespace CustomRoles.Roles
             });
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{Name}:{nameof(UnSubscribeEvents)} unloading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name}:{nameof(UnsubscribeEvents)} unloading events.", Plugin.Singleton.Config.Debug);
             Exiled.Events.Handlers.Player.Hurting -= OnHurt;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         protected override void RoleRemoved(Player player)

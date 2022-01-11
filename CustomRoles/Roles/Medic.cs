@@ -3,11 +3,13 @@ namespace CustomRoles.Roles
     using System.Collections.Generic;
     using CustomRoles.Abilities;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using Player = Exiled.Events.Handlers.Player;
 
+    [ExiledSerializable]
     public class Medic : CustomRole
     {
         public override uint Id { get; set; } = 7;
@@ -18,7 +20,9 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A medic, equipped with a Medigun, TranqGun, EMP Grenade, and has the ability to activate a mist of healing chemicals around them, protecting nearby allies.\nYou can use \".special\" to activate a spray of healing mist to heal and fortify nearby allies.\nYou can keybind this ability with \"cmdbind KEY .special\"";
 
-        protected override List<string> Inventory { get; set; } = new List<string>
+        public override string CustomInfo { get; set; } = "Medic";
+
+        public override List<string> Inventory { get; set; } = new List<string>
         {
             "MG-119",
             "TG-119",
@@ -29,7 +33,7 @@ namespace CustomRoles.Roles
             $"{ItemType.KeycardNTFLieutenant}"
         };
 
-        protected override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
+        public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
         {
             RoleSpawnPoints = new List<RoleSpawnPoint>
             {
@@ -48,16 +52,16 @@ namespace CustomRoles.Roles
 
         protected override void SubscribeEvents()
         {
-            Log.Debug($"{nameof(SubscribeEvents)}: Loading medic events..");
+            Log.Debug($"{nameof(SubscribeEvents)}: Loading medic events..", Plugin.Singleton.Config.Debug);
             Player.PickingUpItem += OnPickingUpItem;
             base.SubscribeEvents();
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{nameof(UnSubscribeEvents)}: Unloading medic events..");
+            Log.Debug($"{nameof(UnsubscribeEvents)}: Unloading medic events..", Plugin.Singleton.Config.Debug);
             Player.PickingUpItem -= OnPickingUpItem;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void OnPickingUpItem(PickingUpItemEventArgs ev)

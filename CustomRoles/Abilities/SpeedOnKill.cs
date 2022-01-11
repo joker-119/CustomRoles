@@ -22,17 +22,17 @@ namespace CustomRoles.Abilities
             base.SubscribeEvents();
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
             Player.Dying -= OnDying;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void OnDying(DyingEventArgs ev)
         {
             if (Check(ev.Killer))
             {
-                var curIntensity = ev.Killer.GetEffectIntensity<Scp207>();
+                byte curIntensity = ev.Killer.GetEffectIntensity<Scp207>();
                 if (curIntensity < IntensityLimit)
                 {
                     ev.Killer.ChangeEffectIntensity<Scp207>((byte)(curIntensity + 1));

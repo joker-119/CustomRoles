@@ -26,14 +26,14 @@ namespace CustomRoles.Abilities
 
         protected override void AbilityUsed(Player player)
         {
-            var target = Vector3.zero;
-            if (RunRaycast(player, out var hit))
+            Vector3 target = Vector3.zero;
+            if (RunRaycast(player, out RaycastHit hit))
             {
                 if ((player.Position - hit.point).sqrMagnitude > 400)
                 {
                     target = Vector3.MoveTowards(player.Position, hit.point, 20f);
 
-                    if (Physics.Linecast(target, Vector3.down * 20f, out var lineHit,
+                    if (Physics.Linecast(target, Vector3.down * 20f, out RaycastHit lineHit,
                         player.ReferenceHub.playerMovementSync.CollidableSurfaces))
                         target = lineHit.point;
                 }
@@ -42,11 +42,12 @@ namespace CustomRoles.Abilities
                     target = hit.point;
                 }
 
-                var pickup = new Item(ItemType.SCP018).Spawn(player.CameraTransform.position);
+                Pickup pickup = Item.Create(ItemType.SCP018).Spawn(player.CameraTransform.position);
                 NetworkServer.UnSpawn(pickup.Base.gameObject);
-                pickup.Base.gameObject.transform.localScale = Vector3.one * 2f;
-                NetworkServer.Spawn(pickup.Base.gameObject);
-                var body = pickup.Base.GetComponent<Rigidbody>();
+                GameObject gameObject = pickup.Base.gameObject;
+                gameObject.transform.localScale = Vector3.one * 2f;
+                NetworkServer.Spawn(gameObject);
+                Rigidbody body = pickup.Base.GetComponent<Rigidbody>();
                 body.useGravity = false;
                 body.isKinematic = false;
                 Timing.RunCoroutine(Update(pickup, target));
@@ -55,16 +56,17 @@ namespace CustomRoles.Abilities
 
         public bool RunRaycast(Player player, out RaycastHit hit)
         {
-            return Physics.Raycast(player.Position + player.CameraTransform.forward, player.CameraTransform.forward,
+            Vector3 forward = player.CameraTransform.forward;
+            return Physics.Raycast(player.Position + forward, forward,
                 out hit, 200f, StandardHitregBase.HitregMask);
         }
 
         private IEnumerator<float> Update(Pickup pickup, Vector3 target)
         {
-            var deleted = false;
-            var startPosition = pickup.Position;
-            var stepScale = Speed / Vector3.Distance(startPosition, target);
-            var progress = 0f;
+            bool deleted = false;
+            Vector3 startPosition = pickup.Position;
+            float stepScale = Speed / Vector3.Distance(startPosition, target);
+            float progress = 0f;
             for (;;)
             {
                 if (deleted)
@@ -73,10 +75,10 @@ namespace CustomRoles.Abilities
                 progress = Mathf.Min(progress + Time.deltaTime * stepScale, 1.0f);
 
                 // Turn this 0-1 value into a parabola that goes from 0 to 1, then back to 0.
-                var parabola = 1.0f - 4.0f * (progress - 0.5f) * (progress - 0.5f);
+                float parabola = 1.0f - 4.0f * (progress - 0.5f) * (progress - 0.5f);
 
                 // Travel in a straight line from our start position to the target.        
-                var nextPos = Vector3.Lerp(startPosition, target, progress);
+                Vector3 nextPos = Vector3.Lerp(startPosition, target, progress);
 
                 // Then add a vertical arc in excess of this.
                 nextPos.y += parabola * ArcHeight;
@@ -94,9 +96,7 @@ namespace CustomRoles.Abilities
             }
         }
 
-        private void Arrived(Vector3 target)
-        {
-            PlagueZombie.Grenades.Add(new ExplosiveGrenade(ItemType.GrenadeHE).Spawn(target));
-        }
+        private void Arrived(Vector3 target) => 
+            PlagueZombie.Grenades.Add(Item.Create(ItemType.GrenadeHE).Spawn(target));
     }
 }

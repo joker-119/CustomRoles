@@ -3,10 +3,12 @@ namespace CustomRoles.Roles
     using System.Collections.Generic;
     using CustomRoles.Abilities;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using Player = Exiled.Events.Handlers.Player;
 
+    [ExiledSerializable]
     public class MedicZombie : CustomRole
     {
         public override uint Id { get; set; } = 8;
@@ -15,6 +17,7 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = "Medic Zombie";
 
         public override string Description { get; set; } = "A slightly slower and weaker zombie that heals nearby SCPs";
+        public override string CustomInfo { get; set; } = "Medic Zombie";
 
         public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
@@ -24,16 +27,16 @@ namespace CustomRoles.Roles
 
         protected override void SubscribeEvents()
         {
-            Log.Debug($"{Name} loading events.");
+            Log.Debug($"{Name} loading events.", Plugin.Singleton.Config.Debug);
             Player.Hurting += OnHurt;
             base.SubscribeEvents();
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{Name} unloading events.");
+            Log.Debug($"{Name} unloading events.", Plugin.Singleton.Config.Debug);
             Player.Hurting -= OnHurt;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         public void OnHurt(HurtingEventArgs ev)

@@ -2,8 +2,10 @@ namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
     using CustomRoles.Abilities;
+    using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
 
+    [ExiledSerializable]
     public class BerserkZombie : CustomRole
     {
         public override uint Id { get; set; } = 2;
@@ -12,6 +14,7 @@ namespace CustomRoles.Roles
         public override string Name { get; set; } = "Berserk Zombie";
 
         public override string Description { get; set; } = "A zombie that gains more speed when they kill someone.";
+        public override string CustomInfo { get; set; } = "Berserk Zombie";
 
         public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {

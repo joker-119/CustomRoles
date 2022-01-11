@@ -20,6 +20,8 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A zombie with ballistic damage resistance, but is instantly killed by flash grenades. Has a 25% chance when hitting someone to teleport them to the Pocket Dimension";
 
+        public override string CustomInfo { get; set; } = "Pocket Dimension Zombie";
+
         [Description("The chance the zombie has on each melee hit to teleport the target to the pocket dimension.")]
         public int TeleportChance { get; set; } = 25;
 
@@ -31,19 +33,19 @@ namespace CustomRoles.Roles
             base.SubscribeEvents();
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{Name}:{nameof(UnSubscribeEvents)}: unloading events.");
+            Log.Debug($"{Name}:{nameof(UnsubscribeEvents)}: unloading events.", Plugin.Singleton.Config.Debug);
             Player.Hurting -= OnHurt;
             Player.ReceivingEffect -= OnReceivingEffect;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void OnHurt(HurtingEventArgs ev)
         {
             if (Check(ev.Attacker))
             {
-                var chance = Plugin.Singleton.Rng.Next(100);
+                int chance = Plugin.Singleton.Rng.Next(100);
 
                 if (chance < TeleportChance)
                     ev.Target.EnableEffect(EffectType.Corroding);

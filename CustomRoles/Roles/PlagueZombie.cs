@@ -1,9 +1,11 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
+    using CustomPlayerEffects;
     using CustomRoles.Abilities;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
@@ -11,6 +13,7 @@ namespace CustomRoles.Roles
     using Map = Exiled.Events.Handlers.Map;
     using Player = Exiled.Events.Handlers.Player;
 
+    [ExiledSerializable]
     public class PlagueZombie : CustomRole
     {
         public static List<Pickup> Grenades = new List<Pickup>();
@@ -21,6 +24,8 @@ namespace CustomRoles.Roles
 
         public override string Description { get; set; } =
             "A slower and weaker zombie that is infectious with SCP-008. You can launch a projectile that will poison enemies near where it hits with the console command `.special`.\nIt is recommended you keybind this by running the console command `cmdbind g .special`.\nThis keybind applies to all roles with special abilities.";
+
+        public override string CustomInfo { get; set; } = "Plague Zombie";
 
         public override List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>
         {
@@ -36,19 +41,19 @@ namespace CustomRoles.Roles
             base.SubscribeEvents();
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
             Log.Debug($"{Name} unloading events.", Plugin.Singleton.Config.Debug);
             Player.Hurting -= OnHurt;
             Map.ExplodingGrenade -= OnExplodingGrenade;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (!Grenades.Contains(Pickup.Get(ev.Grenade))) return;
             ev.IsAllowed = false;
-            foreach (var player in ev.TargetsToAffect)
+            foreach (Exiled.API.Features.Player player in ev.TargetsToAffect)
             {
                 if (player.Team == Team.SCP || (player.Position - ev.Grenade.transform.position).sqrMagnitude > 200)
                     continue;
@@ -60,7 +65,7 @@ namespace CustomRoles.Roles
         private void OnHurt(HurtingEventArgs ev)
         {
             if (ev.Target.IsHuman && ev.Target.Health - ev.Amount <= 0 &&
-                ev.Target.TryGetEffect(EffectType.Poisoned, out var poisoned) && poisoned.Intensity > 0)
+                ev.Target.TryGetEffect(EffectType.Poisoned, out PlayerEffect poisoned) && poisoned.Intensity > 0)
             {
                 ev.IsAllowed = false;
                 ev.Amount = 0;

@@ -2,11 +2,13 @@ namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
     using CustomRoles.Abilities;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
+    [ExiledSerializable]
     public class Phantom : CustomRole
     {
         public override uint Id { get; set; } = 10;
@@ -17,7 +19,9 @@ namespace CustomRoles.Roles
         public override string Description { get; set; } =
             "A Chaos Insurgency outfitted with an active-camo suit that allows them to go invisible at will.\n\nUse the Client console command \".special\" to activate this ability. This can be keybound with \"cmdbind KEY .special\"";
 
-        protected override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
+        public override string CustomInfo { get; set; } = "Chaos Phantom";
+
+        public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
         {
             RoleSpawnPoints = new List<RoleSpawnPoint>
             {
@@ -29,7 +33,7 @@ namespace CustomRoles.Roles
             }
         };
 
-        protected override List<string> Inventory { get; set; } = new List<string>
+        public override List<string> Inventory { get; set; } = new List<string>
         {
             "SR-119",
             "IG-119",
@@ -60,12 +64,12 @@ namespace CustomRoles.Roles
                 ev.IsAllowed = false;
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
             Player.DroppingItem -= OnDroppingItem;
             Player.PickingUpItem -= OnPickingUpItem;
             Player.UsingItem -= OnUsingMedicalItem;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void OnPickingUpItem(PickingUpItemEventArgs ev)

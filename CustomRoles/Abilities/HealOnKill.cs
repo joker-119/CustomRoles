@@ -40,12 +40,12 @@ namespace CustomRoles.Abilities
             base.SubscribeEvents();
         }
 
-        protected override void UnSubscribeEvents()
+        protected override void UnsubscribeEvents()
         {
             Exiled.Events.Handlers.Player.Dying -= OnDying;
             if (HealOverTime && DamageInterruptsHot)
                 Exiled.Events.Handlers.Player.Hurting -= OnHurting;
-            base.UnSubscribeEvents();
+            base.UnsubscribeEvents();
         }
 
         private void OnDying(DyingEventArgs ev)
@@ -67,10 +67,10 @@ namespace CustomRoles.Abilities
 
         private IEnumerator<float> DoHealOverTime(Player player)
         {
-            var tickAmount = HealAmount / HealOverTimeDuration;
-            var tickCount = Mathf.FloorToInt(HealOverTimeDuration / HealOverTimeTickFrequency);
+            float tickAmount = HealAmount / HealOverTimeDuration;
+            int tickCount = Mathf.FloorToInt(HealOverTimeDuration / HealOverTimeTickFrequency);
 
-            for (var i = 0; i < tickCount; i++)
+            for (int i = 0; i < tickCount; i++)
             {
                 player.Heal(tickAmount, HealOverMax);
                 yield return Timing.WaitForSeconds(HealOverTimeTickFrequency);
