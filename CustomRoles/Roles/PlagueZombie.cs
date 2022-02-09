@@ -55,7 +55,7 @@ namespace CustomRoles.Roles
             ev.IsAllowed = false;
             foreach (Exiled.API.Features.Player player in ev.TargetsToAffect)
             {
-                if (player.Team == Team.SCP || (player.Position - ev.Grenade.transform.position).sqrMagnitude > 200)
+                if (player.Role.Team == Team.SCP || (player.Position - ev.Grenade.transform.position).sqrMagnitude > 200)
                     continue;
                 player.Hurt(new UniversalDamageHandler(30f, DeathTranslations.Poisoned));
                 player.EnableEffect(EffectType.Poisoned, 25f);
@@ -76,7 +76,7 @@ namespace CustomRoles.Roles
             if (!Check(ev.Attacker))
                 return;
 
-            if (ev.Target.Team == Team.SCP)
+            if (ev.Target.Role.Team == Team.SCP)
             {
                 ev.Amount = 0f;
                 return;

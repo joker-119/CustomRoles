@@ -38,7 +38,7 @@ namespace CustomRoles.Abilities
         private void ActivateMist(Player ply)
         {
             foreach (Player player in Player.List)
-                if (player.Side == ply.Side && player != ply)
+                if (player.Role.Side == ply.Role.Side && player != ply)
                     _coroutines.Add(Timing.RunCoroutine(DoMist(ply, player)));
         }
 

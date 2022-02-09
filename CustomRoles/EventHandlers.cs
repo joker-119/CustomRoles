@@ -26,7 +26,7 @@ namespace CustomRoles
             bool spawnDwarf = plugin.Rng.Next(100) <= 35;
 
             foreach (Player player in Player.List)
-                switch (player.Role)
+                switch (player.Role.Type)
                 {
                     case RoleType.FacilityGuard when !isPhantom && spawnPhantom:
                     {
