@@ -2,7 +2,6 @@ namespace CustomRoles
 {
     using CustomRoles.Roles;
     using Exiled.API.Features;
-    using Exiled.CustomRoles.API;
     using Exiled.CustomRoles.API.Features;
 
     public class Methods

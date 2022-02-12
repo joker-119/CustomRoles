@@ -2,12 +2,12 @@ namespace CustomRoles.Abilities
 {
     using System.ComponentModel;
     using CustomPlayerEffects;
-    using CustomRoles.Abilities.Generics;
     using Exiled.API.Enums;
+    using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
-    public class SpeedOnKill : PassiveAbilityResolvable
+    public class SpeedOnKill : PassiveAbility
     {
         public override string Name { get; set; } = "Speed on Kill";
         public override string Description { get; set; } = "Gives the user speed when they kill another player.";

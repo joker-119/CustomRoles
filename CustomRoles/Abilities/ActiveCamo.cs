@@ -3,12 +3,12 @@ namespace CustomRoles.Abilities
     using System;
     using System.Linq;
     using CustomPlayerEffects;
-    using CustomRoles.Abilities.Generics;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using MEC;
 
-    public class ActiveCamo : ActiveAbilityResolvable
+    public class ActiveCamo : ActiveAbility
     {
         public override string Name { get; set; } = "Active Camo";
 

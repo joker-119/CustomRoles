@@ -2,16 +2,16 @@ namespace CustomRoles.Abilities
 {
     using System.Collections.Generic;
     using System.ComponentModel;
-    using CustomRoles.Abilities.Generics;
     using CustomRoles.Roles;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.CustomRoles.API.Features;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
     using Mirror;
     using UnityEngine;
 
-    public class ProjectileAbility : ActiveAbilityResolvable
+    public class ProjectileAbility : ActiveAbility
     {
         public override string Name { get; set; } = "Projectile";
         public override string Description { get; set; } = "Shoots an item in the direction you are facing.";

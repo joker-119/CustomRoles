@@ -1,11 +1,11 @@
 namespace CustomRoles.Abilities
 {
-    using CustomRoles.Abilities.Generics;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features;
     using MEC;
 
-    public class MoveSpeedReduction : PassiveAbilityResolvable
+    public class MoveSpeedReduction : PassiveAbility
     {
         public override string Name { get; set; } = "Reduced movement speed.";
         public override string Description { get; set; } = "Reduces the player's movement speed.";

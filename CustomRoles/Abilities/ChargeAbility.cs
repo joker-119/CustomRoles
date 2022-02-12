@@ -3,15 +3,15 @@ namespace CustomRoles.Abilities
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using CustomRoles.Abilities.Generics;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
     using PlayerStatsSystem;
     using UnityEngine;
 
-    public class ChargeAbility : ActiveAbilityResolvable
+    public class ChargeAbility : ActiveAbility
     {
         public override string Name { get; set; } = "Charge";
         public override string Description { get; set; } = "Charges towards the target location.";

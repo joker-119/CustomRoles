@@ -6,6 +6,7 @@ namespace CustomRoles.Configs
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.CustomRoles.API.Features;
+    using Exiled.Loader;
     using Exiled.Loader.Features.Configs;
     using Exiled.Loader.Features.Configs.CustomConverters;
     using YamlDotNet.Serialization;
@@ -14,25 +15,6 @@ namespace CustomRoles.Configs
 
     public class Config : IConfig
     {
-        private static readonly ISerializer Serializer = new SerializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithTypeInspector(i => new CommentGatheringTypeInspector(i))
-            .WithEmissionPhaseObjectGraphVisitor(a => new CommentsObjectGraphVisitor(a.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .Build();
-
-        private static readonly IDeserializer Deserializer = new DeserializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithNodeDeserializer(
-                inner => new AbstractNodeNodeTypeResolverWithValidation(inner,
-                    new AggregateExpectationTypeResolver<CustomAbility>(UnderscoredNamingConvention.Instance)),
-                s => s.InsteadOf<ObjectNodeDeserializer>())
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
-
         public Roles RoleConfigs;
 
         [Description("Whether or not debug messages shoudl be shown.")]
@@ -59,12 +41,12 @@ namespace CustomRoles.Configs
             if (!File.Exists(filePath))
             {
                 RoleConfigs = new Roles();
-                File.WriteAllText(filePath, Serializer.Serialize(RoleConfigs));
+                File.WriteAllText(filePath, Loader.Serializer.Serialize(RoleConfigs));
             }
             else
             {
-                RoleConfigs = Deserializer.Deserialize<Roles>(File.ReadAllText(filePath));
-                File.WriteAllText(filePath, Serializer.Serialize(RoleConfigs));
+                RoleConfigs = Loader.Deserializer.Deserialize<Roles>(File.ReadAllText(filePath));
+                File.WriteAllText(filePath, Loader.Serializer.Serialize(RoleConfigs));
             }
         }
     }

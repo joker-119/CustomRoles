@@ -108,9 +108,6 @@
     <ItemGroup>
         <Compile Include="Abilities\ActiveCamo.cs" />
         <Compile Include="Abilities\ChargeAbility.cs" />
-        <Compile Include="Abilities\Generics\ActiveAbilityResolvable.cs" />
-        <Compile Include="Abilities\Generics\IResolvableAbility.cs" />
-        <Compile Include="Abilities\Generics\PassiveAbilityResolvable.cs" />
         <Compile Include="Abilities\HealingMist.cs" />
         <Compile Include="Abilities\HealOnKill.cs" />
         <Compile Include="Abilities\Martyrdom.cs" />
@@ -119,12 +116,7 @@
         <Compile Include="Abilities\ReactiveHume.cs" />
         <Compile Include="Abilities\SpeedOnKill.cs" />
         <Compile Include="Commands\TestCommand.cs" />
-        <Compile Include="Configs\AbstractNodeNodeTypeResolver.cs" />
-        <Compile Include="Configs\AggregateExpectationTypeResolver.cs" />
         <Compile Include="Configs\Config.cs" />
-        <Compile Include="Configs\IParserExtension.cs" />
-        <Compile Include="Configs\ITypeDiscriminator.cs" />
-        <Compile Include="Configs\ParsingEventBuffer.cs" />
         <Compile Include="Configs\Roles.cs" />
         <Compile Include="EventHandlers.cs" />
         <Compile Include="Methods.cs" />

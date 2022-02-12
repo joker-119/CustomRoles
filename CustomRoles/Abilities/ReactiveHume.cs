@@ -1,11 +1,11 @@
 namespace CustomRoles.Abilities
 {
-    using CustomRoles.Abilities.Generics;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using Player = Exiled.Events.Handlers.Player;
 
-    public class ReactiveHume : PassiveAbilityResolvable
+    public class ReactiveHume : PassiveAbility
     {
         public override string Name { get; set; } = "Reactive Hume Shield";
 
