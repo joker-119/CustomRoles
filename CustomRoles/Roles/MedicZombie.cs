@@ -8,7 +8,7 @@ namespace CustomRoles.Roles
     using Exiled.Events.EventArgs;
     using Player = Exiled.Events.Handlers.Player;
 
-    [ExiledSerializable]
+    [CustomRole(RoleType.Scp0492)]
     public class MedicZombie : CustomRole
     {
         public override uint Id { get; set; } = 8;

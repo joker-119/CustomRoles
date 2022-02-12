@@ -8,7 +8,7 @@ namespace CustomRoles.Roles
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
-    [ExiledSerializable]
+    [CustomRole(RoleType.ChaosConscript)]
     public class Phantom : CustomRole
     {
         public override uint Id { get; set; } = 10;

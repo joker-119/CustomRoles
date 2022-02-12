@@ -4,6 +4,7 @@ namespace CustomRoles
     using System.Collections.Generic;
     using CustomRoles.Configs;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API;
     using Exiled.CustomRoles.API.Features;
     using PlayerEvents = Exiled.Events.Handlers.Player;
     using Scp049Events = Exiled.Events.Handlers.Scp049;
@@ -29,7 +30,18 @@ namespace CustomRoles
             Methods = new Methods(this);
 
             Config.LoadConfigs();
-            CustomRole.RegisterRoles();
+            Config.RoleConfigs.Demolitionists.Register();
+            Config.RoleConfigs.Dwarves.Register();
+            Config.RoleConfigs.Medics.Register();
+            Config.RoleConfigs.Phantoms.Register();
+            Config.RoleConfigs.BallisticZombies.Register();
+            Config.RoleConfigs.BerserkZombies.Register();
+            Config.RoleConfigs.ChargerZombies.Register();
+            Config.RoleConfigs.DwarfZombies.Register();
+            Config.RoleConfigs.MedicZombies.Register();
+            Config.RoleConfigs.PdZombies.Register();
+            Config.RoleConfigs.PlagueZombies.Register();
+            Config.RoleConfigs.TankZombies.Register();
 
             PlayerEvents.ChangingRole += EventHandlers.OnChangingRole;
             ServerEvents.RoundStarted += EventHandlers.OnRoundStarted;

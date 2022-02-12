@@ -8,7 +8,7 @@ namespace CustomRoles.Roles
     using Exiled.CustomRoles.API.Features;
     using PlayerStatsSystem;
 
-    [ExiledSerializable]
+    [CustomRole(RoleType.Scp0492)]
     public class TankZombie : CustomRole
     {
         public override uint Id { get; set; } = 13;

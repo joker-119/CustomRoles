@@ -5,7 +5,7 @@ namespace CustomRoles.Roles
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
 
-    [ExiledSerializable]
+    [CustomRole(RoleType.Scp0492)]
     public class ChargerZombie : CustomRole
     {
         public override uint Id { get; set; } = 3;

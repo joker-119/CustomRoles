@@ -8,7 +8,7 @@ namespace CustomRoles.Roles
     using MEC;
     using UnityEngine;
 
-    [ExiledSerializable]
+    [CustomRole(RoleType.Scp0492)]
     public class DwarfZombie : CustomRole
     {
         public override uint Id { get; set; } = 6;

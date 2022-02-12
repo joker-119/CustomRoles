@@ -9,7 +9,7 @@ namespace CustomRoles.Roles
     using Exiled.Events.EventArgs;
     using Player = Exiled.Events.Handlers.Player;
 
-    [ExiledSerializable]
+    [CustomRole(RoleType.NtfSpecialist)]
     public class Medic : CustomRole
     {
         public override uint Id { get; set; } = 7;

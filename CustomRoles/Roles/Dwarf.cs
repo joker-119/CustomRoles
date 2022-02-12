@@ -6,7 +6,7 @@ namespace CustomRoles.Roles
     using MEC;
     using UnityEngine;
 
-    [ExiledSerializable]
+    [CustomRole(RoleType.None)]
     public class Dwarf : CustomRole
     {
         public override uint Id { get; set; } = 5;

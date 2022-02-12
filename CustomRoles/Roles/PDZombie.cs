@@ -5,11 +5,13 @@ namespace CustomRoles.Roles
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using PlayerStatsSystem;
     using Player = Exiled.Events.Handlers.Player;
 
+    [CustomRole(RoleType.Scp0492)]
     public class PDZombie : CustomRole
     {
         public override uint Id { get; set; } = 9;

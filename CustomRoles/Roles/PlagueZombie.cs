@@ -13,7 +13,7 @@ namespace CustomRoles.Roles
     using Map = Exiled.Events.Handlers.Map;
     using Player = Exiled.Events.Handlers.Player;
 
-    [ExiledSerializable]
+    [CustomRole(RoleType.Scp0492)]
     public class PlagueZombie : CustomRole
     {
         public static List<Pickup> Grenades = new List<Pickup>();
