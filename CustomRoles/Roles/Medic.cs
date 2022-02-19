@@ -1,10 +1,12 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
+    using CustomItems.Items;
     using CustomRoles.Abilities;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Spawn;
+    using Exiled.CustomItems.API.Features;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
     using Player = Exiled.Events.Handlers.Player;
@@ -69,8 +71,14 @@ namespace CustomRoles.Roles
             if (!Check(ev.Player))
                 return;
 
-            ev.Player.ShowHint("You are not able to pick up this item, because it is of the same type as mediguns.");
-            ev.IsAllowed = false;
+            CustomItem item = CustomItem.Get("MG-119");
+            if (item == null)
+                return;
+            if (ev.Pickup.Type == item.Type)
+            {
+                ev.Player.ShowHint("You are not able to pick up this item, because it is of the same type as mediguns.");
+                ev.IsAllowed = false;
+            }
         }
     }
 }
