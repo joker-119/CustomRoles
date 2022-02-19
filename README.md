@@ -24,46 +24,6 @@ Plague Zombie | 11 | Projectile, MoveSpeedReduction | Randomly when revived by S
 SCP-575 | 12 | Blackout | Immediately when a round begins | See the 575 section below.
 Juggernaut Zombie | 13 | ReactiveHume, MoveSpeedReduction | Randomly when revived by SCP-049 | A very tanky zombie capable of living through enourmous amounts of damage.
 
-### SCP-575
-This section will explain SCP-575 in detail, as he is too complex to summarize in the role list table. There are a lot of configurable options for 575, so the below description assumes DEFAULT config values, which are recommended for balance.
-
-SCP-575 (The Consuming Darkness / The Shapeless Void) is a keter-class entity that is extremely deadly and difficult to contain. When it comes in contact with any type of matter, it is capable of consuming it to grow in size. While it is capable of consuming all types of matter, it is attracted to organic matter above all else. 
-
-SCP-575 will appear as an SCP-106 model, however he is not able to use and of 106's abilities, nor can he be recontained via the femur breaker.
-
-This SCP has a small chance to replace SCP-106 when a round begins with a 106 spawned. SCP-575 will have a small chance to spawn in SCP-173, SCP-079 or SCP-049's rooms, otherwise he spawns in 106's normal spawn room.
-He spawns with 550 health, but takes 40% less damage from bullets and frag grenades. He is invisible to human players, unless someone is looking directly at him while holding a flashlight, weapon with a flashlight attachment, or are zoomed in on him with a NV scope. He also causes the lights in any room he enters to shut off. The lights will remain off while he is in the room, and for up to 10 seconds after he leaves that room.
-
-His invisibility is not player-specific, meaning one person triggering him to be visible, makes him visible to everyone so long as they continue to look at him with one of the above items.
-
-His damage starts off very low (30 per melee hit), but each time he gets a kill, he will gain a stack of "Consumption". Each stack of consumption will increase his damage, as well as gradually increasing his movement speed.
-
-At 5 stacks of consumption, he is able to start using his blackout ability.
-
-Even while invisible, he is extremely vulnerable to flashbang grenades. When a flashbang goes off, if he is too close, he will take damage based on how far from the grenade he is standing when it explodes, as well as lose consumption stacks. The amount of stacks lost depend both on his distance from the grenade, aswell as his current number of stacks. A higher number of stacks and closer proximity to the grenade results in more stacks being lost.
-
-
-## Technical explinations
-These are some more in-depth explinations of how numbers are crunched behind the scenes, to calculate his samage, movement speed, etc.
-
-His damage is calculated with `BaseDamage * (ConsumptionStacks / DamageScalar)` which is `30 * (x / 2)`, with a minimum value of 30.
-This works out to the follow damage amounts, listed in order of consumption stacks from 0-10: `30, 30, 30, 45, 60, 75, 90, 105, 120, 135, 150`
-
-For his speed boost from stacks, he gains intensity levels of 207 to allow him to move faster. The intensity level is calculated with `ConsumptionStacks / (MaxConsumptionStacks / 2)`, which is `x / (10 / 2)`
-This basically means he gains an intensity level of 207 on every even level (2, 4, 6 etc).
-
-When hit with a flash grenade, the following rules govern how his consumption stacks are affected:
-1. Based on how far from the explosion he is:
-	a. If between 0-5ft away, lose 1 stack instantly. (This is meant to award human players for good aim with grenades, as well as punish 575 for not paying attention to his surroundings)
-	b. If between 6-15ft away, no change.
-	c. If more than 15ft away, gain 1 stack instantly. (This is meant to award 575 for correctly putting as much distance between him and the grenade as possible, as well as punish human players who carelessly throw grenades without knowing where 575 actually is)
-2. Based on how many stacks he currently has:
-	a. If half his current stacks is more than 3, lose 3 stacks.
-	b. If half his current stacks is more than 2, lose 2 stacks.
-	c. If neither of the above, lose 1 stack.
-
-Additionally, he is damaged for a large amount if he is closer than 20ft from the grenade. The damage taken is calculated with `FlashbangBaseDamage - (distance * FlashbangFalloffMultiplier)` which is `450 - (x * 20)`. This effectively means that for each 1ft further away from the grenade he is, it will deal 30 less damage. The most damage it can deal is 450, the minimum it can deal is 70, if he is 19ft away.
-
 
 ### Ability List
 Below is a table of all the current abilities, followed by a description of them. 
@@ -71,7 +31,6 @@ Below is a table of all the current abilities, followed by a description of them
 AbilityName | Type | Duration | Cooldown | Description
 :---: | :---: | :---: | :---: | :------
 ActiveCamo | Active | 30s | 90s | Turns the user invisible when used. While invisible they may interact with objects, use items, and throw grenades without breaking their invisibility, however shooting a gun or starting to charge a micro will break their invisibility early.
-Blackout | Active | 2min | 3min | Causes most rooms inside the facility to lose lightning for the duration. While active, any human player in an affected room will take damage every 5 seconds that they do not have a light source in their hand.
 Charge | Active | N/A | 45s | Causes the player to charge forward in a straight line very quickly. Upon colliding with a solid object, or another player, the user of the ability is ensnared for 5 seconds. If they collided with another player, that player is also ensnared for the same duration, and take 15 damage (if the player was not moving at the time, this value is doubled). If instead they collide with a non-player object (such as a wall/door), the user takes 15 damage instead.
 HealingMist | Active | 15s | 3min | Every 1 second for the duration, all friendly players within 12ft of the user will be healed for 6 health. When the duration expires, any allies within that range are also given 45 AHP. Neither the heal, nor the AHP are applied to the user of this ability, however they can be affected by another player's use of this ability.
 HealOnKill | Passive | Up to 10s | N/A | Heals the player for 2.5 health every second for 10 seconds after they kill another player. Taking damage while this effect is active will cancel the remaining duration. (If the heal over time option is disabled, all of the healing is done instantly, and damage taken will not prevent it)
