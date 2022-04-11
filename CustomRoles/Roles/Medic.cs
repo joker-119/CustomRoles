@@ -1,7 +1,6 @@
 namespace CustomRoles.Roles
 {
     using System.Collections.Generic;
-    using CustomItems.Items;
     using CustomRoles.Abilities;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
