@@ -7,18 +7,22 @@ namespace CustomRoles.Roles
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.EventArgs.Player;
+    using PlayerRoles;
     using PlayerStatsSystem;
     using Map = Exiled.Events.Handlers.Map;
     using Player = Exiled.Events.Handlers.Player;
 
-    [CustomRole(RoleType.Scp0492)]
+    [CustomRole(RoleTypeId.Scp0492)]
     public class PlagueZombie : CustomRole
     {
         public static List<Pickup> Grenades = new List<Pickup>();
         public override uint Id { get; set; } = 11;
-        public override RoleType Role { get; set; } = RoleType.Scp0492;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.Scp0492;
         public override int MaxHealth { get; set; } = 500;
         public override string Name { get; set; } = "Plague Zombie";
 
@@ -35,7 +39,7 @@ namespace CustomRoles.Roles
 
         protected override void SubscribeEvents()
         {
-            Log.Debug($"{Name} loading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name} loading events.");
             Player.Hurting += OnHurt;
             Map.ExplodingGrenade += OnExplodingGrenade;
             base.SubscribeEvents();
@@ -43,7 +47,7 @@ namespace CustomRoles.Roles
 
         protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{Name} unloading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name} unloading events.");
             Player.Hurting -= OnHurt;
             Map.ExplodingGrenade -= OnExplodingGrenade;
             base.UnsubscribeEvents();
@@ -51,11 +55,11 @@ namespace CustomRoles.Roles
 
         private void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
-            if (!Grenades.Contains(Pickup.Get(ev.Grenade))) return;
+            if (!Grenades.Contains(Pickup.Get(ev.Projectile.Base))) return;
             ev.IsAllowed = false;
             foreach (Exiled.API.Features.Player player in ev.TargetsToAffect)
             {
-                if (player.Role.Team == Team.SCP || (player.Position - ev.Grenade.transform.position).sqrMagnitude > 200)
+                if (player.Role.Team == Team.SCPs || (player.Position - ev.Projectile.Transform.position).sqrMagnitude > 200)
                     continue;
                 player.Hurt(new UniversalDamageHandler(30f, DeathTranslations.Poisoned));
                 player.EnableEffect(EffectType.Poisoned, 25f);
@@ -64,36 +68,36 @@ namespace CustomRoles.Roles
 
         private void OnHurt(HurtingEventArgs ev)
         {
-            if (ev.Target.IsHuman && ev.Target.Health - ev.Amount <= 0 &&
-                ev.Target.TryGetEffect(EffectType.Poisoned, out PlayerEffect poisoned) && poisoned.Intensity > 0)
+            if (ev.Player.IsHuman && ev.Player.Health - ev.Amount <= 0 &&
+                ev.Player.TryGetEffect(EffectType.Poisoned, out StatusEffectBase poisoned) && poisoned.Intensity > 0)
             {
                 ev.IsAllowed = false;
                 ev.Amount = 0;
-                ev.Target.DropItems();
-                ev.Target.SetRole(RoleType.Scp0492, SpawnReason.ForceClass, true);
+                ev.Player.DropItems();
+                ev.Player.Role.Set(RoleTypeId.Scp0492, SpawnReason.ForceClass, RoleSpawnFlags.None);
             }
 
             if (!Check(ev.Attacker))
                 return;
 
-            if (ev.Target.Role.Team == Team.SCP)
+            if (ev.Player.Role.Team == Team.SCPs)
             {
                 ev.Amount = 0f;
                 return;
             }
 
-            if (ev.Handler.Type == DamageType.Explosion)
+            if (ev.DamageHandler.Type == DamageType.Explosion)
             {
                 ev.Amount = 0;
-                ev.Target.Hurt(new UniversalDamageHandler(30f, DeathTranslations.Poisoned));
-                ev.Target.EnableEffect(EffectType.Poisoned);
+                ev.Player.Hurt(new UniversalDamageHandler(30f, DeathTranslations.Poisoned));
+                ev.Player.EnableEffect(EffectType.Poisoned);
                 return;
             }
 
             ev.Amount = 10f;
 
             if (Plugin.Singleton.Rng.Next(100) < 60)
-                ev.Target.EnableEffect(EffectType.Poisoned);
+                ev.Player.EnableEffect(EffectType.Poisoned);
         }
     }
 }

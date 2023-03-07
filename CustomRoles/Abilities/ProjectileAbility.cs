@@ -5,6 +5,7 @@ namespace CustomRoles.Abilities
     using CustomRoles.Roles;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.CustomRoles.API.Features;
     using InventorySystem.Items.Firearms.Modules;
     using MEC;
@@ -33,8 +34,7 @@ namespace CustomRoles.Abilities
                 {
                     target = Vector3.MoveTowards(player.Position, hit.point, 20f);
 
-                    if (Physics.Linecast(target, Vector3.down * 20f, out RaycastHit lineHit,
-                        player.ReferenceHub.playerMovementSync.CollidableSurfaces))
+                    if (Physics.Linecast(target, Vector3.down * 20f, out RaycastHit lineHit))
                         target = lineHit.point;
                 }
                 else
@@ -42,7 +42,7 @@ namespace CustomRoles.Abilities
                     target = hit.point;
                 }
 
-                Pickup pickup = Item.Create(ItemType.SCP018).Spawn(player.CameraTransform.position);
+                Pickup pickup = Pickup.CreateAndSpawn(ItemType.SCP018, player.CameraTransform.position, default);
                 NetworkServer.UnSpawn(pickup.Base.gameObject);
                 GameObject gameObject = pickup.Base.gameObject;
                 gameObject.transform.localScale = Vector3.one * 2f;
@@ -97,6 +97,6 @@ namespace CustomRoles.Abilities
         }
 
         private void Arrived(Vector3 target) => 
-            PlagueZombie.Grenades.Add(Item.Create(ItemType.GrenadeHE).Spawn(target));
+            PlagueZombie.Grenades.Add(Pickup.CreateAndSpawn(ItemType.GrenadeHE, target, default));
     }
 }

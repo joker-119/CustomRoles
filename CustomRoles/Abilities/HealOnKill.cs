@@ -5,6 +5,7 @@ namespace CustomRoles.Abilities
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using MEC;
     using UnityEngine;
 
@@ -50,19 +51,19 @@ namespace CustomRoles.Abilities
 
         private void OnDying(DyingEventArgs ev)
         {
-            if (Check(ev.Killer))
+            if (Check(ev.Attacker))
             {
                 if (HealOverTime)
-                    _activeHoTs[ev.Killer] = Timing.RunCoroutine(DoHealOverTime(ev.Killer));
-                ev.Killer.Heal(HealAmount, HealOverMax);
+                    _activeHoTs[ev.Attacker] = Timing.RunCoroutine(DoHealOverTime(ev.Attacker));
+                ev.Attacker.Heal(HealAmount, HealOverMax);
             }
         }
 
         private void OnHurting(HurtingEventArgs ev)
         {
-            if (Check(ev.Target))
-                if (DamageInterruptsHot && _activeHoTs.ContainsKey(ev.Target))
-                    Timing.KillCoroutines(_activeHoTs[ev.Target]);
+            if (Check(ev.Player))
+                if (DamageInterruptsHot && _activeHoTs.ContainsKey(ev.Player))
+                    Timing.KillCoroutines(_activeHoTs[ev.Player]);
         }
 
         private IEnumerator<float> DoHealOverTime(Player player)

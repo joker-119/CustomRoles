@@ -6,13 +6,14 @@ namespace CustomRoles.Roles
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
+    using PlayerRoles;
     using PlayerStatsSystem;
 
-    [CustomRole(RoleType.Scp0492)]
+    [CustomRole(RoleTypeId.Scp0492)]
     public class TankZombie : CustomRole
     {
         public override uint Id { get; set; } = 13;
-        public override RoleType Role { get; set; } = RoleType.Scp0492;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.Scp0492;
         public override int MaxHealth { get; set; } = 1100;
         public override string Name { get; set; } = "Juggernaut Zombie";
 
@@ -36,7 +37,7 @@ namespace CustomRoles.Roles
 
         protected override void RoleAdded(Player player)
         {
-            Log.Debug($"{Name}: Setting Max AHP and Decay", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name}: Setting Max AHP and Decay");
 
             // Please work
             ((AhpStat)player.ReferenceHub.playerStats.StatModules[1]).ServerAddProcess(0, HumeMax,
@@ -45,7 +46,7 @@ namespace CustomRoles.Roles
 
         protected override void RoleRemoved(Player player)
         {
-            Log.Debug($"{Name}: Resetting AHP values.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name}: Resetting AHP values.");
             // Those should be handled by AhpStat.ClassChanged()
             // player.MaxArtificialHealth = 75;
             // player.ArtificialHealth = 0;

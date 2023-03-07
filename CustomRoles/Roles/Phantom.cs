@@ -6,13 +6,15 @@ namespace CustomRoles.Roles
     using Exiled.API.Features.Spawn;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
+    using PlayerRoles;
 
-    [CustomRole(RoleType.ChaosConscript)]
+    [CustomRole(RoleTypeId.ChaosConscript)]
     public class Phantom : CustomRole
     {
         public override uint Id { get; set; } = 10;
-        public override RoleType Role { get; set; } = RoleType.ChaosConscript;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.ChaosConscript;
         public override int MaxHealth { get; set; } = 120;
         public override string Name { get; set; } = "Chaos Phantom";
 
@@ -27,7 +29,7 @@ namespace CustomRoles.Roles
             {
                 new RoleSpawnPoint
                 {
-                    Role = RoleType.FacilityGuard,
+                    Role = RoleTypeId.FacilityGuard,
                     Chance = 100
                 }
             }

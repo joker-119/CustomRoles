@@ -8,13 +8,15 @@ namespace CustomRoles.Roles
     using Exiled.CustomItems.API.Features;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using PlayerRoles;
     using Player = Exiled.Events.Handlers.Player;
 
-    [CustomRole(RoleType.NtfSpecialist)]
+    [CustomRole(RoleTypeId.NtfSpecialist)]
     public class Medic : CustomRole
     {
         public override uint Id { get; set; } = 7;
-        public override RoleType Role { get; set; } = RoleType.NtfSpecialist;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.NtfSpecialist;
         public override int MaxHealth { get; set; } = 120;
         public override string Name { get; set; } = "Medic";
 
@@ -40,7 +42,7 @@ namespace CustomRoles.Roles
             {
                 new RoleSpawnPoint
                 {
-                    Role = RoleType.NtfSpecialist,
+                    Role = RoleTypeId.NtfSpecialist,
                     Chance = 100
                 }
             }
@@ -53,14 +55,14 @@ namespace CustomRoles.Roles
 
         protected override void SubscribeEvents()
         {
-            Log.Debug($"{nameof(SubscribeEvents)}: Loading medic events..", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{nameof(SubscribeEvents)}: Loading medic events..");
             Player.PickingUpItem += OnPickingUpItem;
             base.SubscribeEvents();
         }
 
         protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{nameof(UnsubscribeEvents)}: Unloading medic events..", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{nameof(UnsubscribeEvents)}: Unloading medic events..");
             Player.PickingUpItem -= OnPickingUpItem;
             base.UnsubscribeEvents();
         }

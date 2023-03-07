@@ -3,6 +3,7 @@ namespace CustomRoles.Abilities
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Player = Exiled.Events.Handlers.Player;
 
     public class ReactiveHume : PassiveAbility
@@ -30,20 +31,18 @@ namespace CustomRoles.Abilities
             {
                 ev.Amount *= 0.4f;
             }
-            else if (Check(ev.Target))
+            else if (Check(ev.Player))
             {
-                float perc = ev.Target.ArtificialHealth / ev.Target.MaxArtificialHealth;
+                float perc = ev.Player.ArtificialHealth / ev.Player.MaxArtificialHealth;
                 float reduction = ev.Amount * (perc * .8f);
                 Log.Debug(
-                    $"{Name}: AHP: {ev.Target.ArtificialHealth} -- Reducing incoming damage by: ({perc * 100}%) -- Base: {ev.Amount} New: {ev.Amount - reduction}",
-                    Plugin.Singleton.Config.Debug);
+                    $"{Name}: AHP: {ev.Player.ArtificialHealth} -- Reducing incoming damage by: ({perc * 100}%) -- Base: {ev.Amount} New: {ev.Amount - reduction}");
                 float amountToAdd = ev.Amount * 0.75f;
-                if (ev.Target.ArtificialHealth + amountToAdd > ev.Target.MaxArtificialHealth)
-                    ev.Target.ArtificialHealth = (ushort)ev.Target.MaxArtificialHealth;
+                if (ev.Player.ArtificialHealth + amountToAdd > ev.Player.MaxArtificialHealth)
+                    ev.Player.ArtificialHealth = (ushort)ev.Player.MaxArtificialHealth;
                 else
-                    ev.Target.ArtificialHealth += (ushort)(ev.Amount * 0.75f);
-                Log.Debug($"{Name}: Adding {ev.Amount * 0.75f} to AHP. New value: {ev.Target.ArtificialHealth}",
-                    Plugin.Singleton.Config.Debug);
+                    ev.Player.ArtificialHealth += (ushort)(ev.Amount * 0.75f);
+                Log.Debug($"{Name}: Adding {ev.Amount * 0.75f} to AHP. New value: {ev.Player.ArtificialHealth}");
 
                 ev.Amount -= reduction;
             }

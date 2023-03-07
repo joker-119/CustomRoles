@@ -9,12 +9,13 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>CustomRoles</RootNamespace>
         <AssemblyName>CustomRoles</AssemblyName>
-        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
-        <LangVersion>8</LangVersion>
+        <LangVersion>default</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
+        <PlatformTarget>x64</PlatformTarget>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
@@ -25,7 +26,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
+        <PlatformTarget>x64</PlatformTarget>
         <DebugType>pdbonly</DebugType>
         <Optimize>true</Optimize>
         <OutputPath>bin\Release\</OutputPath>
@@ -35,44 +36,50 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
+        </Reference>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
-        <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-            <HintPath>$(EXILED_REFERENCES)\CommandSystem.Core.dll</HintPath>
+        <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\CommandSystem.Core.dll</HintPath>
         </Reference>
-        <Reference Include="CustomItems, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\CustomItems\CustomItems\bin\Release\CustomItems.dll</HintPath>
+        <Reference Include="Exiled.API, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.API.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.API, Version=5.1.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.API.dll</HintPath>
+        <Reference Include="Exiled.CreditTags, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CreditTags.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.CreditTags, Version=5.1.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.CreditTags.dll</HintPath>
+        <Reference Include="Exiled.CustomItems, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CustomItems.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.CustomItems, Version=5.1.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.CustomItems.dll</HintPath>
+        <Reference Include="Exiled.CustomRoles, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.CustomRoles.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.CustomRoles, Version=5.1.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.CustomRoles.dll</HintPath>
+        <Reference Include="Exiled.Loader, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Loader.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.Events, Version=5.1.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.Events.dll</HintPath>
+        <Reference Include="Exiled.Permissions, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Permissions.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.Loader, Version=5.1.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.Loader.dll</HintPath>
+        <Reference Include="Exiled.Events, Version=6.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+            <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Events.dll</HintPath>
         </Reference>
-        <Reference Include="Exiled.Permissions, Version=5.1.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\EXILED\bin\Release\Exiled.Permissions.dll</HintPath>
+        <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\Exiled.Updater.dll</HintPath>
         </Reference>
         <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
         </Reference>
-        <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\NorthwoodLib.dll</HintPath>
+        <Reference Include="NorthwoodLib, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\NorthwoodLib.dll</HintPath>
+        </Reference>
+        <Reference Include="PluginAPI, Version=12.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\EXILED.6.0.0-beta.26\lib\net48\PluginAPI.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -88,9 +95,8 @@
         <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
         </Reference>
-        <Reference Include="YamlDotNet, Version=9.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e">
-            <HintPath>..\packages\YamlDotNet.9.1.4\lib\net45\YamlDotNet.dll</HintPath>
-            <Private>True</Private>
+        <Reference Include="YamlDotNet, Version=12.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+          <HintPath>..\packages\YamlDotNet.12.0.2\lib\net47\YamlDotNet.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
@@ -124,6 +130,7 @@
         <Compile Include="Roles\TankZombie.cs" />
     </ItemGroup>
     <ItemGroup>
+        <None Include="App.config" />
         <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

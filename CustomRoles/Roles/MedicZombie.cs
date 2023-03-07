@@ -6,13 +6,15 @@ namespace CustomRoles.Roles
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using PlayerRoles;
     using Player = Exiled.Events.Handlers.Player;
 
-    [CustomRole(RoleType.Scp0492)]
+    [CustomRole(RoleTypeId.Scp0492)]
     public class MedicZombie : CustomRole
     {
         public override uint Id { get; set; } = 8;
-        public override RoleType Role { get; set; } = RoleType.Scp0492;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.Scp0492;
         public override int MaxHealth { get; set; } = 500;
         public override string Name { get; set; } = "Medic Zombie";
 
@@ -27,14 +29,14 @@ namespace CustomRoles.Roles
 
         protected override void SubscribeEvents()
         {
-            Log.Debug($"{Name} loading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name} loading events.");
             Player.Hurting += OnHurt;
             base.SubscribeEvents();
         }
 
         protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{Name} unloading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name} unloading events.");
             Player.Hurting -= OnHurt;
             base.UnsubscribeEvents();
         }

@@ -5,14 +5,16 @@ namespace CustomRoles.Roles
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using MEC;
+    using PlayerRoles;
     using UnityEngine;
 
-    [CustomRole(RoleType.Scp0492)]
+    [CustomRole(RoleTypeId.Scp0492)]
     public class DwarfZombie : CustomRole
     {
         public override uint Id { get; set; } = 6;
-        public override RoleType Role { get; set; } = RoleType.Scp0492;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.Scp0492;
         public override int MaxHealth { get; set; } = 450;
         public override string Name { get; set; } = "Dwarf Zombie";
 
@@ -23,7 +25,7 @@ namespace CustomRoles.Roles
 
         protected override void SubscribeEvents()
         {
-            Log.Debug($"{Name}:{nameof(SubscribeEvents)} loading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name}:{nameof(SubscribeEvents)} loading events.");
             Exiled.Events.Handlers.Player.Hurting += OnHurt;
             base.SubscribeEvents();
         }
@@ -39,7 +41,7 @@ namespace CustomRoles.Roles
 
         protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{Name}:{nameof(UnsubscribeEvents)} unloading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name}:{nameof(UnsubscribeEvents)} unloading events.");
             Exiled.Events.Handlers.Player.Hurting -= OnHurt;
             base.UnsubscribeEvents();
         }
@@ -52,7 +54,7 @@ namespace CustomRoles.Roles
 
         private void OnHurt(HurtingEventArgs ev)
         {
-            if (Check(ev.Target) && ev.Handler.Type == DamageType.Scp207)
+            if (Check(ev.Player) && ev.DamageHandler.Type == DamageType.Scp207)
                 ev.IsAllowed = false;
 
             if (Check(ev.Attacker))

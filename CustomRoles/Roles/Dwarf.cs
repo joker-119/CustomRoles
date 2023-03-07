@@ -4,13 +4,14 @@ namespace CustomRoles.Roles
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using MEC;
+    using PlayerRoles;
     using UnityEngine;
 
-    [CustomRole(RoleType.None)]
+    [CustomRole(RoleTypeId.None)]
     public class Dwarf : CustomRole
     {
         public override uint Id { get; set; } = 5;
-        public override RoleType Role { get; set; } = RoleType.None;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.None;
         public override int MaxHealth { get; set; } = 100;
         public override string Name { get; set; } = "Dwarf";
 

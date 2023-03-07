@@ -8,14 +8,16 @@ namespace CustomRoles.Roles
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using PlayerRoles;
     using PlayerStatsSystem;
     using Player = Exiled.Events.Handlers.Player;
 
-    [CustomRole(RoleType.Scp0492)]
+    [CustomRole(RoleTypeId.Scp0492)]
     public class PDZombie : CustomRole
     {
         public override uint Id { get; set; } = 9;
-        public override RoleType Role { get; set; } = RoleType.Scp0492;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.Scp0492;
         public override int MaxHealth { get; set; } = 500;
         public override string Name { get; set; } = "Pocket Dimension Zombie";
 
@@ -29,7 +31,7 @@ namespace CustomRoles.Roles
 
         protected override void SubscribeEvents()
         {
-            Log.Debug($"{Name}:{nameof(SubscribeEvents)}: loading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name}:{nameof(SubscribeEvents)}: loading events.");
             Player.Hurting += OnHurt;
             Player.ReceivingEffect += OnReceivingEffect;
             base.SubscribeEvents();
@@ -37,7 +39,7 @@ namespace CustomRoles.Roles
 
         protected override void UnsubscribeEvents()
         {
-            Log.Debug($"{Name}:{nameof(UnsubscribeEvents)}: unloading events.", Plugin.Singleton.Config.Debug);
+            Log.Debug($"{Name}:{nameof(UnsubscribeEvents)}: unloading events.");
             Player.Hurting -= OnHurt;
             Player.ReceivingEffect -= OnReceivingEffect;
             base.UnsubscribeEvents();
@@ -50,10 +52,10 @@ namespace CustomRoles.Roles
                 int chance = Plugin.Singleton.Rng.Next(100);
 
                 if (chance < TeleportChance)
-                    ev.Target.EnableEffect(EffectType.Corroding);
+                    ev.Player.EnableEffect(EffectType.Corroding);
             }
 
-            if (Check(ev.Target) && ev.Attacker.IsHuman && ev.Attacker.CurrentItem.Type.IsWeapon(false))
+            if (Check(ev.Player) && ev.Attacker.IsHuman && ev.Attacker.CurrentItem.Type.IsWeapon(false))
                 ev.Amount *= 0.20f;
         }
 

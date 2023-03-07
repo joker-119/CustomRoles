@@ -3,12 +3,13 @@ namespace CustomRoles.Roles
     using System.Collections.Generic;
     using Exiled.API.Features.Attributes;
     using Exiled.CustomRoles.API.Features;
+    using PlayerRoles;
 
-    [CustomRole(RoleType.NtfSpecialist)]
+    [CustomRole(RoleTypeId.NtfSpecialist)]
     public class Demolitionist : CustomRole
     {
         public override uint Id { get; set; } = 4;
-        public override RoleType Role { get; set; } = RoleType.NtfSpecialist;
+        public override RoleTypeId Role { get; set; } = RoleTypeId.NtfSpecialist;
         public override int MaxHealth { get; set; } = 120;
         public override string Name { get; set; } = "Demolitionist";
 

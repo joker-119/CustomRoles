@@ -32,8 +32,7 @@ namespace CustomRoles.Abilities
             if (RunRaycast(player, out RaycastHit hit))
             {
                 Log.Debug($"{player.Nickname} -- {player.Position} - {hit.point}");
-                bool line = Physics.Linecast(hit.point, hit.point + Vector3.down * 5f, out RaycastHit lineHit,
-                    player.ReferenceHub.playerMovementSync.CollidableSurfaces);
+                bool line = Physics.Linecast(hit.point, hit.point + Vector3.down * 5f, out RaycastHit lineHit);
                 if (!line)
                 {
                     player.ShowHint(

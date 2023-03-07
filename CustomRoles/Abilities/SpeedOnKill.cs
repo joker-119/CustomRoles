@@ -5,6 +5,7 @@ namespace CustomRoles.Abilities
     using Exiled.API.Enums;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     public class SpeedOnKill : PassiveAbility
@@ -30,13 +31,13 @@ namespace CustomRoles.Abilities
 
         private void OnDying(DyingEventArgs ev)
         {
-            if (Check(ev.Killer))
+            if (Check(ev.Attacker))
             {
-                byte curIntensity = ev.Killer.GetEffectIntensity<Scp207>();
+                byte curIntensity = ev.Attacker.GetEffectIntensity<Scp207>();
                 if (curIntensity < IntensityLimit)
                 {
-                    ev.Killer.ChangeEffectIntensity<Scp207>((byte)(curIntensity + 1));
-                    ev.Killer.GetEffect(EffectType.Scp207).Duration = Duration;
+                    ev.Attacker.ChangeEffectIntensity<Scp207>((byte)(curIntensity + 1));
+                    ev.Attacker.GetEffect(EffectType.Scp207).Duration = Duration;
                 }
             }
         }

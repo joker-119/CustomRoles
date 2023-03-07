@@ -3,6 +3,7 @@ namespace CustomRoles.Abilities
     using Exiled.API.Features.Items;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
     using Item = Exiled.API.Features.Items.Item;
 
@@ -25,8 +26,8 @@ namespace CustomRoles.Abilities
 
         private void OnDying(DyingEventArgs ev)
         {
-            if (Check(ev.Target))
-                ((ExplosiveGrenade)Item.Create(ItemType.GrenadeHE)).SpawnActive(ev.Target.Position, ev.Target);
+            if (Check(ev.Player))
+                ((ExplosiveGrenade)Item.Create(ItemType.GrenadeHE)).SpawnActive(ev.Player.Position, ev.Player);
         }
     }
 }
