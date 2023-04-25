@@ -118,7 +118,7 @@ public class ProjectileAbility : ActiveAbility
     private void Arrived(Vector3 target)
     {
         ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-        grenade.FuseTime = 0.0f;
+        grenade.FuseTime = 0.5f;
         PlagueZombie.Grenades.Add(grenade.Serial);
         grenade.SpawnActive(target);
     }
