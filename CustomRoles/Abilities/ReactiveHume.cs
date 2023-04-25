@@ -1,51 +1,59 @@
-namespace CustomRoles.Abilities
+namespace CustomRoles.Abilities;
+
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.API.Features.Attributes;
+using Exiled.CustomRoles.API.Features;
+using Exiled.Events.EventArgs;
+using Exiled.Events.EventArgs.Player;
+using Player = Exiled.Events.Handlers.Player;
+
+[CustomAbility]
+public class ReactiveHume : PassiveAbility
 {
-    using Exiled.API.Features;
-    using Exiled.CustomRoles.API.Features;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.EventArgs.Player;
-    using Player = Exiled.Events.Handlers.Player;
+    public override string Name { get; set; } = "Reactive Hume Shield";
 
-    public class ReactiveHume : PassiveAbility
+    public override string Description { get; set; } =
+        "A Hume shield that builds up in power as the player takes damage. Instead of negating damage, it instead reduced incoming damage based on how full the shield is.";
+
+    protected override void SubscribeEvents()
     {
-        public override string Name { get; set; } = "Reactive Hume Shield";
+        Player.Hurting += OnHurting;
+        base.SubscribeEvents();
+    }
 
-        public override string Description { get; set; } =
-            "A Hume shield that builds up in power as the player takes damage. Instead of negating damage, it instead reduced incoming damage based on how full the shield is.";
+    protected override void UnsubscribeEvents()
+    {
+        Player.Hurting -= OnHurting;
+        base.UnsubscribeEvents();
+    }
 
-        protected override void SubscribeEvents()
+    private void OnHurting(HurtingEventArgs ev)
+    {
+        if (Check(ev.Attacker))
         {
-            Player.Hurting += OnHurting;
-            base.SubscribeEvents();
+            ev.Amount *= 0.4f;
         }
-
-        protected override void UnsubscribeEvents()
+        else if (Check(ev.Player))
         {
-            Player.Hurting -= OnHurting;
-            base.UnsubscribeEvents();
-        }
+            ev.IsAllowed = false;
+            float perc = ev.Player.ArtificialHealth / ev.Player.MaxArtificialHealth;
+            float reduction = ev.Amount * (perc * .8f);
+            Log.Debug(
+                $"{Name}: AHP: {ev.Player.ArtificialHealth} -- Reducing incoming damage by: ({perc * 100}%) -- Base: {ev.Amount} New: {ev.Amount - reduction}");
+            float amountToAdd = ev.Amount * 0.75f;
+            if (ev.Player.ArtificialHealth + amountToAdd > ev.Player.MaxArtificialHealth)
+                ev.Player.ArtificialHealth = (ushort)ev.Player.MaxArtificialHealth;
+            else
+                ev.Player.ArtificialHealth += (ushort)(ev.Amount * 0.75f);
+            Log.Debug($"{Name}: Adding {ev.Amount * 0.75f} to AHP. New value: {ev.Player.ArtificialHealth}");
 
-        private void OnHurting(HurtingEventArgs ev)
-        {
-            if (Check(ev.Attacker))
-            {
-                ev.Amount *= 0.4f;
-            }
-            else if (Check(ev.Player))
-            {
-                float perc = ev.Player.ArtificialHealth / ev.Player.MaxArtificialHealth;
-                float reduction = ev.Amount * (perc * .8f);
-                Log.Debug(
-                    $"{Name}: AHP: {ev.Player.ArtificialHealth} -- Reducing incoming damage by: ({perc * 100}%) -- Base: {ev.Amount} New: {ev.Amount - reduction}");
-                float amountToAdd = ev.Amount * 0.75f;
-                if (ev.Player.ArtificialHealth + amountToAdd > ev.Player.MaxArtificialHealth)
-                    ev.Player.ArtificialHealth = (ushort)ev.Player.MaxArtificialHealth;
-                else
-                    ev.Player.ArtificialHealth += (ushort)(ev.Amount * 0.75f);
-                Log.Debug($"{Name}: Adding {ev.Amount * 0.75f} to AHP. New value: {ev.Player.ArtificialHealth}");
-
-                ev.Amount -= reduction;
-            }
+            ev.Amount -= reduction;
+            Log.Debug($"Dealing {ev.Amount} damage.");
+            if (ev.Player.Health - ev.Amount <= 0)
+                ev.Player.Kill(ev.DamageHandler);
+            else
+                ev.Player.Health -= ev.Amount;
         }
     }
 }

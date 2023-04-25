@@ -1,31 +1,64 @@
-namespace CustomRoles
+namespace CustomRoles;
+
+using System;
+using System.Collections.Generic;
+
+using CustomRoles.API;
+
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.CustomRoles.API.Features;
+using Exiled.Loader;
+
+public class Methods
 {
-    using CustomRoles.Roles;
-    using Exiled.API.Features;
-    using Exiled.CustomRoles.API.Features;
+    private readonly Plugin plugin;
 
-    public class Methods
+    public Methods(Plugin plugin)
     {
-        private readonly Plugin plugin;
+        this.plugin = plugin;
+    }
 
-        public Methods(Plugin plugin)
+    public static CustomRole? GetCustomRole(ref List<ICustomRole>.Enumerator? enumerator, bool checkEscape = false, bool checkRevive = false)
+    {
+        try
         {
-            this.plugin = plugin;
-        }
+            Log.Debug("Getting role from enumerator..");
 
-        public void SelectRandomZombieType(Player player)
-        {
-            int r = plugin.Rng.Next(plugin.Config.EnabledZombies.Count - 1);
-            Log.Debug(
-                $"{nameof(SelectRandomZombieType)}: {plugin.Config.EnabledZombies.Count} -- {plugin.Config.EnabledZombies[r]} -- Ex: {nameof(BallisticZombie)} - {nameof(PlagueZombie)}");
-            string name = plugin.Config.EnabledZombies[r];
-            if (!CustomRole.TryGet(name, out CustomRole role))
+            if (!enumerator.HasValue)
+                return null;
+
+            while (enumerator.Value.MoveNext())
             {
-                Log.Warn($"{nameof(SelectRandomZombieType)}: {name} is not a valid custom role.");
-                return;
+                if (enumerator.Value.Current is not null)
+                {
+                    if (enumerator.Value.Current.StartTeam.HasFlag(StartTeam.Other)
+                        || (enumerator.Value.Current.StartTeam.HasFlag(StartTeam.Revived) && !checkRevive)
+                        || (enumerator.Value.Current.StartTeam.HasFlag(StartTeam.Escape) && !checkEscape)
+                        || (!enumerator.Value.Current.StartTeam.HasFlag(StartTeam.Revived) && checkRevive)
+                        || (!enumerator.Value.Current.StartTeam.HasFlag(StartTeam.Escape) && checkEscape)
+                        || Loader.Random.Next(100) > enumerator.Value.Current.Chance)
+                    {
+                        Log.Debug("Validation check failed");
+                        continue;
+                    }
+
+                    Log.Debug("Returning a role!");
+                    return (CustomRole)enumerator.Value.Current;
+                }
+
+                Log.Debug("Enumerator current is null.");
+                return null;
             }
 
-            role.AddRole(player);
+            Log.Debug("Cannot move next");
+
+            return null;
+        }
+        catch (Exception e)
+        {
+            Log.Error(e);
+            return null;
         }
     }
 }

@@ -1,66 +1,54 @@
-namespace CustomRoles.Roles
+namespace CustomRoles.Roles;
+
+using CustomRoles.API;
+
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.API.Features.Attributes;
+using Exiled.API.Features.Spawn;
+using Exiled.CustomRoles.API.Features;
+
+using MEC;
+using PlayerRoles;
+using UnityEngine;
+
+[CustomRole(RoleTypeId.Scp0492)]
+public class DwarfZombie : CustomRole, ICustomRole
 {
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Attributes;
-    using Exiled.CustomRoles.API.Features;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.EventArgs.Player;
-    using MEC;
-    using PlayerRoles;
-    using UnityEngine;
+    public int Chance { get; set; } = 20;
 
-    [CustomRole(RoleTypeId.Scp0492)]
-    public class DwarfZombie : CustomRole
+    public StartTeam StartTeam { get; set; } = StartTeam.Scp | StartTeam.Revived;
+
+    public override uint Id { get; set; } = 6;
+
+    public override RoleTypeId Role { get; set; } = RoleTypeId.Scp0492;
+
+    public override int MaxHealth { get; set; } = 450;
+
+    public override string Name { get; set; } = "Dwarf Zombie";
+
+    public override string Description { get; set; } =
+        "A weaker, smaller, amd faster zombie than its brothers.";
+
+    public override string CustomInfo { get; set; } = "Dwarf Zombie";
+
+    public override SpawnProperties SpawnProperties { get; set; } = new()
     {
-        public override uint Id { get; set; } = 6;
-        public override RoleTypeId Role { get; set; } = RoleTypeId.Scp0492;
-        public override int MaxHealth { get; set; } = 450;
-        public override string Name { get; set; } = "Dwarf Zombie";
+        Limit = 1,
+    };
 
-        public override string Description { get; set; } =
-            "A weaker, smaller, amd faster zombie than its brothers.";
-
-        public override string CustomInfo { get; set; } = "Dwarf Zombie";
-
-        protected override void SubscribeEvents()
+    protected override void RoleAdded(Player player)
+    {
+        Timing.CallDelayed(2.5f, () =>
         {
-            Log.Debug($"{Name}:{nameof(SubscribeEvents)} loading events.");
-            Exiled.Events.Handlers.Player.Hurting += OnHurt;
-            base.SubscribeEvents();
-        }
+            player.Scale = new Vector3(0.75f, 0.75f, 0.75f);
+            player.EnableEffect(EffectType.MovementBoost);
+        });
+    }
 
-        protected override void RoleAdded(Player player)
-        {
-            Timing.CallDelayed(2.5f, () =>
-            {
-                player.Scale = new Vector3(0.75f, 0.75f, 0.75f);
-                player.EnableEffect(EffectType.Scp207);
-            });
-        }
-
-        protected override void UnsubscribeEvents()
-        {
-            Log.Debug($"{Name}:{nameof(UnsubscribeEvents)} unloading events.");
-            Exiled.Events.Handlers.Player.Hurting -= OnHurt;
-            base.UnsubscribeEvents();
-        }
-
-        protected override void RoleRemoved(Player player)
-        {
-            player.DisableEffect(EffectType.Scp207);
-            player.Scale = Vector3.one;
-        }
-
-        private void OnHurt(HurtingEventArgs ev)
-        {
-            if (Check(ev.Player) && ev.DamageHandler.Type == DamageType.Scp207)
-                ev.IsAllowed = false;
-
-            if (Check(ev.Attacker))
-            {
-                ev.Amount *= 0.7f;
-            }
-        }
+    protected override void RoleRemoved(Player player)
+    {
+        player.DisableEffect(EffectType.Scp207);
+        player.Scale = Vector3.one;
     }
 }

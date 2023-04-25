@@ -1,102 +1,125 @@
-namespace CustomRoles.Abilities
+namespace CustomRoles.Abilities;
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using CustomRoles.Roles;
+using Exiled.API.Features;
+using Exiled.API.Features.Attributes;
+using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups;
+using Exiled.CustomRoles.API.Features;
+using InventorySystem.Items.Firearms.Modules;
+using MEC;
+using Mirror;
+using UnityEngine;
+
+[CustomAbility]
+public class ProjectileAbility : ActiveAbility
 {
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using CustomRoles.Roles;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups;
-    using Exiled.CustomRoles.API.Features;
-    using InventorySystem.Items.Firearms.Modules;
-    using MEC;
-    using Mirror;
-    using UnityEngine;
+    public override string Name { get; set; } = "Projectile";
 
-    public class ProjectileAbility : ActiveAbility
+    public override string Description { get; set; } = "Shoots an item in the direction you are facing.";
+
+    public override float Duration { get; set; } = 1f;
+
+    public override float Cooldown { get; set; } = 35f;
+
+    [Description("The speed of the projectile.")]
+    public float Speed { get; set; } = 8f;
+
+    [Description("How high the projectile arcs upwards when thrown.")]
+    public float ArcHeight { get; set; } = 3f;
+
+    protected override void AbilityUsed(Player player)
     {
-        public override string Name { get; set; } = "Projectile";
-        public override string Description { get; set; } = "Shoots an item in the direction you are facing.";
-        public override float Duration { get; set; } = 1f;
-        public override float Cooldown { get; set; } = 35f;
-
-        [Description("The speed of the projectile.")]
-        public float Speed { get; set; } = 8f;
-
-        [Description("How high the projectile arcs upwards when thrown.")]
-        public float ArcHeight { get; set; } = 3f;
-
-        protected override void AbilityUsed(Player player)
+        Log.Debug("Projectile used.");
+        Vector3 target = Vector3.zero;
+        if (RunRaycast(player, out RaycastHit hit))
         {
-            Vector3 target = Vector3.zero;
-            if (RunRaycast(player, out RaycastHit hit))
+            Log.Debug("Raycast hits");
+            if ((player.Position - hit.point).sqrMagnitude > 400)
             {
-                if ((player.Position - hit.point).sqrMagnitude > 400)
-                {
-                    target = Vector3.MoveTowards(player.Position, hit.point, 20f);
+                Log.Debug("over max distance");
+                target = Vector3.MoveTowards(player.Position, hit.point, 20f);
 
-                    if (Physics.Linecast(target, Vector3.down * 20f, out RaycastHit lineHit))
-                        target = lineHit.point;
-                }
-                else
+                if (Physics.Linecast(target, Vector3.down * 20f, out RaycastHit lineHit))
                 {
-                    target = hit.point;
+                    Log.Debug("Max distance linecast");
+                    target = lineHit.point;
                 }
-
-                Pickup pickup = Pickup.CreateAndSpawn(ItemType.SCP018, player.CameraTransform.position, default);
-                NetworkServer.UnSpawn(pickup.Base.gameObject);
-                GameObject gameObject = pickup.Base.gameObject;
-                gameObject.transform.localScale = Vector3.one * 2f;
-                NetworkServer.Spawn(gameObject);
-                Rigidbody body = pickup.Base.GetComponent<Rigidbody>();
-                body.useGravity = false;
-                body.isKinematic = false;
-                Timing.RunCoroutine(Update(pickup, target));
             }
-        }
-
-        public bool RunRaycast(Player player, out RaycastHit hit)
-        {
-            Vector3 forward = player.CameraTransform.forward;
-            return Physics.Raycast(player.Position + forward, forward,
-                out hit, 200f, StandardHitregBase.HitregMask);
-        }
-
-        private IEnumerator<float> Update(Pickup pickup, Vector3 target)
-        {
-            bool deleted = false;
-            Vector3 startPosition = pickup.Position;
-            float stepScale = Speed / Vector3.Distance(startPosition, target);
-            float progress = 0f;
-            for (;;)
+            else
             {
-                if (deleted)
-                    yield break;
-                // Increment our progress from 0 at the start, to 1 when we arrive.
-                progress = Mathf.Min(progress + Time.deltaTime * stepScale, 1.0f);
+                target = hit.point;
+            }
 
-                // Turn this 0-1 value into a parabola that goes from 0 to 1, then back to 0.
-                float parabola = 1.0f - 4.0f * (progress - 0.5f) * (progress - 0.5f);
+            Log.Debug("Spawning pickup");
+            Pickup pickup = Pickup.CreateAndSpawn(ItemType.SCP018, player.CameraTransform.position, default);
+            pickup.Scale *= 2f;
+            Rigidbody body = pickup.Base.GetComponent<Rigidbody>();
+            body.useGravity = false;
+            body.isKinematic = false;
+            Log.Debug("Starting throw");
+            Timing.RunCoroutine(DoLerpArc(pickup, target));
+        }
+    }
 
-                // Travel in a straight line from our start position to the target.        
-                Vector3 nextPos = Vector3.Lerp(startPosition, target, progress);
+    public bool RunRaycast(Player player, out RaycastHit hit)
+    {
+        Vector3 forward = player.CameraTransform.forward;
+        return Physics.Raycast(player.Position + forward, forward,
+                               out hit, 200f, StandardHitregBase.HitregMask);
+    }
 
-                // Then add a vertical arc in excess of this.
-                nextPos.y += parabola * ArcHeight;
+    private IEnumerator<float> DoLerpArc(Pickup pickup, Vector3 target)
+    {
+        bool deleted = false;
+        Vector3 startPosition = pickup.Position;
+        float stepScale = Speed / Vector3.Distance(startPosition, target);
+        float progress = 0f;
+        for (;;)
+        {
+            Log.Debug("Moving object");
+            if (deleted)
+            {
+                Log.Debug("Is deleted.");
+                yield break;
+            }
 
-                // Continue as before.
+            progress = Mathf.Min(progress + (Time.deltaTime * stepScale), 1.0f);
+
+            float parabola = 1.0f - (4.0f * (progress - 0.5f) * (progress - 0.5f));
+
+            Vector3 nextPos = Vector3.Lerp(startPosition, target, progress);
+
+            nextPos.y += parabola * ArcHeight;
+
+            if (Physics.Linecast(pickup.Position, nextPos, out RaycastHit hit, StandardHitregBase.HitregMask))
+            {
+                progress = 1.0f;
+                target = hit.point;
+            }
+            else
                 pickup.Position = nextPos;
 
-                // I presume you disable/destroy the arrow in Arrived so it doesn't keep arriving.
-                if (progress == 1.0f)
-                {
-                    Arrived(target);
-                    pickup.Destroy();
-                    deleted = true;
-                }
+            if (progress >= 1.0f)
+            {
+                Log.Debug("Arrived");
+                Arrived(target);
+                pickup.Destroy();
+                deleted = true;
             }
-        }
 
-        private void Arrived(Vector3 target) => 
-            PlagueZombie.Grenades.Add(Pickup.CreateAndSpawn(ItemType.GrenadeHE, target, default));
+            yield return Timing.WaitForOneFrame;
+        }
+    }
+
+    private void Arrived(Vector3 target)
+    {
+        ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+        grenade.FuseTime = 0.0f;
+        PlagueZombie.Grenades.Add(grenade.Serial);
+        grenade.SpawnActive(target);
     }
 }

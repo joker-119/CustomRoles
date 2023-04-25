@@ -1,126 +1,137 @@
-namespace CustomRoles
+namespace CustomRoles;
+
+using System.Collections.Generic;
+
+using CustomRoles.API;
+
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.CustomRoles.API.Features;
+using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp049;
+using Exiled.Events.EventArgs.Server;
+
+using PlayerRoles;
+using Respawning;
+
+public class EventHandlers
 {
-    using System.Linq;
-    using CustomRoles.Roles;
-    using Exiled.API.Features;
-    using Exiled.CustomRoles.API;
-    using Exiled.CustomRoles.API.Features;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Scp049;
-    using Exiled.Events.EventArgs.Server;
-    using MEC;
-    using PlayerRoles;
-    using Respawning;
+    private readonly Plugin plugin;
 
-    public class EventHandlers
+    public EventHandlers(Plugin plugin)
     {
-        private readonly Plugin plugin;
+        this.plugin = plugin;
+    }
 
-        public EventHandlers(Plugin plugin)
+    public void OnRoundStarted()
+    {
+        List<ICustomRole>.Enumerator? dClassRoles = new();
+        List<ICustomRole>.Enumerator? scientistRoles = new();
+        List<ICustomRole>.Enumerator? guardRoles = new();
+        List<ICustomRole>.Enumerator? scpRoles = new();
+
+        foreach (KeyValuePair<StartTeam, List<ICustomRole>> kvp in plugin.Roles)
         {
-            this.plugin = plugin;
-        }
-
-        public void OnRoundStarted()
-        {
-            bool isPhantom = false;
-            bool isDwarf = false;
-            bool spawnPhantom = plugin.Rng.Next(100) <= 20;
-            bool spawnDwarf = plugin.Rng.Next(100) <= 35;
-
-            foreach (Player player in Player.List)
-                switch (player.Role.Type)
-                {
-                    case RoleTypeId.FacilityGuard when !isPhantom && spawnPhantom:
-                    {
-                        CustomRole.Get(typeof(Phantom))?.AddRole(player);
-
-                        isPhantom = true;
-                        break;
-                    }
-                    case RoleTypeId.Scientist:
-                    case RoleTypeId.ClassD:
-                    {
-                        if (spawnDwarf && !isDwarf)
-                        {
-                            CustomRole.Get(typeof(Dwarf))?.AddRole(player);
-                            isDwarf = true;
-                        }
-
-                        break;
-                    }
-                }
-        }
-
-        public void OnRespawningTeam(RespawningTeamEventArgs ev)
-        {
-            if (ev.Players.Count == 0)
+            Log.Debug($"Setting enumerator for {kvp.Key} - {kvp.Value.Count}");
+            switch (kvp.Key)
             {
-                Log.Warn(
-                    $"{nameof(OnRespawningTeam)}: The respawn list is empty ?!? -- {ev.NextKnownTeam} / {ev.MaximumRespawnAmount}");
-
-                foreach (Player player in Player.Get(RoleTypeId.Spectator))
-                    ev.Players.Add(player);
-                ev.MaximumRespawnAmount = ev.Players.Count;
-            }
-
-            if (ev.NextKnownTeam == SpawnableTeamType.NineTailedFox)
-                if (plugin.Rng.Next(100) <= 40)
-                {
-                    Log.Debug($"{nameof(OnRespawningTeam)}: Spawning NTF Special");
-                    int r = plugin.Rng.Next(ev.Players.Count);
-                    if (plugin.Rng.Next(0, 1) == 0)
-                    {
-                        if (ev.Players[r].GetCustomRoles().Any())
-                            return;
-                        Log.Debug($"{nameof(OnRespawningTeam)}: Spawning medic!");
-                        CustomRole.Get("Medic").AddRole(ev.Players[r]);
-                    }
-                    else
-                    {
-                        if (ev.Players[r].GetCustomRoles().Any())
-                            return;
-                        Log.Debug($"{nameof(OnRespawningTeam)}: Spawning Demo!");
-                        CustomRole.Get("Demolitionist").AddRole(ev.Players[r]);
-                    }
-
-                    ev.Players.RemoveAt(r);
-                }
-        }
-
-        public void OnReloadedConfigs()
-        {
-            plugin.Config.LoadConfigs();
-        }
-
-        public void OnChangingRole(ChangingRoleEventArgs ev)
-        {
-            if (ev.NewRole == RoleTypeId.Scp0492)
-            {
-                if (ev.Player.GetCustomRoles().Any())
-                    return;
-                Log.Debug($"{nameof(OnChangingRole)}: Trying to spawn new zombie.");
-                if (plugin.Rng.Next(100) <= 45)
-                {
-                    Log.Debug($"{nameof(OnChangingRole)}: Selecting random zombie role.");
-                    Timing.CallDelayed(2f, () => plugin.Methods.SelectRandomZombieType(ev.Player));
-                }
+                case StartTeam.ClassD:
+                    Log.Debug("Class d funny");
+                    dClassRoles = kvp.Value.GetEnumerator();
+                    break;
+                case StartTeam.Scientist:
+                    scientistRoles = kvp.Value.GetEnumerator();
+                    break;
+                case StartTeam.Guard:
+                    guardRoles = kvp.Value.GetEnumerator();
+                    break;
+                case StartTeam.Scp:
+                    scpRoles = kvp.Value.GetEnumerator();
+                    break;
             }
         }
 
-        public void FinishingRecall(FinishingRecallEventArgs ev)
+        foreach (Player player in Player.List)
         {
-            Log.Debug($"{nameof(OnChangingRole)}: Selecting random zombie role.");
-            Timing.CallDelayed(2f, () => plugin.Methods.SelectRandomZombieType(ev.Target));
+            Log.Debug($"Trying to give {player.Nickname} a role | {player.Role.Type}");
+            CustomRole? role = null;
+            switch (player.Role.Type)
+            {
+                case RoleTypeId.FacilityGuard:
+                    role = Methods.GetCustomRole(ref guardRoles);
+                    break;
+                case RoleTypeId.Scientist:
+                    role = Methods.GetCustomRole(ref scientistRoles);
+                    break;
+                case RoleTypeId.ClassD:
+                    role = Methods.GetCustomRole(ref dClassRoles);
+                    break;
+                case { } when player.Role.Side == Side.Scp:
+                    role = Methods.GetCustomRole(ref scpRoles);
+                    break;
+            }
+
+            role?.AddRole(player);
+        }
+    }
+
+    public void OnRespawningTeam(RespawningTeamEventArgs ev)
+    {
+        if (ev.Players.Count == 0)
+        {
+            Log.Warn(
+                $"{nameof(OnRespawningTeam)}: The respawn list is empty ?!? -- {ev.NextKnownTeam} / {ev.MaximumRespawnAmount}");
+
+            foreach (Player player in Player.Get(RoleTypeId.Spectator))
+                ev.Players.Add(player);
+            ev.MaximumRespawnAmount = ev.Players.Count;
         }
 
-        public void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
+        List<ICustomRole>.Enumerator? roles = new();
+        switch (ev.NextKnownTeam)
         {
-            if (!plugin.StopRagdollList.Contains(ev.Player)) return;
-            Log.Warn($"Stopped doll for {ev.Player.Nickname}");
-            ev.IsAllowed = false;
-            plugin.StopRagdollList.Remove(ev.Player);
+            case SpawnableTeamType.ChaosInsurgency:
+                if (plugin.Roles.ContainsKey(StartTeam.Chaos))
+                    roles = plugin.Roles[StartTeam.Chaos].GetEnumerator();
+                break;
+            case SpawnableTeamType.NineTailedFox:
+                if (plugin.Roles.ContainsKey(StartTeam.Ntf))
+                    roles = plugin.Roles[StartTeam.Ntf].GetEnumerator();
+                break;
         }
+
+        foreach (Player player in ev.Players)
+        {
+            CustomRole? role = Methods.GetCustomRole(ref roles);
+
+            role?.AddRole(player);
+        }
+    }
+
+    public void OnReloadedConfigs()
+    {
+        plugin.Config.LoadConfigs();
+    }
+
+    public void FinishingRecall(FinishingRecallEventArgs ev)
+    {
+        Log.Debug($"{nameof(FinishingRecall)}: Selecting random zombie role.");
+        if (plugin.Roles.ContainsKey(StartTeam.Scp) && ev.Target is not null)
+        {
+            List<ICustomRole>.Enumerator? roles = plugin.Roles[StartTeam.Scp].GetEnumerator();
+            CustomRole? role = Methods.GetCustomRole(ref roles, false, true);
+
+            role?.AddRole(ev.Target);
+        }
+    }
+
+    public void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
+    {
+        if (!plugin.StopRagdollList.Contains(ev.Player)) 
+            return;
+
+        Log.Warn($"Stopped doll for {ev.Player.Nickname}");
+        ev.IsAllowed = false;
+        plugin.StopRagdollList.Remove(ev.Player);
     }
 }
