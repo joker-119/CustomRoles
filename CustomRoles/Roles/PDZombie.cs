@@ -72,7 +72,7 @@ public class PDZombie : CustomRole, ICustomRole
                 ev.Player.EnableEffect(EffectType.Corroding);
         }
 
-        if (Check(ev.Player) && ev.Attacker.IsHuman && ev.Attacker.CurrentItem.Type.IsWeapon(false))
+        if (Check(ev.Player) && ev.Attacker is { CurrentItem: { }, IsHuman: true } && ev.Attacker.CurrentItem.Type.IsWeapon(false))
             ev.Amount *= 0.20f;
     }
 

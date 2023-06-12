@@ -5,17 +5,11 @@ using System.ComponentModel;
 using System.IO;
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
-using Exiled.CustomRoles.API.Features;
 using Exiled.Loader;
-using Exiled.Loader.Features.Configs;
-using Exiled.Loader.Features.Configs.CustomConverters;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
-using YamlDotNet.Serialization.NodeDeserializers;
 
 public class Config : IConfig
 {
-    public Roles RoleConfigs;
+    public Roles RoleConfigs { get; private set; } = null!;
 
     [Description("Whether or not debug messages shoudl be shown.")]
     public bool Debug { get; set; } = true;

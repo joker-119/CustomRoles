@@ -3,7 +3,6 @@ namespace CustomRoles.Abilities;
 using Exiled.API.Features.Attributes;
 using Exiled.API.Features.Items;
 using Exiled.CustomRoles.API.Features;
-using Exiled.Events.EventArgs;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.Handlers;
 using Item = Exiled.API.Features.Items.Item;

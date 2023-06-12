@@ -6,7 +6,6 @@ using CustomPlayerEffects;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
 using Exiled.CustomRoles.API.Features;
-using Exiled.Events.EventArgs;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 

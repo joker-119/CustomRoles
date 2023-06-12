@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using CustomRoles.API;
 
 using Exiled.API.Features;
-using Exiled.API.Features.Roles;
-using Exiled.CustomRoles;
 using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
+
+using PlayerRoles;
 
 using Config = Configs.Config;
 using CustomRole = Exiled.CustomRoles.API.Features.CustomRole;
@@ -60,20 +60,39 @@ public class Plugin : Plugin<Config>
 
         foreach (CustomRole role in CustomRole.Registered)
         {
-            foreach (CustomAbility ability in role.CustomAbilities)
+            if (role.CustomAbilities is not null)
             {
-                ability.Register();
+                foreach (CustomAbility ability in role.CustomAbilities)
+                {
+                    ability.Register();
+                }
             }
 
             if (role is ICustomRole custom)
             {
                 Log.Debug($"Adding {role.Name} to dictionary..");
-                if (!Roles.ContainsKey(custom.StartTeam))
-                    Roles.Add(custom.StartTeam, new());
+                StartTeam team;
+                if (custom.StartTeam.HasFlag(StartTeam.Chaos))
+                    team = StartTeam.Chaos;
+                else if (custom.StartTeam.HasFlag(StartTeam.Guard))
+                    team = StartTeam.Guard;
+                else if (custom.StartTeam.HasFlag(StartTeam.Ntf))
+                    team = StartTeam.Ntf;
+                else if (custom.StartTeam.HasFlag(StartTeam.Scientist))
+                    team = StartTeam.Scientist;
+                else if (custom.StartTeam.HasFlag(StartTeam.ClassD))
+                    team = StartTeam.ClassD;
+                else if (custom.StartTeam.HasFlag(StartTeam.Scp))
+                    team = StartTeam.Scp;
+                else
+                    team = StartTeam.Other;
+
+                if (!Roles.ContainsKey(team))
+                    Roles.Add(team, new());
 
                 for (int i = 0; i < role.SpawnProperties.Limit; i++)
-                    Roles[custom.StartTeam].Add(custom);
-                Log.Debug($"Roles {custom.StartTeam} now has {Roles[custom.StartTeam].Count} elements.");
+                    Roles[team].Add(custom);
+                Log.Debug($"Roles {team} now has {Roles[team].Count} elements.");
             }
         }
 

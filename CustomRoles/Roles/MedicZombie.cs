@@ -59,7 +59,7 @@ public class MedicZombie : CustomRole, ICustomRole
 
     private void OnHurt(HurtingEventArgs ev)
     {
-        if (Check(ev.Attacker)) 
+        if (Check(ev.Attacker))
             ev.Amount *= 0.75f;
     }
 }

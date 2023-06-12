@@ -6,6 +6,7 @@ using CustomRoles.API;
 
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Scp049;
@@ -25,10 +26,10 @@ public class EventHandlers
 
     public void OnRoundStarted()
     {
-        List<ICustomRole>.Enumerator? dClassRoles = new();
-        List<ICustomRole>.Enumerator? scientistRoles = new();
-        List<ICustomRole>.Enumerator? guardRoles = new();
-        List<ICustomRole>.Enumerator? scpRoles = new();
+        List<ICustomRole>.Enumerator dClassRoles = new();
+        List<ICustomRole>.Enumerator scientistRoles = new();
+        List<ICustomRole>.Enumerator guardRoles = new();
+        List<ICustomRole>.Enumerator scpRoles = new();
 
         foreach (KeyValuePair<StartTeam, List<ICustomRole>> kvp in plugin.Roles)
         {
@@ -73,6 +74,11 @@ public class EventHandlers
 
             role?.AddRole(player);
         }
+
+        guardRoles.Dispose();
+        scientistRoles.Dispose();
+        dClassRoles.Dispose();
+        scpRoles.Dispose();
     }
 
     public void OnRespawningTeam(RespawningTeamEventArgs ev)
@@ -87,7 +93,7 @@ public class EventHandlers
             ev.MaximumRespawnAmount = ev.Players.Count;
         }
 
-        List<ICustomRole>.Enumerator? roles = new();
+        List<ICustomRole>.Enumerator roles = new();
         switch (ev.NextKnownTeam)
         {
             case SpawnableTeamType.ChaosInsurgency:
@@ -106,6 +112,8 @@ public class EventHandlers
 
             role?.AddRole(player);
         }
+
+        roles.Dispose();
     }
 
     public void OnReloadedConfigs()
@@ -118,16 +126,18 @@ public class EventHandlers
         Log.Debug($"{nameof(FinishingRecall)}: Selecting random zombie role.");
         if (plugin.Roles.ContainsKey(StartTeam.Scp) && ev.Target is not null)
         {
-            List<ICustomRole>.Enumerator? roles = plugin.Roles[StartTeam.Scp].GetEnumerator();
+            List<ICustomRole>.Enumerator roles = plugin.Roles[StartTeam.Scp].GetEnumerator();
             CustomRole? role = Methods.GetCustomRole(ref roles, false, true);
 
-            role?.AddRole(ev.Target);
+            if (ev.Target.GetCustomRoles().Count == 0)
+                role?.AddRole(ev.Target);
+            roles.Dispose();
         }
     }
 
     public void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
     {
-        if (!plugin.StopRagdollList.Contains(ev.Player)) 
+        if (!plugin.StopRagdollList.Contains(ev.Player))
             return;
 
         Log.Warn($"Stopped doll for {ev.Player.Nickname}");

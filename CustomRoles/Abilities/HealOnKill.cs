@@ -5,7 +5,6 @@ using System.ComponentModel;
 using Exiled.API.Features;
 using Exiled.API.Features.Attributes;
 using Exiled.CustomRoles.API.Features;
-using Exiled.Events.EventArgs;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 using UnityEngine;
@@ -13,7 +12,7 @@ using UnityEngine;
 [CustomAbility]
 public class HealOnKill : PassiveAbility
 {
-    private readonly Dictionary<Player, CoroutineHandle> _activeHoTs = new ();
+    private readonly Dictionary<Player, CoroutineHandle> activeHoTs = new ();
 
     public override string Name { get; set; } = "Heal on Kill";
 
@@ -58,7 +57,7 @@ public class HealOnKill : PassiveAbility
         if (Check(ev.Attacker))
         {
             if (HealOverTime)
-                _activeHoTs[ev.Attacker] = Timing.RunCoroutine(DoHealOverTime(ev.Attacker));
+                activeHoTs[ev.Attacker] = Timing.RunCoroutine(DoHealOverTime(ev.Attacker));
             ev.Attacker.Heal(HealAmount, HealOverMax);
         }
     }
@@ -66,8 +65,10 @@ public class HealOnKill : PassiveAbility
     private void OnHurting(HurtingEventArgs ev)
     {
         if (Check(ev.Player))
-            if (DamageInterruptsHot && _activeHoTs.ContainsKey(ev.Player))
-                Timing.KillCoroutines(_activeHoTs[ev.Player]);
+        {
+            if (DamageInterruptsHot && activeHoTs.ContainsKey(ev.Player))
+                Timing.KillCoroutines(activeHoTs[ev.Player]);
+        }
     }
 
     private IEnumerator<float> DoHealOverTime(Player player)

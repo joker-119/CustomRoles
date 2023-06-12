@@ -37,7 +37,7 @@ public class ChargeAbility : ActiveAbility
         if (RunRaycast(player, out RaycastHit hit))
         {
             Log.Debug($"{player.Nickname} -- {player.Position} - {hit.point}");
-            bool line = Physics.Linecast(hit.point, hit.point + Vector3.down * 5f, out RaycastHit lineHit);
+            bool line = Physics.Linecast(hit.point, hit.point + (Vector3.down * 5f), out RaycastHit lineHit);
             if (!line)
             {
                 player.ShowHint(
@@ -52,13 +52,13 @@ public class ChargeAbility : ActiveAbility
         }
     }
 
-    public bool RunRaycast(Player player, out RaycastHit hit)
+    private bool RunRaycast(Player player, out RaycastHit hit)
     {
-        return Physics.Raycast(player.Position + player.CameraTransform.forward, player.CameraTransform.forward,
-                               out hit, 200f, StandardHitregBase.HitregMask);
+        Vector3 forward = player.CameraTransform.forward;
+        return Physics.Raycast(player.Position + forward, forward, out hit, 200f, StandardHitregBase.HitregMask);
     }
 
-    public IEnumerator<float> MovePlayer(Player player, RaycastHit hit)
+    private IEnumerator<float> MovePlayer(Player player, RaycastHit hit)
     {
         while ((player.Position - hit.point).sqrMagnitude >= 2.5f)
         {
@@ -74,8 +74,7 @@ public class ChargeAbility : ActiveAbility
         {
             if ((target.Position - hit.point).sqrMagnitude >= 3f)
             {
-                target.Hurt(new ScpDamageHandler(player.ReferenceHub, ContactDamage * AccuracyMultiplier,
-                                                 DeathTranslations.Zombie));
+                target.Hurt(new ScpDamageHandler(player.ReferenceHub, ContactDamage * AccuracyMultiplier, DeathTranslations.Zombie));
                 target.EnableEffect(EffectType.Ensnared, EnsnareDuration);
             }
             else

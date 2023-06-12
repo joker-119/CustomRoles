@@ -5,7 +5,6 @@ using CustomPlayerEffects;
 using Exiled.API.Enums;
 using Exiled.API.Features.Attributes;
 using Exiled.CustomRoles.API.Features;
-using Exiled.Events.EventArgs;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.Handlers;
 
@@ -16,7 +15,7 @@ public class SpeedOnKill : PassiveAbility
 
     public override string Description { get; set; } = "Gives the user speed when they kill another player.";
 
-    private float Duration { get; set; } = 5f;
+    public float Duration { get; set; } = 5f;
 
     [Description("The highest intensity level of SCP-207 speed this ability can give.")]
     public byte IntensityLimit { get; set; } = 2;

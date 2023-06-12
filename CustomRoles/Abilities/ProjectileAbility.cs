@@ -1,6 +1,5 @@
 namespace CustomRoles.Abilities;
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using CustomRoles.Roles;
@@ -11,7 +10,7 @@ using Exiled.API.Features.Pickups;
 using Exiled.CustomRoles.API.Features;
 using InventorySystem.Items.Firearms.Modules;
 using MEC;
-using Mirror;
+
 using UnityEngine;
 
 [CustomAbility]
@@ -65,11 +64,10 @@ public class ProjectileAbility : ActiveAbility
         }
     }
 
-    public bool RunRaycast(Player player, out RaycastHit hit)
+    private bool RunRaycast(Player player, out RaycastHit hit)
     {
         Vector3 forward = player.CameraTransform.forward;
-        return Physics.Raycast(player.Position + forward, forward,
-                               out hit, 200f, StandardHitregBase.HitregMask);
+        return Physics.Raycast(player.Position + forward, forward, out hit, 200f, StandardHitregBase.HitregMask);
     }
 
     private IEnumerator<float> DoLerpArc(Pickup pickup, Vector3 target)

@@ -10,7 +10,7 @@ using MEC;
 [CustomAbility]
 public class HealingMist : ActiveAbility
 {
-    private readonly List<CoroutineHandle> _coroutines = new ();
+    private readonly List<CoroutineHandle> coroutines = new ();
 
     public override string Name { get; set; } = "Healing Mist";
 
@@ -34,7 +34,7 @@ public class HealingMist : ActiveAbility
 
     protected override void UnsubscribeEvents()
     {
-        foreach (CoroutineHandle handle in _coroutines)
+        foreach (CoroutineHandle handle in coroutines)
             Timing.KillCoroutines(handle);
         base.UnsubscribeEvents();
     }
@@ -42,8 +42,10 @@ public class HealingMist : ActiveAbility
     private void ActivateMist(Player ply)
     {
         foreach (Player player in Player.List)
+        {
             if (player.Role.Side == ply.Role.Side && player != ply)
-                _coroutines.Add(Timing.RunCoroutine(DoMist(ply, player)));
+                coroutines.Add(Timing.RunCoroutine(DoMist(ply, player)));
+        }
     }
 
     private IEnumerator<float> DoMist(Player activator, Player player)

@@ -10,6 +10,12 @@ using Exiled.CustomRoles.API.Features;
 [CommandHandler(typeof(RemoteAdminCommandHandler))]
 public class TestCommand : ICommand
 {
+    public string Command { get; } = "roletest";
+
+    public string[] Aliases { get; } = { "rtest" };
+
+    public string Description { get; } = "thing";
+
     public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
     {
         string[] args = arguments.Array;
@@ -74,8 +80,4 @@ public class TestCommand : ICommand
         response = "Done";
         return true;
     }
-
-    public string Command { get; } = "roletest";
-    public string[] Aliases { get; } = { "rtest" };
-    public string Description { get; } = "thing";
 }
