@@ -50,7 +50,7 @@ public class PlagueZombie : CustomRole, ICustomRole
         Limit = 1,
     };
 
-    public override List<CustomAbility> CustomAbilities { get; set; } = new()
+    public override List<CustomAbility>? CustomAbilities { get; set; } = new()
     {
         new ProjectileAbility(),
         new MoveSpeedReduction(),

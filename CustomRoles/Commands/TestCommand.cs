@@ -43,37 +43,37 @@ public class TestCommand : ICommand
                     response += $"{role.Name}\n";
                 return true;
             case "phantom":
-                CustomRole.Get(typeof(Phantom)).AddRole(target);
+                CustomRole.Get(typeof(Phantom))?.AddRole(target);
                 break;
             case "dwarf":
-                CustomRole.Get(typeof(Dwarf)).AddRole(target);
+                CustomRole.Get(typeof(Dwarf))?.AddRole(target);
                 break;
             case "medic":
-                CustomRole.Get(typeof(Medic)).AddRole(target);
+                CustomRole.Get(typeof(Medic))?.AddRole(target);
                 break;
             case "berserk":
-                CustomRole.Get(typeof(BerserkZombie)).AddRole(target);
+                CustomRole.Get(typeof(BerserkZombie))?.AddRole(target);
                 break;
             case "charger":
-                CustomRole.Get(typeof(ChargerZombie)).AddRole(target);
+                CustomRole.Get(typeof(ChargerZombie))?.AddRole(target);
                 break;
             case "medicz":
-                CustomRole.Get(typeof(MedicZombie)).AddRole(target);
+                CustomRole.Get(typeof(MedicZombie))?.AddRole(target);
                 break;
             case "plague":
-                CustomRole.Get(typeof(PlagueZombie)).AddRole(target);
+                CustomRole.Get(typeof(PlagueZombie))?.AddRole(target);
                 break;
             case "ballistic":
-                CustomRole.Get(typeof(BallisticZombie)).AddRole(target);
+                CustomRole.Get(typeof(BallisticZombie))?.AddRole(target);
                 break;
             case "dwarfz":
-                CustomRole.Get(typeof(DwarfZombie)).AddRole(target);
+                CustomRole.Get(typeof(DwarfZombie))?.AddRole(target);
                 break;
             case "pdz":
-                CustomRole.Get(typeof(PDZombie)).AddRole(target);
+                CustomRole.Get(typeof(PDZombie))?.AddRole(target);
                 break;
             case "tank":
-                CustomRole.Get(typeof(TankZombie)).AddRole(target);
+                CustomRole.Get(typeof(TankZombie))?.AddRole(target);
                 break;
         }
 

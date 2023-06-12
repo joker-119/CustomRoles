@@ -58,7 +58,7 @@ public class Medic : CustomRole, ICustomRole
         },
     };
 
-    public override List<CustomAbility> CustomAbilities { get; set; } = new()
+    public override List<CustomAbility>? CustomAbilities { get; set; } = new()
     {
         new HealingMist(),
     };
@@ -82,7 +82,7 @@ public class Medic : CustomRole, ICustomRole
         if (!Check(ev.Player))
             return;
 
-        CustomItem item = CustomItem.Get("MG-119");
+        CustomItem? item = CustomItem.Get("MG-119");
         if (item == null)
             return;
         if (ev.Pickup.Type == item.Type)

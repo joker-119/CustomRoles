@@ -45,7 +45,7 @@ public class TankZombie : CustomRole, ICustomRole
     [Description("The rate at which his hume shield will decay.")]
     public float HumeDecayRate { get; set; } = 2.5f;
 
-    public override List<CustomAbility> CustomAbilities { get; set; } = new()
+    public override List<CustomAbility>? CustomAbilities { get; set; } = new()
     {
         new ReactiveHume(),
         new MoveSpeedReduction(),

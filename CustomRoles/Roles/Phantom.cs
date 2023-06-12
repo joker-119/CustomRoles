@@ -64,7 +64,7 @@ public class Phantom : CustomRole, ICustomRole
         },
     };
 
-    public override List<CustomAbility> CustomAbilities { get; set; } = new()
+    public override List<CustomAbility>? CustomAbilities { get; set; } = new()
     {
         new ActiveCamo(),
     };
