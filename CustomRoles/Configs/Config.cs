@@ -7,8 +7,11 @@ using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Loader;
 
+using YamlDotNet.Serialization;
+
 public class Config : IConfig
 {
+    [YamlIgnore]
     public Roles RoleConfigs { get; private set; } = null!;
 
     [Description("Whether or not debug messages shoudl be shown.")]
@@ -19,9 +22,6 @@ public class Config : IConfig
 
     [Description("The file name to load role configs from.")]
     public string RolesFile { get; set; } = "global.yml";
-
-    [Description("A list of zombie class names that are enabled on this server.")]
-    public List<string> EnabledZombies { get; set; } = new ();
 
     [Description("Whether or not this plugin is enabled.")]
     public bool IsEnabled { get; set; } = true;

@@ -97,12 +97,12 @@ public class EventHandlers
         switch (ev.NextKnownTeam)
         {
             case SpawnableTeamType.ChaosInsurgency:
-                if (plugin.Roles.ContainsKey(StartTeam.Chaos))
-                    roles = plugin.Roles[StartTeam.Chaos].GetEnumerator();
+                if (plugin.Roles.TryGetValue(StartTeam.Chaos, out List<ICustomRole>? role))
+                    roles = role.GetEnumerator();
                 break;
             case SpawnableTeamType.NineTailedFox:
-                if (plugin.Roles.ContainsKey(StartTeam.Ntf))
-                    roles = plugin.Roles[StartTeam.Ntf].GetEnumerator();
+                if (plugin.Roles.TryGetValue(StartTeam.Ntf, out List<ICustomRole>? pluginRole))
+                    roles = pluginRole.GetEnumerator();
                 break;
         }
 
