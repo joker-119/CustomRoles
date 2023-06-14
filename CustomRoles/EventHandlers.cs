@@ -126,6 +126,7 @@ public class EventHandlers
         Log.Debug($"{nameof(FinishingRecall)}: Selecting random zombie role.");
         if (plugin.Roles.ContainsKey(StartTeam.Scp) && ev.Target is not null)
         {
+            Log.Debug($"{nameof(FinishingRecall)}: List count {plugin.Roles[StartTeam.Scp].Count}");
             List<ICustomRole>.Enumerator roles = plugin.Roles[StartTeam.Scp].GetEnumerator();
             CustomRole? role = Methods.GetCustomRole(ref roles, false, true);
 
