@@ -55,6 +55,7 @@ public class ProjectileAbility : ActiveAbility
 
             Log.Debug("Spawning pickup");
             Pickup pickup = Pickup.CreateAndSpawn(ItemType.SCP018, player.CameraTransform.position, default);
+            PlagueZombie.Grenades.Add(pickup.Serial);
             pickup.Scale *= 2f;
             Rigidbody body = pickup.Base.GetComponent<Rigidbody>();
             body.useGravity = false;
