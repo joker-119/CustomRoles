@@ -130,6 +130,7 @@ public class EventHandlers
             List<ICustomRole>.Enumerator roles = plugin.Roles[StartTeam.Scp].GetEnumerator();
             CustomRole? role = Methods.GetCustomRole(ref roles, false, true);
 
+            Log.Debug($"Got custom role {role?.Name}");
             if (ev.Target.GetCustomRoles().Count == 0)
                 role?.AddRole(ev.Target);
             roles.Dispose();

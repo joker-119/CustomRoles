@@ -7,6 +7,8 @@ using Exiled.API.Features;
 using Exiled.CustomRoles.API;
 using Exiled.CustomRoles.API.Features;
 
+using PlayerRoles;
+
 [CommandHandler(typeof(RemoteAdminCommandHandler))]
 public class TestCommand : ICommand
 {
@@ -27,6 +29,8 @@ public class TestCommand : ICommand
 
         Player player = Player.Get(((CommandSender)sender).SenderId);
         Log.Debug(args[1]);
+        if (args[1] == "npc")
+            Npc.Spawn("test", RoleTypeId.ClassD);
         Player target = Player.Get(args[1]);
 
         if (target == null)

@@ -89,6 +89,9 @@ public class PlagueZombie : CustomRole, ICustomRole
 
     private void OnHurt(HurtingEventArgs ev)
     {
+        if (ev.Player?.Role is null)
+            return;
+
         if (ev.Player.IsHuman && ev.Player.Health - ev.Amount <= 0 && ev.Player.TryGetEffect(EffectType.Poisoned, out StatusEffectBase poisoned) && poisoned.Intensity > 0)
         {
             ev.IsAllowed = false;

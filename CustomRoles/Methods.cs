@@ -29,14 +29,15 @@ public class Methods
                 Log.Debug(enumerator.Current?.StartTeam);
                 if (enumerator.Current is not null)
                 {
+                    int r = Loader.Random.Next(100);
                     if (enumerator.Current.StartTeam.HasFlag(StartTeam.Other)
                         || (enumerator.Current.StartTeam.HasFlag(StartTeam.Revived) && !checkRevive)
                         || (enumerator.Current.StartTeam.HasFlag(StartTeam.Escape) && !checkEscape)
                         || (!enumerator.Current.StartTeam.HasFlag(StartTeam.Revived) && checkRevive)
                         || (!enumerator.Current.StartTeam.HasFlag(StartTeam.Escape) && checkEscape)
-                        || Loader.Random.Next(100) > enumerator.Current.Chance)
+                        || r > enumerator.Current.Chance)
                     {
-                        Log.Debug("Validation check failed");
+                        Log.Debug($"Validation check failed | {enumerator.Current.StartTeam} {enumerator.Current.Chance}% || {r}");
                         continue;
                     }
 
