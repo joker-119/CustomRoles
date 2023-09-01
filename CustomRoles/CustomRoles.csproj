@@ -6,8 +6,8 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
         <Version>1.0.0</Version>
-        <AssemblyVersion>5.0.5</AssemblyVersion>
-        <FileVersion>5.0.5</FileVersion>
+        <AssemblyVersion>5.0.6</AssemblyVersion>
+        <FileVersion>5.0.6</FileVersion>
     </PropertyGroup>
 
     <Import Project="../../Plugin.props" />

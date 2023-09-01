@@ -31,7 +31,7 @@ public class Plugin : Plugin<Config>
 
     public override string Prefix { get; } = "CustomRoles";
 
-    public override Version RequiredExiledVersion { get; } = new (5, 0, 0);
+    public override Version RequiredExiledVersion { get; } = new (8, 0, 0);
 
     public Methods Methods { get; private set; } = null!;
 
@@ -45,6 +45,7 @@ public class Plugin : Plugin<Config>
 
         Config.LoadConfigs();
 
+        CustomRole.RegisterRoles(false, Config.RoleConfigs);
         Config.RoleConfigs.Demolitionists.Register();
         Config.RoleConfigs.Dwarves.Register();
         Config.RoleConfigs.Medics.Register();

@@ -42,7 +42,7 @@ public class Medic : CustomRole, ICustomRole
         $"{ItemType.Medkit}",
         $"{ItemType.Adrenaline}",
         $"{ItemType.Painkillers}",
-        $"{ItemType.KeycardNTFLieutenant}",
+        $"{ItemType.KeycardMTFOperative}",
     };
 
     public override SpawnProperties SpawnProperties { get; set; } = new()
