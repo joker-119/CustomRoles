@@ -15,4 +15,12 @@ public class API
         else
             ExemptPlayers[player] = type;
     }
+
+    public static void UnExemptPlayer(Player player, ExemptionType type)
+    {
+        if (ExemptPlayers.TryGetValue(player, out ExemptionType exemptionType) && exemptionType != type)
+            ExemptPlayers[player] &= type;
+        else if (ExemptPlayers.ContainsKey(player))
+            ExemptPlayers.Remove(player);
+    }
 }
