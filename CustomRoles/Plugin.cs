@@ -45,7 +45,6 @@ public class Plugin : Plugin<Config>
 
         Config.LoadConfigs();
 
-        CustomRole.RegisterRoles(false, Config.RoleConfigs);
         Config.RoleConfigs.Demolitionists.Register();
         Config.RoleConfigs.Dwarves.Register();
         Config.RoleConfigs.Medics.Register();
